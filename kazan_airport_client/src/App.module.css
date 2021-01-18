@@ -1,6 +1,5 @@
 .appWrapper{
     display: grid;
-    width: 1200px;
     margin: auto;
     align-content: center;
 
@@ -15,5 +14,4 @@
 .appWrapperContent {
     grid-area: ct;
     background: lightgray;
-    margin-top: 5px;
 }

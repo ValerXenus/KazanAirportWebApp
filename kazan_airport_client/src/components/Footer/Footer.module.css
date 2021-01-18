@@ -1,4 +1,28 @@
 .footerStyle {
     grid-area: ft;
-    background: purple;
+    background: yellowgreen;
+
+    display: grid;
+    margin: auto;
+    align-content: center;
+
+    grid-template-areas: 
+    "sv os sc ab";
+}
+
+.services {
+    grid-area: sv;
+    padding-left: 15px;
+}
+
+.otherServices {
+    grid-area: os;
+}
+
+.terminalSchemes {
+    grid-area: sc;
+}
+
+.aboutInfo {
+    grid-area: ab;
 }
