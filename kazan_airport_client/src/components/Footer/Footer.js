@@ -21,10 +21,10 @@ const Footer = () => {
                 </div>
                 <div className={styles.terminalSchemes}>
                     <h3>Схема терминалов</h3>
-                    <div><NavLink to="/">Общая схема терминалов</NavLink></div>
-                    <div><NavLink to="/">Схема терминала 1А</NavLink></div>
-                    <div><NavLink to="/">Схема терминала 1</NavLink></div>
-                    <div><NavLink to="/">Схема терминала 2</NavLink></div>
+                    <div><NavLink to="/terminals">Общая схема терминалов</NavLink></div>
+                    <div><NavLink to="/terminals/terminal_1a">Схема терминала 1А</NavLink></div>
+                    <div><NavLink to="/terminals/terminal_1">Схема терминала 1</NavLink></div>
+                    <div><NavLink to="/terminals/terminal_2">Схема терминала 2</NavLink></div>
                 </div>
                 <div className={styles.aboutInfo}>
                     <h3>О нас</h3>

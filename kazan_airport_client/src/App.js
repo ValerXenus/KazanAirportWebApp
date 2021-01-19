@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer';
 import Schedule from './components/Pages/Schedule/Schedule';
 import Services from './components/Pages/ServicesComponents/Services';
 import HowToGet from './components/Pages/HowToGet/HowToGet';
+import TerminalsScheme from './components/Pages/TerminalsSchemeComponents/TerminalsScheme';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/schedule" exact={true} render={() => <Schedule /> } />
             <Route path="/services" render={() => <Services /> } />
             <Route path="/howtoget" render={() => <HowToGet /> } />
+            <Route path="/terminals" render={() => <TerminalsScheme /> } />
           </div> 
         </div>
         <footer>
