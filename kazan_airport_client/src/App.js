@@ -6,6 +6,7 @@ import styles from './App.module.css';
 import Footer from './components/Footer/Footer';
 import Schedule from './components/Pages/Schedule/Schedule';
 import Services from './components/Pages/ServicesComponents/Services';
+import HowToGet from './components/Pages/HowToGet/HowToGet';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" exact={true} render={() => <Home /> } />
             <Route path="/schedule" exact={true} render={() => <Schedule /> } />
             <Route path="/services" render={() => <Services /> } />
+            <Route path="/howtoget" render={() => <HowToGet /> } />
           </div> 
         </div>
         <footer>

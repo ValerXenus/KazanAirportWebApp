@@ -29,7 +29,7 @@ const Footer = () => {
                 <div className={styles.aboutInfo}>
                     <h3>О нас</h3>
                     <div><NavLink to="/">Новости</NavLink></div>
-                    <div><NavLink to="/">Как добраться</NavLink></div>
+                    <div><NavLink to="/howtoget">Как добраться</NavLink></div>
                     <div><NavLink to="/">История</NavLink></div>
                     <div><NavLink to="/">Контактная информация</NavLink></div>
                 </div>
