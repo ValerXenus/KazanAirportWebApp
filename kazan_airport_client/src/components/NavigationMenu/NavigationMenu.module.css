@@ -8,4 +8,29 @@
 .menuContainer {
     width: 1200px;
     margin: 0 auto;
+    padding-top: 25px;
+    height: 110px;
+}
+
+.menuItems {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    float: right;
+}
+
+.menuItem {
+    display: block;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 5px 5px 5px 5px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.menuItem:hover {
+    background-color: chocolate;
+    color: black;
+    transition: all 0.3s ease;
+    display: block;
 }

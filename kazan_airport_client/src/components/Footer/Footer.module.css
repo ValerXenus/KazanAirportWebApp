@@ -1,6 +1,7 @@
 .footerStyle {
     grid-area: ft;
-    background: yellowgreen;;
+    background: yellowgreen;
+    height: 300px;
 }
 
 .footerContainer {

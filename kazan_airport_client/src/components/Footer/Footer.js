@@ -14,10 +14,10 @@ const Footer = () => {
                 </div>
                 <div className={styles.otherServices}>
                     <h3>Услуги</h3>
-                    <div><NavLink to="/">Магазины</NavLink></div>
-                    <div><NavLink to="/">Кафе и рестораны</NavLink></div>
-                    <div><NavLink to="/">VIP и бизнес-залы</NavLink></div>
-                    <div><NavLink to="/">Парковка</NavLink></div>
+                    <div><NavLink to="/services/stores">Магазины</NavLink></div>
+                    <div><NavLink to="/services/cafes">Кафе и рестораны</NavLink></div>
+                    <div><NavLink to="/services/vip">VIP и бизнес-залы</NavLink></div>
+                    <div><NavLink to="/services/parking">Парковка</NavLink></div>
                 </div>
                 <div className={styles.terminalSchemes}>
                     <h3>Схема терминалов</h3>

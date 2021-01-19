@@ -8,10 +8,12 @@
     "ct"
     "ft";
 
-    grid-template-rows: 60px;
+    grid-template-rows: 110px;
 }
 
 .appWrapperContent {
     grid-area: ct;
+    padding-top: 50px;
+    padding-bottom: 50px;
     background: lightgray;
 }
