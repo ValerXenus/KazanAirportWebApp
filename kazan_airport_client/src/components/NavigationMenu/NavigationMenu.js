@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from './../../logo.svg';
+import logo from './../../logo_kzn.svg';
 import styles from './NavigationMenu.module.css';
 
 const NavigationMenu = () => {
     return (
         <div className={styles.menuStyle}>            
-            <nav>
+            <nav className={styles.menuContainer}>
                 <NavLink to="/">
                     <img src={logo} style={{height: 60}} alt="logo" />
                 </NavLink>

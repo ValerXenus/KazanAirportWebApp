@@ -1,9 +1,12 @@
 .footerStyle {
     grid-area: ft;
-    background: yellowgreen;
+    background: yellowgreen;;
+}
 
+.footerContainer {
+    width: 1200px;
     display: grid;
-    margin: auto;
+    margin: 0 auto;
     align-content: center;
 
     grid-template-areas: 
@@ -12,17 +15,20 @@
 
 .services {
     grid-area: sv;
-    padding-left: 15px;
+    padding-left: 60px;
 }
 
 .otherServices {
     grid-area: os;
+    padding-left: 60px;
 }
 
 .terminalSchemes {
     grid-area: sc;
+    padding-left: 60px;
 }
 
 .aboutInfo {
     grid-area: ab;
+    padding-left: 60px;
 }
