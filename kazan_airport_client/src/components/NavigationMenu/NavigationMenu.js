@@ -17,7 +17,7 @@ const NavigationMenu = () => {
                     <NavLink to="/" className={styles.menuItem}>Купить билет</NavLink>
                     <NavLink to="/howtoget" className={styles.menuItem}>Как добраться</NavLink>
                     <NavLink to="/terminals" className={styles.menuItem}>Схема терминалов</NavLink>
-                    <NavLink to="/" className={styles.menuItem}>О нас</NavLink>
+                    <NavLink to="/about" className={styles.menuItem}>О нас</NavLink>
                     <NavLink to="/" className={styles.menuItem}>Войти</NavLink>
                 </div>
             </nav>

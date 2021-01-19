@@ -8,6 +8,7 @@ import Schedule from './components/Pages/Schedule/Schedule';
 import Services from './components/Pages/ServicesComponents/Services';
 import HowToGet from './components/Pages/HowToGet/HowToGet';
 import TerminalsScheme from './components/Pages/TerminalsSchemeComponents/TerminalsScheme';
+import AboutComponents from './components/Pages/AboutComponents/AboutComponents';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/services" render={() => <Services /> } />
             <Route path="/howtoget" render={() => <HowToGet /> } />
             <Route path="/terminals" render={() => <TerminalsScheme /> } />
+            <Route path="/about" render={() => <AboutComponents /> } />
           </div> 
         </div>
         <footer>
