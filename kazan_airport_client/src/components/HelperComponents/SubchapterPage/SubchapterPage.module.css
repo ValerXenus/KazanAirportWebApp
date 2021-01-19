@@ -1,0 +1,16 @@
+.subchapterContainer {
+    margin: 0 auto;
+    width: 1200px;
+    min-height: 800px;
+    display: grid;
+    grid-template-areas: "subchapter-navigation subchapter-content";
+    grid-template-columns: 250px 950px;
+}
+
+.subchapterNavigation {
+    grid-area: subchapter-navigation;
+}
+
+.subchapterContent {
+    grid-area: subchapter-content;
+}

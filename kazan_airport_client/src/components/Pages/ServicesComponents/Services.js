@@ -1,6 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Route } from 'react-router-dom';
+import SubchapterPage from '../../HelperComponents/SubchapterPage/SubchapterPage';
 import Cafes from './Cafes/Cafes';
 import Parking from './Parking/Parking';
 import styles from './Services.module.css';
@@ -9,23 +8,17 @@ import Stores from './Stores/Stores';
 import Vip from './Vip/Vip';
 
 const Services = () => {
+    let collection = { data: [
+        { link: "/services/stores", name: "Магазины", component: <Stores /> }, 
+        { link: "/services/cafes", name: "Кафе и рестораны", component: <Cafes />},
+        { link: "/services/vip", name: "VIP и бизнес-залы", component: <Vip />},
+        { link: "/services/parking", name: "Парковка", component: <Parking />}],
+        main: { link: "/services", component: <ServicesMain /> }
+    };
+
     return (
-        <div className={styles.servicesContainer}>
-            {/* Submenu */}
-            <div className={styles.servicesNavigation}>
-                <div><NavLink to="/services/stores">Магазины</NavLink></div>
-                <div><NavLink to="/services/cafes">Кафе и рестораны</NavLink></div>
-                <div><NavLink to="/services/vip">VIP и бизнес-залы</NavLink></div>
-                <div><NavLink to="/services/parking">Парковка</NavLink></div>
-            </div>
-            {/* Subchapter */}
-            <div className={styles.servicesContent}>
-                <Route path="/services" exact={true} render={() => <ServicesMain /> } />
-                <Route path="/services/stores" exact={true} render={() => <Stores /> } />
-                <Route path="/services/cafes" exact={true} render={() => <Cafes /> } />
-                <Route path="/services/vip" exact={true} render={() => <Vip /> } />
-                <Route path="/services/parking" exact={true} render={() => <Parking /> } />
-            </div>
+        <div>
+            <SubchapterPage collection={collection}/>
         </div>
     );
 }

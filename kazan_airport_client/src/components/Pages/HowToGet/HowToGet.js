@@ -10,7 +10,7 @@ const HowToGet = () => {
                 Добраться до аэропорта Вы можете на общественном транспорте, личном автомобиле, такси или электричке.<br/>
                 Если Вы приехали на личном автомобиле, то Вы можете оставить свое авто на парковке.
             </div>
-            <iframe style={{paddingTop: 20}} src="https://yandex.ru/map-widget/v1/?um=constructor%3A2644d979829631cf03b268f595f791d63c67d236983a32ed18fed2366ea6727e&amp;source=constructor" width="1200" height="390" frameborder="0"></iframe>
+            <iframe style={{paddingTop: 20}} src="https://yandex.ru/map-widget/v1/?um=constructor%3A2644d979829631cf03b268f595f791d63c67d236983a32ed18fed2366ea6727e&amp;source=constructor" width="1200" height="600" frameborder="0"></iframe>
         </div>
     );
 }
