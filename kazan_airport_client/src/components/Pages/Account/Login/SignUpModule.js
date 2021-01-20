@@ -43,7 +43,7 @@ const SignUpModule = () => {
         if (!validateInputs())
             return;
 
-        let encryptedPassword = md5(state.password); 
+        let encryptedPassword = md5(state.password);
 
         axios.post("https://localhost:44377/api/UserAccount/AddNewUser", {
             login: state.login,

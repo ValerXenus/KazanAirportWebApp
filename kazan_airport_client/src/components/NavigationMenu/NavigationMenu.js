@@ -7,7 +7,13 @@ import Cookies from 'js-cookie';
 const NavigationMenu = () => {
 
     const accountButton = () => {
-        let currentSession = JSON.parse(Cookies.get("authData"));
+        var authCookie = Cookies.get("authData");
+        if (!authCookie)
+            return(
+                <NavLink to="/login" className={styles.menuItem}>Войти</NavLink>
+            );
+
+        let currentSession = JSON.parse(authCookie);
         if (!currentSession || 
             (currentSession !== undefined && !currentSession.isAuth)) {
             return(

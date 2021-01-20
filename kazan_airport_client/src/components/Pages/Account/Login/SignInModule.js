@@ -1,7 +1,10 @@
+import axios from 'axios';
+import md5 from 'md5';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import InputValidations from '../../../HelperComponents/Logic/InputValidations';
-import styles from './Login.module.css'
+import Cookies from 'js-cookie';
+import styles from './Login.module.css';
 
 const SignInModule = () => {
 
@@ -37,6 +40,36 @@ const SignInModule = () => {
 
     // Обработчик кнопки "Войти"
     const handleSignInButton = () => {
+        if (!validateInputs())
+            return;
+
+        let encryptedPassword = md5(state.password);
+
+        axios.post("https://localhost:44377/api/UserAccount/LoginUser", {
+            login: state.login,
+            passWord: encryptedPassword
+        })
+        .then((response) => completedSuccessfully(response))
+        .catch((error) => {
+            alert(`Ошибка при отправке данных: ${error}`);
+        });
+    }
+
+    // Выполнение запроса успешно завершено
+    const completedSuccessfully = (response) => {
+        let userData = response.data;
+        if (userData === undefined) {
+            alert("Неправильный логин или пароль");
+            return;
+        }
+
+        Cookies.set("authData", JSON.stringify({
+            userId: userData.id,
+            role: userData.userTypeId,
+            isAuth: true
+        }));
+
+        alert("Вход выполнен успешно.\n");
         window.location = "/";
     }
 

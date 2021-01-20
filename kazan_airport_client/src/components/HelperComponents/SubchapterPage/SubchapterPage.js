@@ -9,7 +9,7 @@ const SubchapterPage = (props) => {
 
     let navLinks = collection.data.map(x => {
         return (
-            <div key={x.key}><NavLink to={x.link}>{x.name}</NavLink></div>
+            <div key={x.key}><NavLink key={x.key} to={x.link}>{x.name}</NavLink></div>
         );
     });
 
