@@ -61,5 +61,31 @@ namespace KazanAirportWebApp.Controllers
                 return exception.Message;
             }
         }
+
+        /// <summary>
+        /// Авторизация пользователя
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("LoginUser")]
+        public Logins LoginUser(Logins user)
+        {
+            try
+            {
+                List<Logins> loginsList;
+                using (var db = new KazanAirportDbEntities())
+                { 
+                    loginsList = db.Database.SqlQuery<Logins>("Select * From dbo.Logins Where ([login] = @login) and ([passWord] = @password)",
+                        new SqlParameter("@login", user.login),
+                        new SqlParameter("@password", user.passWord)).ToList();
+                }
+
+                return loginsList.Count == 0 ? null : loginsList[0];
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
