@@ -60,6 +60,6 @@ namespace KazanAirportWebApp.Controllers
             {
                 return exception.Message;
             }
-        } 
+        }
     }
 }
