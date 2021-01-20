@@ -1,0 +1,19 @@
+.appWrapper{
+    display: grid;
+    margin: auto;
+    align-content: center;
+
+    grid-template-areas: 
+    "hd"
+    "ct"
+    "ft";
+
+    grid-template-rows: 110px;
+}
+
+.appWrapperContent {
+    grid-area: ct;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background: lightgray;
+}

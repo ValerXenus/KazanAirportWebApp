@@ -1,0 +1,35 @@
+.footerStyle {
+    grid-area: ft;
+    background: yellowgreen;
+    height: 300px;
+}
+
+.footerContainer {
+    width: 1200px;
+    display: grid;
+    margin: 0 auto;
+    align-content: center;
+
+    grid-template-areas: 
+    "sv os sc ab";
+}
+
+.services {
+    grid-area: sv;
+    padding-left: 60px;
+}
+
+.otherServices {
+    grid-area: os;
+    padding-left: 60px;
+}
+
+.terminalSchemes {
+    grid-area: sc;
+    padding-left: 60px;
+}
+
+.aboutInfo {
+    grid-area: ab;
+    padding-left: 60px;
+}

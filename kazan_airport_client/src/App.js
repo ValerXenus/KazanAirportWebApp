@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Home from './components/Pages/Home/Home';
+import NavigationMenu from './components/NavigationMenu/NavigationMenu';
+import styles from './App.module.css';
+import Footer from './components/Footer/Footer';
+import Schedule from './components/Pages/Schedule/Schedule';
+import Services from './components/Pages/ServicesComponents/Services';
+import HowToGet from './components/Pages/HowToGet/HowToGet';
+import TerminalsScheme from './components/Pages/TerminalsSchemeComponents/TerminalsScheme';
+import AboutComponents from './components/Pages/AboutComponents/AboutComponents';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className={styles.appWrapper}>
+        <header>
+          <NavigationMenu />
+        </header>
+        <div className={styles.appWrapperContent}>
+          <div>
+            <Route path="/" exact={true} render={() => <Home /> } />
+            <Route path="/schedule" exact={true} render={() => <Schedule /> } />
+            <Route path="/services" render={() => <Services /> } />
+            <Route path="/howtoget" render={() => <HowToGet /> } />
+            <Route path="/terminals" render={() => <TerminalsScheme /> } />
+            <Route path="/about" render={() => <AboutComponents /> } />
+          </div> 
+        </div>
+        <footer>
+          <Footer />
+        </footer>
+      </div>
+    </BrowserRouter>
   );
 }
 
