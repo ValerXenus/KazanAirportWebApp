@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
+using KazanAirportWebApp.Logic;
 using KazanAirportWebApp.Models.Data_Access;
 
 namespace KazanAirportWebApp.Controllers
@@ -30,5 +28,38 @@ namespace KazanAirportWebApp.Controllers
 
             return Request.CreateResponse(HttpStatusCode.OK, types);
         }
+
+        /// <summary>
+        /// Добавить нового пользователя
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("AddNewUser")]
+        public string AddNewUser(Logins user)
+        {
+            var existingDataValidation = ValidationLogic.ValidateExistingUserData(user);
+            if (!string.IsNullOrEmpty(existingDataValidation))
+            {
+                return existingDataValidation;
+            }
+
+            try
+            {
+                using (var db = new KazanAirportDbEntities())
+                {
+                    db.Database.ExecuteSqlCommand(
+                        "Insert Into dbo.Logins ([login], [passWord], email, userTypeId) Values (@login, @password, @email, 2)",
+                        new SqlParameter("@login", user.login), 
+                        new SqlParameter("@password", user.passWord),
+                        new SqlParameter("@email", user.email));
+                }
+
+                return "Success";
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+        } 
     }
 }

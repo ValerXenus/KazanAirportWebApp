@@ -75,12 +75,9 @@
           <Property Name="seatsNumber" Type="int" Nullable="false" />
           <Property Name="airlineId" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'KazanAirportDb.dbo.UserTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserTypes">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="typeName" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="typeName" Type="varchar" MaxLength="50" Nullable="false" />
@@ -93,12 +90,7 @@ warning 6002: The table/view 'KazanAirportDb.dbo.UserTypes' does not have a prim
           <EntitySet Name="Logins" EntityType="Self.Logins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Passengers" EntityType="Self.Passengers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Planes" EntityType="Self.Planes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserTypes].[id] AS [id], 
-    [UserTypes].[typeName] AS [typeName]
-    FROM [dbo].[UserTypes] AS [UserTypes]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -165,14 +157,6 @@ warning 6002: The table/view 'KazanAirportDb.dbo.UserTypes' does not have a prim
           <Property Name="seatsNumber" Type="Int32" Nullable="false" />
           <Property Name="airlineId" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="UserTypes">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="typeName" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="typeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="KazanAirportDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Airlines" EntityType="Self.Airlines" />
           <EntitySet Name="Flights" EntityType="Self.Flights" />
@@ -180,8 +164,8 @@ warning 6002: The table/view 'KazanAirportDb.dbo.UserTypes' does not have a prim
           <EntitySet Name="Logins" EntityType="Self.Logins" />
           <EntitySet Name="Passengers" EntityType="Self.Passengers" />
           <EntitySet Name="Planes" EntityType="Self.Planes" />
-          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" />
           <EntitySet Name="Cities" EntityType="KazanAirportDbModel.Cities" />
+          <EntitySet Name="UserTypes" EntityType="KazanAirportDbModel.UserTypes" />
         </EntityContainer>
         <EntityType Name="Cities">
           <Key>
@@ -191,6 +175,13 @@ warning 6002: The table/view 'KazanAirportDb.dbo.UserTypes' does not have a prim
           <Property Name="cityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="icaoCode" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="iataCode" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="typeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -265,20 +256,20 @@ warning 6002: The table/view 'KazanAirportDb.dbo.UserTypes' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserTypes">
-            <EntityTypeMapping TypeName="KazanAirportDbModel.UserTypes">
-              <MappingFragment StoreEntitySet="UserTypes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="typeName" ColumnName="typeName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="KazanAirportDbModel.Cities">
               <MappingFragment StoreEntitySet="Cities">
                 <ScalarProperty Name="iataCode" ColumnName="iataCode" />
                 <ScalarProperty Name="icaoCode" ColumnName="icaoCode" />
                 <ScalarProperty Name="cityName" ColumnName="cityName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTypes">
+            <EntityTypeMapping TypeName="KazanAirportDbModel.UserTypes">
+              <MappingFragment StoreEntitySet="UserTypes">
+                <ScalarProperty Name="typeName" ColumnName="typeName" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
