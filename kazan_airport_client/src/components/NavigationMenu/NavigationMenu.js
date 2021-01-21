@@ -22,20 +22,17 @@ const NavigationMenu = () => {
         }
 
         let accountUrl = "";
-        let buttonName = "";
+        let buttonName = "Личный кабинет";
 
         switch(currentSession.role){
             case 0:
-                accountUrl = "/account/admin";
-                buttonName = "Личный кабинет";
+                accountUrl = "/admin";
                 break;
             case 1:
-                accountUrl = "/account/operator";
-                buttonName = "Личный кабинет";
+                accountUrl = "/operator";
                 break;
             case 2:
-                accountUrl = "/account/passenger";
-                buttonName = "Личный кабинет";
+                accountUrl = "/passenger";
                 break;
             default:
                 accountUrl = "/login";
