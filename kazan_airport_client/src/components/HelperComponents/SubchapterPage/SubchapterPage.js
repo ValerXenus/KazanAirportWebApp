@@ -30,7 +30,6 @@ const SubchapterPage = (props) => {
     }
 
     let logOutElement = () => {
-        debugger;
         if (collection.needShowLogout === true) {
             return (
                 <div>
@@ -38,6 +37,8 @@ const SubchapterPage = (props) => {
                 </div>
             );
         }
+
+        return null;
     }
 
     return (

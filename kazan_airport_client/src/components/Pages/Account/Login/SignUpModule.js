@@ -48,7 +48,8 @@ const SignUpModule = () => {
         axios.post("https://localhost:44377/api/UserAccount/AddNewUser", {
             login: state.login,
             passWord: encryptedPassword,
-            email: state.email
+            email: state.email,
+            userTypeId: 2
         })
         .then((response) => completedSuccessfully(response))
         .catch((error) => {

@@ -51,12 +51,17 @@ const SignInModule = () => {
         })
         .then((response) => completedSuccessfully(response))
         .catch((error) => {
-            alert(`Ошибка при отправке данных: ${error}`);
+            alert(`Ошибка при отправке данных: ${error}.`);
         });
     }
 
     // Выполнение запроса успешно завершено
     const completedSuccessfully = (response) => {
+        if (response.data === null){
+            alert("Неправильный логин или пароль");
+            return;
+        }
+
         let userData = response.data;
         if (userData === undefined) {
             alert("Неправильный логин или пароль");

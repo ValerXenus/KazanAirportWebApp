@@ -28,7 +28,7 @@ namespace KazanAirportWebApp.Logic
                 loginIds = db.Database.SqlQuery<int>("Select id From dbo.Logins Where email = @email",
                     new SqlParameter("@email", user.email)).ToList();
                 if (loginIds.Count != 0)
-                    validationResult += "- Пользователем с таким Email уже присутствует в системе\n";
+                    validationResult += "- Пользователь с таким Email уже присутствует в системе\n";
 
             }
 

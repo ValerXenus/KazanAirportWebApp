@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web.Http;
 using KazanAirportWebApp.Logic;
 using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.Models.Join_Models;
 
 namespace KazanAirportWebApp.Controllers
 {
@@ -48,10 +49,11 @@ namespace KazanAirportWebApp.Controllers
                 using (var db = new KazanAirportDbEntities())
                 {
                     db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Logins ([login], [passWord], email, userTypeId) Values (@login, @password, @email, 2)",
+                        "Insert Into dbo.Logins ([login], [passWord], email, userTypeId) Values (@login, @password, @email, @role)",
                         new SqlParameter("@login", user.login), 
                         new SqlParameter("@password", user.passWord),
-                        new SqlParameter("@email", user.email));
+                        new SqlParameter("@email", user.email),
+                        new SqlParameter("@role", user.userTypeId));
                 }
 
                 return "Success";
@@ -74,13 +76,63 @@ namespace KazanAirportWebApp.Controllers
             {
                 List<Logins> loginsList;
                 using (var db = new KazanAirportDbEntities())
-                { 
+                {
                     loginsList = db.Database.SqlQuery<Logins>("Select * From dbo.Logins Where ([login] = @login) and ([passWord] = @password)",
                         new SqlParameter("@login", user.login),
                         new SqlParameter("@password", user.passWord)).ToList();
                 }
 
                 return loginsList.Count == 0 ? null : loginsList[0];
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получение пользователя по Id
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetUserById")]
+        public Logins GetUserById(int id)
+        {
+            try
+            {
+                List<Logins> loginsList;
+                using (var db = new KazanAirportDbEntities())
+                {
+                    loginsList = db.Database.SqlQuery<Logins>("Select * From dbo.Logins Where id = @id",
+                        new SqlParameter("@id", id)).ToList();
+                }
+
+                return loginsList.Count == 0 ? null : loginsList[0];
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получение списка пользователей
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetUsersList")]
+        public List<UserItem> GetUsersList()
+        {
+            try
+            {
+                List<UserItem> loginsList;
+                using (var db = new KazanAirportDbEntities())
+                {
+                    loginsList = db.Database.SqlQuery<UserItem>("Select * From dbo.Logins as L " +
+                                                      "join dbo.UserTypes as UT on L.userTypeId = UT.id").ToList();
+                }
+
+                return ProtectLogic.FilterPasswords(loginsList);
             }
             catch
             {

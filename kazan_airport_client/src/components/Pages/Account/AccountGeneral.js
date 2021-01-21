@@ -1,6 +1,6 @@
 import React from 'react';
 import SubchapterPage from '../../HelperComponents/SubchapterPage/SubchapterPage';
-import ManageUsers from './ManagementComps/ManageUsers';
+import { ManageUsers } from './ManagementComps/ManageUsers';
 import ManagePassengers from './ManagementComps/ManagePassengers';
 import ManageCities from './ManagementComps/ManageCities';
 import ManagePlanes from './ManagementComps/ManagePlanes';
