@@ -1,6 +1,7 @@
 import axios from 'axios';
 import md5 from 'md5';
 import React, { useState } from 'react';
+import { usersMethods } from '../../../HelperComponents/ApiUrls';
 import InputValidations from '../../../HelperComponents/Logic/InputValidations';
 import styles from './Login.module.css'
 
@@ -45,7 +46,7 @@ const SignUpModule = () => {
 
         let encryptedPassword = md5(state.password);
 
-        axios.post("https://localhost:44377/api/UserAccount/AddNewUser", {
+        axios.post(usersMethods.ADD_NEW_USER, {
             login: state.login,
             passWord: encryptedPassword,
             email: state.email,

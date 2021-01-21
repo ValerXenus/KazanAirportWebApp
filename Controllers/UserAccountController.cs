@@ -179,5 +179,29 @@ namespace KazanAirportWebApp.Controllers
                 return null;
             }
         }
+
+        /// <summary>
+        /// Удалить пользователя
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("RemoveUser")]
+        public string RemoveUser(int id)
+        {
+            try
+            {
+                using (var db = new KazanAirportDbEntities())
+                {
+                    db.Database.ExecuteSqlCommand("Delete From dbo.Logins where id = @id",
+                        new SqlParameter("@id", id));
+                }
+
+                return "Success";
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+        }
     }
 }

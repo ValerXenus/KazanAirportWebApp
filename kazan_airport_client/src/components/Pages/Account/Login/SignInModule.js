@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import InputValidations from '../../../HelperComponents/Logic/InputValidations';
 import Cookies from 'js-cookie';
 import styles from './Login.module.css';
+import { usersMethods } from '../../../HelperComponents/ApiUrls';
 
 const SignInModule = () => {
 
@@ -45,7 +46,7 @@ const SignInModule = () => {
 
         let encryptedPassword = md5(state.password);
 
-        axios.post("https://localhost:44377/api/UserAccount/LoginUser", {
+        axios.post(usersMethods.LOGIN_USER, {
             login: state.login,
             passWord: encryptedPassword
         })

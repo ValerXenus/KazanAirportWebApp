@@ -2,6 +2,7 @@ import axios from 'axios';
 import md5 from 'md5';
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
+import { usersMethods } from '../../../../HelperComponents/ApiUrls';
 
 export class AddUserModal extends Component {
     constructor(props){
@@ -18,7 +19,7 @@ export class AddUserModal extends Component {
 
     // Получение props. ToDo, заменить на обновленный
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id != this.state.id)){
+        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.id)){
             this.fillState(nextProps);
         }        
     }
@@ -33,7 +34,7 @@ export class AddUserModal extends Component {
         }
         
         let encryptedPassword = md5(this.state.password);
-        axios.post("https://localhost:44377/api/UserAccount/AddNewUser", {
+        axios.post(usersMethods.ADD_NEW_USER, {
             login: this.state.login,
             passWord: encryptedPassword,
             email: this.state.email,
@@ -46,7 +47,7 @@ export class AddUserModal extends Component {
     }
 
     updateUserInfo = () => {
-        axios.post("https://localhost:44377/api/UserAccount/UpdateUser", {
+        axios.post(usersMethods.UPDATE_USER, {
             id: this.state.id,
             login: this.state.login,
             email: this.state.email,
@@ -65,7 +66,6 @@ export class AddUserModal extends Component {
             return;
         }
 
-        alert("Запись успешно сохранена");
         this.props.onHide();
     }
 

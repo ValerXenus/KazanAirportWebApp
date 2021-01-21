@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import {Button, ButtonToolbar, Table} from 'react-bootstrap';
+import { usersMethods } from '../../../HelperComponents/ApiUrls';
 import { AddUserModal } from './Modals/AddUserModal';
 
 export  class ManageUsers extends Component {
@@ -18,10 +19,6 @@ export  class ManageUsers extends Component {
         this.refreshList();
     }
 
-    componentWillUnmount(){
-        this.state = {};
-    }
-
     // Выполняется, когда некоторые данные изменились
     componentDidUpdate() {
         this.refreshList();
@@ -29,7 +26,7 @@ export  class ManageUsers extends Component {
 
     // Обновление списка пользователей
     refreshList = () => {
-        axios.post("https://localhost:44377/api/UserAccount/GetUsersList")
+        axios.post(usersMethods.GET_USERS_LIST)
         .then(response => {
             this.setState({usersList: response.data})
         })
@@ -40,7 +37,7 @@ export  class ManageUsers extends Component {
 
     // Открытие модального окна для редактирования данных
     showModalEdit = (id) => {
-        axios.post("https://localhost:44377/api/UserAccount/GetUserById", null, {
+        axios.post(usersMethods.GET_USER_BY_ID, null, {
             params: {id: id}
         })
         .then(response => {
@@ -56,6 +53,22 @@ export  class ManageUsers extends Component {
         .catch((error) => {
             alert(`Произошла ошибка при получении данных: ${error}`);
         });
+    }
+
+    removeUser = (id) => {
+        if (window.confirm("Вы действитель хотите удалить запись?")) {
+            axios.post(usersMethods.REMOVE_USER, null, {
+                params: {id: id}
+            })
+            .then((response) => {
+                if (response.data !== "Success") {
+                    alert(`Ошибка:\n${response.data}`);
+                }
+            })
+            .catch((error) => {
+                alert(`Ошибка при отправке данных: ${error}`);
+            });
+        }        
     }
 
     render() {
@@ -88,13 +101,12 @@ export  class ManageUsers extends Component {
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => {
-                                            this.showModalEdit(x.id);
-                                        }}>
+                                        onClick={() => { this.showModalEdit(x.id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
-                                        className="mr-2 bg-danger" variant="info">
+                                        className="mr-2 bg-danger" variant="info"
+                                        onClick={() => { this.removeUser(x.id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>
