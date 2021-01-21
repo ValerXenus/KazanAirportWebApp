@@ -43,7 +43,7 @@ export  class ManageUsers extends Component {
         .then(response => {
             this.setState({
                 editModalShow: true,
-                editUserInfo: {
+                editRecord: {
                     id: id,
                     login: response.data.login,
                     email: response.data.email,
@@ -55,7 +55,7 @@ export  class ManageUsers extends Component {
         });
     }
 
-    removeUser = (id) => {
+    removeRecord = (id) => {
         if (window.confirm("Вы действитель хотите удалить запись?")) {
             axios.post(usersMethods.REMOVE_USER, null, {
                 params: {id: id}
@@ -106,7 +106,7 @@ export  class ManageUsers extends Component {
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeUser(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>
@@ -123,7 +123,7 @@ export  class ManageUsers extends Component {
                         onHide={modalClose} />
                     <AddUserModal
                         show={this.state.editModalShow}
-                        editInfo={this.state.editUserInfo}
+                        editInfo={this.state.editRecord}
                         onHide={modalClose} />
                 </ButtonToolbar>
             </div>

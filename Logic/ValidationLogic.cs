@@ -10,8 +10,10 @@ namespace KazanAirportWebApp.Logic
     /// </summary>
     public class ValidationLogic
     {
+        #region Public methods
+
         /// <summary>
-        /// Валидация значений, что нет пользователей с такими же данными
+        /// Валидация полей, что нет пользователей с такими же данными
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -25,7 +27,7 @@ namespace KazanAirportWebApp.Logic
         }
 
         /// <summary>
-        /// Проверка, на валидацию существующего логина, сравнивая с актуальным
+        /// Проверка, на существующий логин в БД, сравнивая с введенным
         /// </summary>
         /// <param name="dbUser"></param>
         /// <param name="receivedUser"></param>
@@ -42,6 +44,24 @@ namespace KazanAirportWebApp.Logic
 
             return outcome;
         }
+
+        /// <summary>
+        /// Валидация полей, что нет пассажиров с такими же данными
+        /// </summary>
+        /// <param name="passenger"></param>
+        /// <returns></returns>
+        public static string ValidatePassengerData(Passengers passenger)
+        {
+            var outcome = "";
+
+            outcome += validateExistingPassport(passenger.passportNumber);
+
+            return outcome;
+        }
+
+        #endregion
+
+        #region Private methods
 
         /// <summary>
         /// Проверка на существование логина в БД
@@ -80,5 +100,29 @@ namespace KazanAirportWebApp.Logic
 
             return outcome;
         }
+
+        /// <summary>
+        /// Проверка на существование данного номера паспорта в БД
+        /// </summary>
+        /// <param name="passportNumber"></param>
+        /// <returns></returns>
+        private static string validateExistingPassport(string passportNumber)
+        {
+            var outcome = string.Empty;
+
+            using (var db = new KazanAirportDbEntities())
+            {
+                var loginIds = db.Database
+                    .SqlQuery<int>("Select id From dbo.Passengers Where passportNumber = @passportNumber",
+                    new SqlParameter("@passportNumber", passportNumber)).ToList();
+                if (loginIds.Count != 0)
+                    outcome += "- Пассажир с таким номером паспорта уже присутствует в системе\n";
+            }
+
+            return outcome;
+        }
+
+        #endregion
+
     }
 }

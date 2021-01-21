@@ -8,3 +8,7 @@ export const usersMethods = {
     LOGIN_USER: apiUrl + "/UserAccount/LoginUser",
     REMOVE_USER: apiUrl + "/UserAccount/RemoveUser"
 }
+
+export const passengersMethods = {
+    GET_PASSENGERS_LIST: apiUrl + "/Passengers/GetPassengersList"
+}

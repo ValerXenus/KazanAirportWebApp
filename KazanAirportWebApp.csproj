@@ -169,11 +169,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PassengersController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\DbHelpers.cs" />
     <Compile Include="Logic\ProtectLogic.cs" />
     <Compile Include="Logic\ValidationLogic.cs" />
     <Compile Include="Models\Data Access\Airlines.cs">
@@ -215,6 +217,7 @@
     <Compile Include="Models\Data Access\UserTypes.cs">
       <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Join Models\PassengerItem.cs" />
     <Compile Include="Models\Join Models\UserItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

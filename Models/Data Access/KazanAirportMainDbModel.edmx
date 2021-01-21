@@ -61,7 +61,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="lastName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="fristName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="middleName" Type="varchar" MaxLength="50" />
           <Property Name="passportNumber" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
@@ -137,16 +137,6 @@
           <Property Name="passengerId" Type="Int32" />
           <Property Name="userTypeId" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Passengers">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="fristName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="middleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="passportNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-        </EntityType>
         <EntityType Name="Planes">
           <Key>
             <PropertyRef Name="id" />
@@ -162,10 +152,10 @@
           <EntitySet Name="Flights" EntityType="Self.Flights" />
           <EntitySet Name="FlightStatuses" EntityType="Self.FlightStatuses" />
           <EntitySet Name="Logins" EntityType="Self.Logins" />
-          <EntitySet Name="Passengers" EntityType="Self.Passengers" />
           <EntitySet Name="Planes" EntityType="Self.Planes" />
           <EntitySet Name="Cities" EntityType="KazanAirportDbModel.Cities" />
           <EntitySet Name="UserTypes" EntityType="KazanAirportDbModel.UserTypes" />
+          <EntitySet Name="Passengers" EntityType="KazanAirportDbModel.Passengers" />
         </EntityContainer>
         <EntityType Name="Cities">
           <Key>
@@ -182,6 +172,16 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="typeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Passengers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="firstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="middleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="passportNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -234,17 +234,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Passengers">
-            <EntityTypeMapping TypeName="KazanAirportDbModel.Passengers">
-              <MappingFragment StoreEntitySet="Passengers">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="lastName" ColumnName="lastName" />
-                <ScalarProperty Name="fristName" ColumnName="fristName" />
-                <ScalarProperty Name="middleName" ColumnName="middleName" />
-                <ScalarProperty Name="passportNumber" ColumnName="passportNumber" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Planes">
             <EntityTypeMapping TypeName="KazanAirportDbModel.Planes">
               <MappingFragment StoreEntitySet="Planes">
@@ -270,6 +259,17 @@
             <EntityTypeMapping TypeName="KazanAirportDbModel.UserTypes">
               <MappingFragment StoreEntitySet="UserTypes">
                 <ScalarProperty Name="typeName" ColumnName="typeName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passengers">
+            <EntityTypeMapping TypeName="KazanAirportDbModel.Passengers">
+              <MappingFragment StoreEntitySet="Passengers">
+                <ScalarProperty Name="passportNumber" ColumnName="passportNumber" />
+                <ScalarProperty Name="middleName" ColumnName="middleName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
