@@ -16,9 +16,11 @@ export class AddUserModal extends Component {
         }
     }
 
-    // Получение props
-    componentWillReceiveProps(nextProps) {
-        this.fillState(nextProps);
+    // Получение props. ToDo, заменить на обновленный
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id != this.state.id)){
+            this.fillState(nextProps);
+        }        
     }
 
     // Событие нажатия кнопки "Сохранить"
@@ -26,7 +28,7 @@ export class AddUserModal extends Component {
         event.preventDefault();
 
         if (this.state.isEditMode) {
-            alert("Edit mode");
+            this.updateUserInfo();
             return;
         }
         
@@ -34,6 +36,19 @@ export class AddUserModal extends Component {
         axios.post("https://localhost:44377/api/UserAccount/AddNewUser", {
             login: this.state.login,
             passWord: encryptedPassword,
+            email: this.state.email,
+            userTypeId: this.state.userTypeId
+        })
+        .then((response) => this.completedSuccessfully(response))
+        .catch((error) => {
+            alert(`Ошибка при отправке данных: ${error}`);
+        });
+    }
+
+    updateUserInfo = () => {
+        axios.post("https://localhost:44377/api/UserAccount/UpdateUser", {
+            id: this.state.id,
+            login: this.state.login,
             email: this.state.email,
             userTypeId: this.state.userTypeId
         })

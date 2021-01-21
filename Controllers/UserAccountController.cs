@@ -116,6 +116,46 @@ namespace KazanAirportWebApp.Controllers
         }
 
         /// <summary>
+        /// Обновление данных пользователя
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("UpdateUser")]
+        public string UpdateUser(Logins user)
+        {
+            var dbUser = GetUserById(user.id);
+            if (dbUser == null)
+            {
+                return "Ошибка. Пользователь не найден";
+            }
+
+            var existingDataValidation = ValidationLogic.ValidateExistingUserCompare(dbUser, user);
+            if (!string.IsNullOrEmpty(existingDataValidation))
+            {
+                return existingDataValidation;
+            }
+
+            try
+            {
+                using (var db = new KazanAirportDbEntities())
+                {
+                    db.Database.ExecuteSqlCommand(
+                        "Update dbo.Logins set[login] = @login, email = @email, userTypeId = @userTypeId where id = @id",
+                        new SqlParameter("@login", user.login),
+                        new SqlParameter("@email", user.email),
+                        new SqlParameter("@userTypeId", user.userTypeId),
+                        new SqlParameter("@id", user.id));
+                }
+
+                return "Success";
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+        }
+
+        /// <summary>
         /// Получение списка пользователей
         /// </summary>
         /// <returns></returns>
