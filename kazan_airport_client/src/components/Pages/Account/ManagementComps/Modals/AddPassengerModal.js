@@ -51,11 +51,13 @@ export class AddPassengerModal extends Component {
     }
 
     updateInfo = () => {
-        axios.post("ЗАГЛУШКА", {
-            id: this.state.id,
-            login: this.state.login,
-            email: this.state.email,
-            userTypeId: this.state.userTypeId
+        axios.post(passengersMethods.UPDATE_PASSENGER, {
+            id: this.state.passengerInfo.id,
+            lastName: this.state.passengerInfo.lastName,
+            firstName: this.state.passengerInfo.firstName,
+            middleName: this.state.passengerInfo.middleName,
+            passportNumber: this.state.passengerInfo.passportNumber,
+            login: this.state.passengerInfo.userLogin
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -86,13 +88,10 @@ export class AddPassengerModal extends Component {
     // Предзаполнение данных для редактирования
     fillState = (props) => {
         if (!props.editInfo)
-        return;
+            return;
 
         this.setState({
-            id: props.editInfo.id,
-            login: props.editInfo.login,
-            email: props.editInfo.email,
-            userTypeId: props.editInfo.role,
+            passengerInfo: props.editInfo,
             isEditMode: true
         });
     }

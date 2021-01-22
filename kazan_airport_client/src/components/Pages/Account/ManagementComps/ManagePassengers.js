@@ -38,17 +38,19 @@ export class ManagePassengers extends Component {
 
     // Открытие модального окна для редактирования данных
     showModalEdit = (id) => {
-        axios.post("ЗАГЛУШКА", null, {
-            params: {id: id}
+        axios.post(passengersMethods.GET_PASSENGER_BY_ID, null, {
+            params: {passengerId: id}
         })
         .then(response => {
             this.setState({
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    login: response.data.login,
-                    email: response.data.email,
-                    role: response.data.userTypeId
+                    lastName: response.data.lastName,
+                    firstName: response.data.firstName,
+                    middleName: response.data.middleName,
+                    passportNumber: response.data.passportNumber,
+                    userLogin: response.data.login
                 }});
         })
         .catch((error) => {
@@ -58,8 +60,8 @@ export class ManagePassengers extends Component {
 
     removeRecord = (id) => {
         if (window.confirm("Вы действитель хотите удалить запись?")) {
-            axios.post("ЗАГЛУШКА", null, {
-                params: {id: id}
+            axios.post(passengersMethods.REMOVE_PASSENGER, null, {
+                params: {passengerId: id}
             })
             .then((response) => {
                 if (response.data !== "Success") {
@@ -128,10 +130,10 @@ export class ManagePassengers extends Component {
                     <AddPassengerModal
                         show={this.state.addModalShow}
                         onHide={modalClose} />
-                    {/* <AddUserModal
+                    <AddPassengerModal
                         show={this.state.editModalShow}
                         editInfo={this.state.editRecord}
-                        onHide={modalClose} /> */}
+                        onHide={modalClose} />
                 </ButtonToolbar>
             </div>
         );

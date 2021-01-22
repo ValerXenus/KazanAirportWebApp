@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using KazanAirportWebApp.Models.Data_Access;
@@ -60,6 +61,36 @@ namespace KazanAirportWebApp.Logic
             }
 
             return outcome;
+        }
+
+        /// <summary>
+        /// Получение Id пользователя по id пассажира или логину
+        /// </summary>
+        /// <returns></returns>
+        public static int GetUserId(int passengerId, string userLogin = "")
+        {
+            using (var db = new KazanAirportDbEntities())
+            {
+                List<Logins> userLogins;
+
+                if (!string.IsNullOrEmpty(userLogin))
+                {
+                    userLogins = db.Database
+                        .SqlQuery<Logins>("Select * From dbo.Logins Where login = @userLogin",
+                            new SqlParameter("@userLogin", userLogin)).ToList();
+
+                    if (userLogins.Count > 0)
+                        return userLogins.First().id;
+                }
+
+                userLogins = db.Database
+                    .SqlQuery<Logins>("Select * From dbo.Logins Where passengerId = @passengerId",
+                        new SqlParameter("@passengerId", passengerId)).ToList();
+                if (userLogins.Count > 0)
+                    return userLogins.First().id;
+            }
+
+            return -1;
         }
     }
 }

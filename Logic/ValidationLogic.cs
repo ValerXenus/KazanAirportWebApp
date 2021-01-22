@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Linq;
 using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.Models.Join_Models;
 
 namespace KazanAirportWebApp.Logic
 {
@@ -55,6 +56,41 @@ namespace KazanAirportWebApp.Logic
             var outcome = "";
 
             outcome += validateExistingPassport(passenger.passportNumber);
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Проверка, на существующий логин и номера паспорта в БД, сравнивая с введенным
+        /// </summary>
+        /// <param name="dbPassenger"></param>
+        /// <param name="receivedPassenger"></param>
+        /// <returns></returns>
+        public static string ValidatePassengerDataCompare(PassengerItem dbPassenger, PassengerItem receivedPassenger)
+        {
+            var outcome = "";
+
+            if (dbPassenger.passportNumber != receivedPassenger.passportNumber)
+                outcome += validateExistingPassport(receivedPassenger.passportNumber);
+
+            if (dbPassenger.login != null 
+                && dbPassenger.login != receivedPassenger.login)
+            {
+                // Проверяем, что логин ни кем не используется, и обновляем
+                using (var db = new KazanAirportDbEntities())
+                {
+                    var userLogins = db.Database
+                        .SqlQuery<Logins>("Select * From dbo.Logins Where [login] = @login",
+                            new SqlParameter("@login", receivedPassenger.login)).ToList();
+
+                    if (userLogins.Count > 0
+                        && userLogins.First().id != dbPassenger.id)
+                    {
+                        outcome += "Нельзя добавить данные пассажира к пользователю, у которого уже указаны " +
+                                   "другие данные пассажира";
+                    }
+                }
+            }
 
             return outcome;
         }
