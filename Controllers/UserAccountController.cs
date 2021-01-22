@@ -82,7 +82,7 @@ namespace KazanAirportWebApp.Controllers
                         new SqlParameter("@password", user.passWord)).ToList();
                 }
 
-                return loginsList.Count == 0 ? null : loginsList[0];
+                return loginsList.Count == 0 ? null : loginsList.First();
             }
             catch
             {
@@ -107,7 +107,7 @@ namespace KazanAirportWebApp.Controllers
                         new SqlParameter("@id", id)).ToList();
                 }
 
-                return loginsList.Count == 0 ? null : loginsList[0];
+                return loginsList.Count == 0 ? null : loginsList.First();
             }
             catch
             {

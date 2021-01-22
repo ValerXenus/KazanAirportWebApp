@@ -2,13 +2,14 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import {Button, ButtonToolbar, Table} from 'react-bootstrap';
 import { passengersMethods } from '../../../HelperComponents/ApiUrls';
-import { AddUserModal } from './Modals/AddUserModal';
+import { AddPassengerModal } from './Modals/AddPassengerModal';
 
 export class ManagePassengers extends Component {
     constructor(props) {
         super(props);
         this.state = {
             passengersList: [],
+            usersList: [],
             addModalShow: false,
             editModalShow: false
         };
@@ -124,13 +125,13 @@ export class ManagePassengers extends Component {
                     <Button variant="primary" onClick={() => this.setState({addModalShow: true})}>
                         Новый пассажир
                     </Button>
-                    <AddUserModal
+                    <AddPassengerModal
                         show={this.state.addModalShow}
                         onHide={modalClose} />
-                    <AddUserModal
+                    {/* <AddUserModal
                         show={this.state.editModalShow}
                         editInfo={this.state.editRecord}
-                        onHide={modalClose} />
+                        onHide={modalClose} /> */}
                 </ButtonToolbar>
             </div>
         );

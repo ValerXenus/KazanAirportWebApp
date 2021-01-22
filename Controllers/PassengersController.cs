@@ -41,14 +41,14 @@ namespace KazanAirportWebApp.Controllers
         /// Добавить нового пассажира
         /// </summary>
         /// <param name="passenger">Добавляемый пассажир</param>
-        /// <param name="userId">
-        /// Id пользователя, к которому необходимо добавить данные пассажира.
-        /// -1 - если нет пользователя, к которому нужно добавить пассажира
+        /// <param name="userLogin">
+        /// Логин пользователя, к которому необходимо добавить данные пассажира.
+        /// "" - если добавлять не нужно
         /// </param>
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewPassenger")]
-        public string AddNewUser(Passengers passenger, int userId = -1)
+        public string AddNewUser(Passengers passenger, string userLogin = "")
         {
             var existingDataValidation = ValidationLogic.ValidatePassengerData(passenger);
             if (!string.IsNullOrEmpty(existingDataValidation))
@@ -67,6 +67,15 @@ namespace KazanAirportWebApp.Controllers
                         new SqlParameter("@firstName", passenger.firstName),
                         new SqlParameter("@middleName", passenger.middleName),
                         new SqlParameter("@passportNumber", passenger.passportNumber));
+                }
+
+                if (!string.IsNullOrEmpty(userLogin))
+                {
+                    var addPassengerResult = DbHelpers.AddPassengerToUser(passenger.passportNumber, userLogin);
+                    if (!addPassengerResult.Equals("Success"))
+                    {
+                        return addPassengerResult;
+                    }
                 }
 
                 return "Success";

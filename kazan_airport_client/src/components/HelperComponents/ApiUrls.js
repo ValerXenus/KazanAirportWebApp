@@ -10,5 +10,6 @@ export const usersMethods = {
 }
 
 export const passengersMethods = {
+    ADD_NEW_PASSENGER: apiUrl + "/Passengers/AddNewPassenger",
     GET_PASSENGERS_LIST: apiUrl + "/Passengers/GetPassengersList"
 }

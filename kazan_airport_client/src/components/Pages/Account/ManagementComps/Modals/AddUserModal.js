@@ -118,7 +118,7 @@ export class AddUserModal extends Component {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Пользователь
+                        Данные пользователя
                     </Modal.Title>
                     <Modal.Body>
                     <div className="container">
