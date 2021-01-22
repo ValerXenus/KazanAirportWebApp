@@ -75,7 +75,7 @@ export class ManagePassengers extends Component {
     }
 
     render() {
-        const { passengersList: passengersList } = this.state;
+        const { passengersList } = this.state;
 
         let modalClose = () => {
             this.setState({addModalShow: false, editModalShow: false});
@@ -124,7 +124,7 @@ export class ManagePassengers extends Component {
                     </tbody>
                 </Table>
                 <ButtonToolbar>
-                    <Button variant="primary" onClick={() => this.setState({addModalShow: true})}>
+                    <Button variant="info" onClick={() => this.setState({addModalShow: true})}>
                         Новый пассажир
                     </Button>
                     <AddPassengerModal

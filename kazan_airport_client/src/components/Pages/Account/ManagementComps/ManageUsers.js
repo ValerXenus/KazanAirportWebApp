@@ -115,7 +115,7 @@ export  class ManageUsers extends Component {
                     </tbody>
                 </Table>
                 <ButtonToolbar>
-                    <Button variant="primary" onClick={() => this.setState({addModalShow: true})}>
+                    <Button variant="info" onClick={() => this.setState({addModalShow: true})}>
                         Новый пользователь
                     </Button>
                     <AddUserModal

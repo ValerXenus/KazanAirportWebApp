@@ -1,15 +1,17 @@
 .footerStyle {
     grid-area: ft;
-    background: yellowgreen;
-    height: 300px;
+    background: #EAECEE;
+    height: 400px;
 }
 
 .footerContainer {
     width: 1200px;
+    padding-top: 60px;
     display: grid;
     margin: 0 auto;
+    color: #556677;
+    font-weight: bold;
     align-content: center;
-
     grid-template-areas: 
     "sv os sc ab";
 }
@@ -32,4 +34,15 @@
 .aboutInfo {
     grid-area: ab;
     padding-left: 60px;
+}
+
+.childItem {
+    display: block;
+    font-weight: lighter;
+    color: #556677;
+    text-decoration: none;
+}
+
+.childItem:hover {
+    color: #556677;
 }

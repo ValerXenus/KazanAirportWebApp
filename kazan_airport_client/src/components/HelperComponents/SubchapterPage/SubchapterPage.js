@@ -11,7 +11,7 @@ const SubchapterPage = (props) => {
     let navLinks = collection.data.map(x => {
         return (
             <div key={x.key}>
-                <NavLink key={x.key} to={x.link}>{x.name}</NavLink>
+                <NavLink className={styles.navlinkItem} key={x.key} to={x.link}>{x.name}</NavLink>
             </div>
         );
     });
@@ -33,7 +33,7 @@ const SubchapterPage = (props) => {
         if (collection.needShowLogout === true) {
             return (
                 <div>
-                    <div onClick={handleLogOutClick}>Выход</div>
+                    <div className={styles.navlinkItem} onClick={handleLogOutClick}>Выход</div>
                 </div>
             );
         }

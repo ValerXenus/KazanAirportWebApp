@@ -10,14 +10,14 @@ const NavigationMenu = () => {
         var authCookie = Cookies.get("authData");
         if (!authCookie)
             return(
-                <NavLink to="/login" className={styles.menuItem}>Войти</NavLink>
+                <NavLink to="/login" className={`${styles.menuItem} ${styles.loginButton}`}>Войти</NavLink>
             );
 
         let currentSession = JSON.parse(authCookie);
         if (!currentSession || 
             (currentSession !== undefined && !currentSession.isAuth)) {
             return(
-                <NavLink to="/login" className={styles.menuItem}>Войти</NavLink>
+                <NavLink to="/login" className={`${styles.menuItem} ${styles.loginButton}`}>Войти</NavLink>
             );
         }
 
@@ -41,7 +41,7 @@ const NavigationMenu = () => {
         }
 
         return(
-            <NavLink to={accountUrl} className={styles.menuItem}>{buttonName}</NavLink>
+            <NavLink to={accountUrl} className={`${styles.menuItem} ${styles.loginButton}`}>{buttonName}</NavLink>
         );
     }
 
@@ -49,7 +49,7 @@ const NavigationMenu = () => {
         <div className={styles.menuStyle}>            
             <nav className={styles.menuContainer}>
                 <NavLink to="/">
-                    <img src={logo} style={{height: 110}} alt="logo" />
+                    <img src={logo} className={styles.logoStyle} alt="logo" />
                 </NavLink>
                 <div className={styles.menuItems}>
                     <NavLink to="/schedule" className={styles.menuItem}>Табло рейсов</NavLink>
