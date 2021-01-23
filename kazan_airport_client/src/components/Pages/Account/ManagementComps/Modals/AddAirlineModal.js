@@ -1,19 +1,16 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
-import { citiesMethods } from '../../../../HelperComponents/ApiUrls';
-import InputValidations from '../../../../HelperComponents/Logic/InputValidations';
+import { airlinesMethods } from '../../../../HelperComponents/ApiUrls';
 
-export class AddCityModal extends Component {
+export class AddAirlineModal extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            cityInfo: {
+            airlineInfo: {
                 id: 0,
-                cityName: "",
-                icaoCode: "",
-                iataCode: ""
+                airlineName: ""
             },
             isEditMode: false
         }
@@ -21,7 +18,7 @@ export class AddCityModal extends Component {
 
     // Получение props. ToDo, заменить на обновленный
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.cityInfo.id)){
+        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.airlineInfo.id)){
             this.fillState(nextProps);
         }
     }
@@ -30,18 +27,13 @@ export class AddCityModal extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        if (!this.validateInputs())
-            return;
-
         if (this.state.isEditMode) {
             this.updateInfo();
             return;
         }
         
-        axios.post(citiesMethods.ADD_NEW_CITY, {
-            cityName: this.state.cityInfo.cityName,
-            icaoCode: this.state.cityInfo.icaoCode,
-            iataCode: this.state.cityInfo.iataCode
+        axios.post(airlinesMethods.ADD_NEW_AIRLINE, {
+            airlineName: this.state.airlineInfo.airlineName
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -50,11 +42,9 @@ export class AddCityModal extends Component {
     }
 
     updateInfo = () => {
-        axios.post(citiesMethods.UPDATE_CITY, {
-            id: this.state.cityInfo.id,
-            cityName: this.state.cityInfo.cityName,
-            icaoCode: this.state.cityInfo.icaoCode,
-            iataCode: this.state.cityInfo.iataCode
+        axios.post(airlinesMethods.UPDATE_AIRLINE, {
+            id: this.state.airlineInfo.id,
+            airlineName: this.state.airlineInfo.airlineName
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -70,11 +60,9 @@ export class AddCityModal extends Component {
         }
 
         this.setState({
-            cityInfo: {
+            airlineInfo: {
                 id: 0,
-                cityName: "",
-                icaoCode: "",
-                iataCode: ""
+                airlineName: ""
             }
         });
         this.props.onHide();
@@ -83,29 +71,11 @@ export class AddCityModal extends Component {
     // Обработчик изменения текста в текстовых полях
     handleChanged = (event) => {
         this.setState(prevState => ({
-            cityInfo: {                   
-                ...prevState.cityInfo,
+            airlineInfo: {                   
+                ...prevState.airlineInfo,
                 [event.target.name]: event.target.value
             }
         }))
-    }
-
-    // Проверка правильности заполнения полей
-    validateInputs = () => {
-        let outcome = "";
-
-        if (!InputValidations.validateIcaoCode(this.state.cityInfo.icaoCode))
-            outcome += "ICAO код должен состоять из 4 прописных букв\n";
-
-        if (!InputValidations.validateIataCode(this.state.cityInfo.iataCode))
-            outcome += "IATA код должен состоять из 3 прописных букв\n";
-
-        if (outcome.length > 0) {
-            alert(outcome);
-            return false;
-        }
-
-        return true;
     }
 
     // Предзаполнение данных для редактирования
@@ -114,7 +84,7 @@ export class AddCityModal extends Component {
             return;
 
         this.setState({
-            cityInfo: props.editInfo,
+            airlineInfo: props.editInfo,
             isEditMode: true
         });
     }
@@ -129,7 +99,7 @@ export class AddCityModal extends Component {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Данные о городе
+                        Данные об авиакомпании
                     </Modal.Title>
                     <Modal.Body>
                     <div className="container">
@@ -137,27 +107,13 @@ export class AddCityModal extends Component {
                         <Row>
                             <Col sm={6}>
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Form.Group controlId="CityNameText">
+                                    <Form.Group controlId="AirlineNameText">
                                         <Form.Label>Название</Form.Label>
                                         <Form.Control type="text"
-                                            name="cityName" required
+                                            name="airlineName" required
                                             onChange={this.handleChanged}
-                                            value={this.state.cityInfo.cityName}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="IcaoCodeText">
-                                        <Form.Label>ICAO</Form.Label>
-                                        <Form.Control type="text"
-                                            name="icaoCode" required
-                                            onChange={this.handleChanged}
-                                            value={this.state.cityInfo.icaoCode}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="IataCodeText">
-                                        <Form.Label>IATA</Form.Label>
-                                        <Form.Control type="text"
-                                            name="iataCode"
-                                            onChange={this.handleChanged}
-                                            value={this.state.cityInfo.iataCode}/>
-                                    </Form.Group>                                
+                                            value={this.state.airlineInfo.airlineName}/>
+                                    </Form.Group>                        
                                     <Form.Group>
                                         <Button variant="primary"
                                             type="submit">

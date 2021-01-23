@@ -24,3 +24,11 @@ export const citiesMethods = {
     GET_CITY_BY_ID: apiUrl + "/Cities/GetCityById",
     REMOVE_CITY: apiUrl + "/Cities/RemoveCity"
 }
+
+export const airlinesMethods = {
+    ADD_NEW_AIRLINE: apiUrl + "/Airlines/AddNewAirline",
+    UPDATE_AIRLINE: apiUrl + "/Airlines/UpdateAirline",
+    GET_AIRLINES_LIST: apiUrl + "/Airlines/GetAirlinesList",
+    GET_AIRLINE_BY_ID: apiUrl + "/Airlines/GetAirlineById",
+    REMOVE_AIRLINE: apiUrl + "/Airlines/RemoveAirline"
+}
