@@ -32,3 +32,11 @@ export const airlinesMethods = {
     GET_AIRLINE_BY_ID: apiUrl + "/Airlines/GetAirlineById",
     REMOVE_AIRLINE: apiUrl + "/Airlines/RemoveAirline"
 }
+
+export const planesMethods = {
+    ADD_NEW_PLANE: apiUrl + "/Planes/AddNewPlane",
+    UPDATE_PLANE: apiUrl + "/Planes/UpdatePlane",
+    GET_PLANES_LIST: apiUrl + "/Planes/GetPlanesList",
+    GET_PLANE_BY_ID: apiUrl + "/Planes/GetPlaneById",
+    REMOVE_PLANE: apiUrl + "/Planes/RemovePlane"
+}

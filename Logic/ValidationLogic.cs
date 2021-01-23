@@ -128,6 +128,35 @@ namespace KazanAirportWebApp.Logic
             return outcome;
         }
 
+        /// <summary>
+        /// Проверка, что в БД больше нет самолета с таким же бортовым номером
+        /// </summary>
+        /// <param name="planeItem"></param>
+        /// <returns></returns>
+        public static string ValidateExistingBoardNumbers(PlaneItem planeItem)
+        {
+            var outcome = "";
+            outcome += validateExistingBoardNumber(planeItem.boardNumber);
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Проверка, что в БД больше нет самолета с таким же бортовым номером, для редактирования
+        /// </summary>
+        /// <param name="dbPlaneItem"></param>
+        /// <param name="receivedPlaneItem"></param>
+        /// <returns></returns>
+        public static string ValidateExistingBoardNumbersForEdit(PlaneItem dbPlaneItem, PlaneItem receivedPlaneItem)
+        {
+            var outcome = "";
+
+            if (dbPlaneItem.boardNumber != receivedPlaneItem.boardNumber)
+                outcome += validateExistingBoardNumber(receivedPlaneItem.boardNumber);
+
+            return outcome;
+        }
+
         #endregion
 
         #region Private methods
@@ -228,6 +257,27 @@ namespace KazanAirportWebApp.Logic
                         new SqlParameter("@iataCode", iata)).ToList();
                 if (foundCities.Count > 0)
                     outcome += "Аэропорт с таким IATA уже присутствует в БД";
+            }
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Проверка на существование данного бортового номера в БД
+        /// </summary>
+        /// <param name="boardNumber"></param>
+        /// <returns></returns>
+        private static string validateExistingBoardNumber(string boardNumber)
+        {
+            var outcome = string.Empty;
+
+            using (var db = new KazanAirportDbEntities())
+            {
+                var foundPlanes = db.Database
+                    .SqlQuery<Planes>("Select * From dbo.Planes Where boardNumber = @boardNumber",
+                        new SqlParameter("@boardNumber", boardNumber)).ToList();
+                if (foundPlanes.Count > 0)
+                    outcome += "Самолет с данным бортовым номером уже присутствует в БД";
             }
 
             return outcome;
