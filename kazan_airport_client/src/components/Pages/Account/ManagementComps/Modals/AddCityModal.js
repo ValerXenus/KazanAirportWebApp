@@ -1,20 +1,19 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
-import { passengersMethods } from '../../../../HelperComponents/ApiUrls';
+import { citiesMethods } from '../../../../HelperComponents/ApiUrls';
+import InputValidations from '../../../../HelperComponents/Logic/InputValidations';
 
-export class AddPassengerModal extends Component {
+export class AddCityModal extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            passengerInfo: {
+            cityInfo: {
                 id: 0,
-                lastName: "",
-                firstName: "",
-                middleName: "",
-                passportNumber: "",
-                userLogin: ""
+                cityName: "",
+                icaoCode: "",
+                iataCode: ""
             },
             isEditMode: false
         }
@@ -22,7 +21,7 @@ export class AddPassengerModal extends Component {
 
     // Получение props. ToDo, заменить на обновленный
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.passengerInfo.id)){
+        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.cityInfo.id)){
             this.fillState(nextProps);
         }
     }
@@ -31,18 +30,18 @@ export class AddPassengerModal extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
+        if (!this.validateInputs())
+            return;
+
         if (this.state.isEditMode) {
             this.updateInfo();
             return;
         }
         
-        axios.post(passengersMethods.ADD_NEW_PASSENGER, {
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
-        }, {
-            params: { userLogin: this.state.passengerInfo.userLogin }
+        axios.post(citiesMethods.ADD_NEW_CITY, {
+            cityName: this.state.cityInfo.cityName,
+            icaoCode: this.state.cityInfo.icaoCode,
+            iataCode: this.state.cityInfo.iataCode
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -51,13 +50,11 @@ export class AddPassengerModal extends Component {
     }
 
     updateInfo = () => {
-        axios.post(passengersMethods.UPDATE_PASSENGER, {
-            id: this.state.passengerInfo.id,
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
-            login: this.state.passengerInfo.userLogin
+        axios.post(citiesMethods.UPDATE_CITY, {
+            id: this.state.cityInfo.id,
+            cityName: this.state.cityInfo.cityName,
+            icaoCode: this.state.cityInfo.icaoCode,
+            iataCode: this.state.cityInfo.iataCode
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -73,13 +70,11 @@ export class AddPassengerModal extends Component {
         }
 
         this.setState({
-            passengerInfo: {
+            cityInfo: {
                 id: 0,
-                lastName: "",
-                firstName: "",
-                middleName: "",
-                passportNumber: "",
-                userLogin: ""
+                cityName: "",
+                icaoCode: "",
+                iataCode: ""
             }
         });
         this.props.onHide();
@@ -88,11 +83,29 @@ export class AddPassengerModal extends Component {
     // Обработчик изменения текста в текстовых полях
     handleChanged = (event) => {
         this.setState(prevState => ({
-            passengerInfo: {                   
-                ...prevState.passengerInfo,
+            cityInfo: {                   
+                ...prevState.cityInfo,
                 [event.target.name]: event.target.value
             }
         }))
+    }
+
+    // Проверка правильности заполнения полей
+    validateInputs = () => {
+        let outcome = "";
+
+        if (!InputValidations.validateIcaoCode(this.state.cityInfo.icaoCode))
+            outcome += "ICAO код должен состоять из 4 прописных букв\n";
+
+        if (!InputValidations.validateIataCode(this.state.cityInfo.iataCode))
+            outcome += "IATA код должен состоять из 3 прописных букв\n";
+
+        if (outcome.length > 0) {
+            alert(outcome);
+            return false;
+        }
+
+        return true;
     }
 
     // Предзаполнение данных для редактирования
@@ -100,8 +113,9 @@ export class AddPassengerModal extends Component {
         if (!props.editInfo)
             return;
 
+        debugger;
         this.setState({
-            passengerInfo: props.editInfo,
+            cityInfo: props.editInfo,
             isEditMode: true
         });
     }
@@ -116,7 +130,7 @@ export class AddPassengerModal extends Component {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Данные пассажира
+                        Данные о городе
                     </Modal.Title>
                     <Modal.Body>
                     <div className="container">
@@ -124,41 +138,27 @@ export class AddPassengerModal extends Component {
                         <Row>
                             <Col sm={6}>
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Form.Group controlId="LastNameText">
-                                        <Form.Label>Фамилия</Form.Label>
+                                    <Form.Group controlId="CityNameText">
+                                        <Form.Label>Название</Form.Label>
                                         <Form.Control type="text"
-                                            name="lastName" required
+                                            name="cityName" required
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.lastName}/>
+                                            value={this.state.cityInfo.cityName}/>
                                     </Form.Group>
-                                    <Form.Group controlId="FirstNameText">
-                                        <Form.Label>Имя</Form.Label>
+                                    <Form.Group controlId="IcaoCodeText">
+                                        <Form.Label>ICAO</Form.Label>
                                         <Form.Control type="text"
-                                            name="firstName" required
+                                            name="icaoCode" required
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.firstName}/>
+                                            value={this.state.cityInfo.icaoCode}/>
                                     </Form.Group>
-                                    <Form.Group controlId="MiddleNameText">
-                                        <Form.Label>Отчество</Form.Label>
+                                    <Form.Group controlId="IataCodeText">
+                                        <Form.Label>IATA</Form.Label>
                                         <Form.Control type="text"
-                                            name="middleName"
+                                            name="iataCode"
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.middleName}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="PassportNumberText">
-                                        <Form.Label>Номер паспорта</Form.Label>
-                                        <Form.Control type="text"
-                                            name="passportNumber" required
-                                            onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.passportNumber}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="UserSelectText">
-                                        <Form.Label>Логин пользователя</Form.Label>
-                                        <Form.Control type="text"
-                                            name="userLogin"
-                                            onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.userLogin}/>
-                                    </Form.Group>
+                                            value={this.state.cityInfo.iataCode}/>
+                                    </Form.Group>                                
                                     <Form.Group>
                                         <Button variant="primary"
                                             type="submit">

@@ -33,7 +33,7 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbUser"></param>
         /// <param name="receivedUser"></param>
         /// <returns></returns>
-        public static string ValidateExistingUserCompare(Logins dbUser, Logins receivedUser)
+        public static string ValidateExistingUserForEdit(Logins dbUser, Logins receivedUser)
         {
             var outcome = "";
 
@@ -66,7 +66,7 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbPassenger"></param>
         /// <param name="receivedPassenger"></param>
         /// <returns></returns>
-        public static string ValidatePassengerDataCompare(PassengerItem dbPassenger, PassengerItem receivedPassenger)
+        public static string ValidatePassengerDataForEdit(PassengerItem dbPassenger, PassengerItem receivedPassenger)
         {
             var outcome = "";
 
@@ -95,6 +95,39 @@ namespace KazanAirportWebApp.Logic
             return outcome;
         }
 
+        /// <summary>
+        /// Проверка полей, что в БД больше нет таких же ICAO и IATA кодов
+        /// </summary>
+        /// <param name="cityData"></param>
+        /// <returns></returns>
+        public static string ValidateExistingAirportCodes(Cities cityData)
+        {
+            var outcome = "";
+            outcome += validateExistingIcaoCode(cityData.icaoCode);
+            outcome += validateExistingIataCode(cityData.iataCode);
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Проверка, на существующие коды в БД
+        /// </summary>
+        /// <param name="dbUser"></param>
+        /// <param name="receivedUser"></param>
+        /// <returns></returns>
+        public static string ValidateExistingAirportDataForEdit(Cities dbCity, Cities receivedCity)
+        {
+            var outcome = "";
+
+            if (dbCity.icaoCode != receivedCity.icaoCode)
+                outcome += validateExistingIcaoCode(receivedCity.icaoCode);
+
+            if (dbCity.iataCode != receivedCity.iataCode)
+                outcome += validateExistingEmail(receivedCity.iataCode);
+
+            return outcome;
+        }
+
         #endregion
 
         #region Private methods
@@ -111,7 +144,7 @@ namespace KazanAirportWebApp.Logic
             {
                 var loginIds = db.Database.SqlQuery<int>("Select id From dbo.Logins Where login = @login",
                     new SqlParameter("@login", login)).ToList();
-                if (loginIds.Count != 0)
+                if (loginIds.Count > 0)
                     outcome += "- Пользователь с таким логином уже зарегистрирован в системе\n";
             }
 
@@ -130,7 +163,7 @@ namespace KazanAirportWebApp.Logic
             {
                 var loginIds = db.Database.SqlQuery<int>("Select id From dbo.Logins Where email = @email",
                     new SqlParameter("@email", email)).ToList();
-                if (loginIds.Count != 0)
+                if (loginIds.Count > 0)
                     outcome += "- Пользователь с таким Email уже присутствует в системе\n";
             }
 
@@ -151,8 +184,50 @@ namespace KazanAirportWebApp.Logic
                 var loginIds = db.Database
                     .SqlQuery<int>("Select id From dbo.Passengers Where passportNumber = @passportNumber",
                     new SqlParameter("@passportNumber", passportNumber)).ToList();
-                if (loginIds.Count != 0)
+                if (loginIds.Count > 0)
                     outcome += "- Пассажир с таким номером паспорта уже присутствует в системе\n";
+            }
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Проверка на существование данного ICAO кода в БД
+        /// </summary>
+        /// <param name="icao"></param>
+        /// <returns></returns>
+        private static string validateExistingIcaoCode(string icao)
+        {
+            var outcome = string.Empty;
+
+            using (var db = new KazanAirportDbEntities())
+            {
+                var foundCities = db.Database
+                    .SqlQuery<Cities>("Select * From dbo.Cities Where icaoCode = @icaoCode",
+                        new SqlParameter("@icaoCode", icao)).ToList();
+                if (foundCities.Count > 0)
+                    outcome += "Аэропорт с таким ICAO уже присутствует в БД";
+            }
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Проверка на существование данного IATA кода в БД
+        /// </summary>
+        /// <param name="iato"></param>
+        /// <returns></returns>
+        private static string validateExistingIataCode(string iata)
+        {
+            var outcome = string.Empty;
+
+            using (var db = new KazanAirportDbEntities())
+            {
+                var foundCities = db.Database
+                    .SqlQuery<Cities>("Select * From dbo.Cities Where iataCode = @iataCode",
+                        new SqlParameter("@iataCode", iata)).ToList();
+                if (foundCities.Count > 0)
+                    outcome += "Аэропорт с таким IATA уже присутствует в БД";
             }
 
             return outcome;

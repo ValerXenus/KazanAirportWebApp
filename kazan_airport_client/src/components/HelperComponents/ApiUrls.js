@@ -16,3 +16,11 @@ export const passengersMethods = {
     GET_PASSENGER_BY_ID: apiUrl + "/Passengers/GetPassengerById",
     REMOVE_PASSENGER: apiUrl + "/Passengers/RemovePassenger"
 }
+
+export const citiesMethods = {
+    ADD_NEW_CITY: apiUrl + "/Cities/AddNewCity",
+    UPDATE_CITY: apiUrl + "/Cities/UpdateCity",
+    GET_CITIES_LIST: apiUrl + "/Cities/GetCitiesList",
+    GET_CITY_BY_ID: apiUrl + "/Cities/GetCityById",
+    REMOVE_CITY: apiUrl + "/Cities/RemoveCity"
+}

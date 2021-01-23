@@ -168,7 +168,7 @@ namespace KazanAirportWebApp.Controllers
                 return "Ошибка. Пассажир не найден";
             }
 
-            var existingDataValidation = ValidationLogic.ValidatePassengerDataCompare(dbPassenger, passenger);
+            var existingDataValidation = ValidationLogic.ValidatePassengerDataForEdit(dbPassenger, passenger);
             if (!string.IsNullOrEmpty(existingDataValidation))
             {
                 return existingDataValidation;

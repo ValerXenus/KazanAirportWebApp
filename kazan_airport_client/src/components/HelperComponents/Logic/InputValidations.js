@@ -18,4 +18,11 @@ export default class InputValidations {
         return "";
     }
 
-};
+    static validateIcaoCode = (icaoCode) => {
+        return /^[A-Z]{4}$/.test(icaoCode);
+    }
+
+    static validateIataCode = (iataCode) => {
+        return /^[A-Z]{3}$/.test(iataCode);
+    }
+}
