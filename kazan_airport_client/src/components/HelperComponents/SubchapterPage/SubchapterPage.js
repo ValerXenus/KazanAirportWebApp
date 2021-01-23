@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import styles from './SubchapterPage.module.css';
+import Cookies from 'js-cookie';
 
 const SubchapterPage = (props) => {
 
@@ -9,23 +10,43 @@ const SubchapterPage = (props) => {
 
     let navLinks = collection.data.map(x => {
         return (
-            <div><NavLink to={x.link}>{x.name}</NavLink></div>
+            <div key={x.key}>
+                <NavLink className={styles.navlinkItem} key={x.key} to={x.link}>{x.name}</NavLink>
+            </div>
         );
     });
 
     let routes = collection.data.map(x => {
         return(
-            <Route path={x.link} exact={true} render={() => {
+            <Route key={x.key} path={x.link} exact={true} render={() => {
                 return (x.component);
             } } />
         );
     });
+
+    let handleLogOutClick = () => {
+        Cookies.remove("authData");
+        window.location = "/";
+    }
+
+    let logOutElement = () => {
+        if (collection.needShowLogout === true) {
+            return (
+                <div>
+                    <div className={styles.navlinkItem} onClick={handleLogOutClick}>Выход</div>
+                </div>
+            );
+        }
+
+        return null;
+    }
 
     return (
         <div className={styles.subchapterContainer}>
             {/* Submenu */}
             <div className={styles.subchapterNavigation}>
                 {navLinks}
+                {logOutElement()}
             </div>
             {/* Subchapter */}
             <div className={styles.subchapterContent}>

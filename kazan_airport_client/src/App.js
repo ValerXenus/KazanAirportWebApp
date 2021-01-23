@@ -9,8 +9,11 @@ import Services from './components/Pages/ServicesComponents/Services';
 import HowToGet from './components/Pages/HowToGet/HowToGet';
 import TerminalsScheme from './components/Pages/TerminalsSchemeComponents/TerminalsScheme';
 import AboutComponents from './components/Pages/AboutComponents/AboutComponents';
+import Login from './components/Pages/Account/Login/Login';
+import AccountGeneral from './components/Pages/Account/AccountGeneral';
 
 function App() {
+
   return (
     <BrowserRouter>
       <div className={styles.appWrapper}>
@@ -25,6 +28,9 @@ function App() {
             <Route path="/howtoget" render={() => <HowToGet /> } />
             <Route path="/terminals" render={() => <TerminalsScheme /> } />
             <Route path="/about" render={() => <AboutComponents /> } />
+            <Route path="/login" render={() => <Login /> } />
+            <Route path="/admin" render={() => <AccountGeneral /> } />
+            <Route path="/operator" render={() => <AccountGeneral /> } />
           </div> 
         </div>
         <footer>

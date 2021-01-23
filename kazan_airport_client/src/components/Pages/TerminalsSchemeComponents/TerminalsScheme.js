@@ -7,9 +7,9 @@ import TerminalsAll from './TerminalsAll/TerminalsAll';
 
 const TerminalsScheme = () => {
     let collection = { data: [
-        { link: "/terminals/terminal_1", name: "Терминал 1", component: <Terminal1 /> },
-        { link: "/terminals/terminal_1a", name: "Терминал 1A", component: <Terminal1A />},
-        { link: "/terminals/terminal_2", name: "Терминал 2", component: <Terminal2 />}],
+        { link: "/terminals/terminal_1", name: "Терминал 1", component: <Terminal1 />, key: "terminal1" },
+        { link: "/terminals/terminal_1a", name: "Терминал 1A", component: <Terminal1A />, key: "terminal1a"},
+        { link: "/terminals/terminal_2", name: "Терминал 2", component: <Terminal2 />, key: "terminal2"}],
         main: { link: "/terminals", component: <TerminalsAll /> }
     };
 

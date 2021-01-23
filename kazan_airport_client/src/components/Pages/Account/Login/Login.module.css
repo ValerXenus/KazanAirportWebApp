@@ -1,0 +1,9 @@
+.loginContainer {
+    margin: 0 auto;
+    width: 1200px;
+    min-height: 800px;
+}
+
+.loginFieldsTable {
+    margin: 0 auto;
+}

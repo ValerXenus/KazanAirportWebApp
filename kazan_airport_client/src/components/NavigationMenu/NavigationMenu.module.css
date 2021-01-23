@@ -1,6 +1,5 @@
 .menuStyle{
     grid-area: hd;
-    background: cadetblue;
     margin: auto;
     align-content: center;
 }
@@ -23,14 +22,40 @@
     display: block;
     text-decoration: none;
     text-transform: uppercase;
-    padding: 5px 5px 5px 5px;
+    padding: 5px 10px 5px 10px;
     font-size: 14px;
     transition: all 0.3s ease;
+    color: #556677;
+
+    /* Анимация выделения */
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+.logoStyle {
+    height: 150px;
+    margin-top: -35px;
 }
 
 .menuItem:hover {
-    background-color: chocolate;
-    color: black;
-    transition: all 0.3s ease;
+    color: #556677;
+    text-decoration: none;
     display: block;
+    background-size: 100% 2px;
+}
+
+.loginButton {
+    border-style: solid;
+    border-width: 2px;
+    margin-top: -2px;
+    border-radius: 5px;
+    border-color: #23B9D6;
+}
+
+.loginButton:hover {
+    color: white;
+    background-color: #23B9D6;
 }

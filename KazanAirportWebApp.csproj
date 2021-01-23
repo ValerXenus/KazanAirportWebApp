@@ -45,15 +45,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -156,10 +169,56 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PassengersController.cs" />
+    <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\DbHelpers.cs" />
+    <Compile Include="Logic\ProtectLogic.cs" />
+    <Compile Include="Logic\ValidationLogic.cs" />
+    <Compile Include="Models\Data Access\Airlines.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\Cities.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\Flights.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\FlightStatuses.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\KazanAirportMainDbModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KazanAirportMainDbModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\KazanAirportMainDbModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\KazanAirportMainDbModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KazanAirportMainDbModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\Logins.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\Passengers.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\Planes.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data Access\UserTypes.cs">
+      <DependentUpon>KazanAirportMainDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Join Models\PassengerItem.cs" />
+    <Compile Include="Models\Join Models\UserItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +230,16 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Models\Data Access\KazanAirportMainDbModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KazanAirportMainDbModel.edmx</DependentUpon>
+      <LastGenOutput>KazanAirportMainDbModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Data Access\KazanAirportMainDbModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>KazanAirportMainDbModel.edmx</DependentUpon>
+      <LastGenOutput>KazanAirportMainDbModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -192,6 +261,13 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <EntityDeploy Include="Models\Data Access\KazanAirportMainDbModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>KazanAirportMainDbModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Data Access\KazanAirportMainDbModel.edmx.diagram">
+      <DependentUpon>KazanAirportMainDbModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -215,7 +291,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -245,6 +320,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

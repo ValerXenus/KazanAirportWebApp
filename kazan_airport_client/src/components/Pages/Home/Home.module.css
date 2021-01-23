@@ -1,4 +1,49 @@
-.homeStyle{
+.homeContainer {
+    position: relative;
     grid-area: ct;
-    background-color: green;
+    min-height: 1200px;
+    margin-top: -50px;
+    margin-bottom: -50px;
+}
+
+.homeStyle {    
+    background-image: url('../../../images/about/main_page_img.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.mainContent {
+    position: relative;    
+    max-width: 1400px;
+    min-width: 800px;
+    margin: 0 auto;
+}
+
+.mainLabel {    
+    text-align: right;
+    color: white;
+    padding-top: 500px;
+}
+
+.airportWord {
+    font-size: 110px;
+    margin-bottom: -60px;
+}
+
+.kazanWord {
+    font-size: 180px;
+}
+
+.makeDark {
+    background-color:rgba(0, 0, 0, 0.5);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
 }
