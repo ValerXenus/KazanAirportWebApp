@@ -1,7 +1,7 @@
 .scheduleStyle{
     grid-area: ct;
-    background-color: cyan;
     min-height: 800px;
-    width: 1200px;
+    min-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
 }

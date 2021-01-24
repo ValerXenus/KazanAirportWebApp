@@ -23,7 +23,7 @@ function App() {
         <div className={styles.appWrapperContent}>
           <div>
             <Route path="/" exact={true} render={() => <Home /> } />
-            <Route path="/schedule" exact={true} render={() => <Schedule /> } />
+            <Route path="/schedule" render={() => <Schedule /> } />
             <Route path="/services" render={() => <Services /> } />
             <Route path="/howtoget" render={() => <HowToGet /> } />
             <Route path="/terminals" render={() => <TerminalsScheme /> } />

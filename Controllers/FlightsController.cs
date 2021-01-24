@@ -27,7 +27,77 @@ namespace KazanAirportWebApp.Controllers
                         .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
                                               "join dbo.Planes as P on F.planeId = P.id " +
                                               "join dbo.Cities as C on F.cityId = C.id " +
-                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id").ToList();
+                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
+                                              "join dbo.Airlines as A on P.airlineId = A.id").ToList();
+                }
+
+                return flights;
+            }
+            catch(Exception exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получение списка прилетающих рейсов
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetDepartureFlightsList")]
+        public List<FlightItem> GetDepartureFlightsList()
+        {
+            try
+            {
+                List<FlightItem> flights;
+                using (var db = new KazanAirportDbEntities())
+                {
+                    var notBefore = DateTime.Now.AddHours(-12);
+                    var notAfter = DateTime.Now.AddHours(12);
+
+                    flights = db.Database
+                        .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
+                                              "join dbo.Planes as P on F.planeId = P.id " +
+                                              "join dbo.Cities as C on F.cityId = C.id " +
+                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
+                                              "join dbo.Airlines as A on P.airlineId = A.id " +
+                                              "Where flightType = 0 and departureScheduled > @notBefore " +
+                                              "and departureScheduled < @notAfter",
+                                              new SqlParameter("@notBefore", DateTime.Now.AddHours(-12)),
+                                              new SqlParameter("@notAfter", DateTime.Now.AddHours(12))).ToList();
+                }
+
+                return flights;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получение списка прилетающих рейсов
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetArrivalFlightsList")]
+        public List<FlightItem> GetArrivalFlightsList()
+        {
+            try
+            {
+                List<FlightItem> flights;
+                using (var db = new KazanAirportDbEntities())
+                {
+                    flights = db.Database
+                        .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
+                                              "join dbo.Planes as P on F.planeId = P.id " +
+                                              "join dbo.Cities as C on F.cityId = C.id " +
+                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
+                                              "join dbo.Airlines as A on P.airlineId = A.id " +
+                                              "Where flightType = 1 and departureScheduled > @notBefore " +
+                                              "and departureScheduled < @notAfter",
+                                              new SqlParameter("@notBefore", DateTime.Now.AddHours(-12)),
+                                              new SqlParameter("@notAfter", DateTime.Now.AddHours(12))).ToList();
                 }
 
                 return flights;
