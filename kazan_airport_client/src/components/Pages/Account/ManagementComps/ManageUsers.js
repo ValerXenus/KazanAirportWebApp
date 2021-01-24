@@ -4,7 +4,7 @@ import {Button, ButtonToolbar, Table} from 'react-bootstrap';
 import { usersMethods } from '../../../HelperComponents/ApiUrls';
 import { AddUserModal } from './Modals/AddUserModal';
 
-export  class ManageUsers extends Component {
+export class ManageUsers extends Component {
     constructor(props) {
         super(props);
         this.state = {

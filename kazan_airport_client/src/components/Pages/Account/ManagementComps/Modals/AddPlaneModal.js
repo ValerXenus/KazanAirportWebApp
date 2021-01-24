@@ -1,20 +1,20 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
-import { passengersMethods } from '../../../../HelperComponents/ApiUrls';
+import { planesMethods } from '../../../../HelperComponents/ApiUrls';
 
-export class AddPassengerModal extends Component {
+export class AddPlaneModal extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            passengerInfo: {
+            planeInfo: {
                 id: 0,
-                lastName: "",
-                firstName: "",
-                middleName: "",
+                modelName: "",
+                boardNumber: "",
+                seatsNumber: "",
                 passportNumber: "",
-                userLogin: ""
+                airlineId: ""
             },
             isEditMode: false
         }
@@ -22,7 +22,7 @@ export class AddPassengerModal extends Component {
 
     // Получение props. ToDo, заменить на обновленный
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.passengerInfo.id)){
+        if(nextProps.editInfo !== undefined && (nextProps.editInfo.id !== this.state.planeInfo.id)){
             this.fillState(nextProps);
         }
     }
@@ -36,13 +36,12 @@ export class AddPassengerModal extends Component {
             return;
         }
         
-        axios.post(passengersMethods.ADD_NEW_PASSENGER, {
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
-        }, {
-            params: { userLogin: this.state.passengerInfo.userLogin }
+        axios.post(planesMethods.ADD_NEW_PLANE, {
+            modelName: this.state.planeInfo.modelName,
+            boardNumber: this.state.planeInfo.boardNumber,
+            seatsNumber: this.state.planeInfo.seatsNumber,
+            passportNumber: this.state.planeInfo.passportNumber,
+            airlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -51,13 +50,13 @@ export class AddPassengerModal extends Component {
     }
 
     updateInfo = () => {
-        axios.post(passengersMethods.UPDATE_PASSENGER, {
-            id: this.state.passengerInfo.id,
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
-            login: this.state.passengerInfo.userLogin
+        axios.post(planesMethods.UPDATE_PLANE, {
+            id: this.state.planeInfo.id,
+            modelName: this.state.planeInfo.modelName,
+            boardNumber: this.state.planeInfo.boardNumber,
+            seatsNumber: this.state.planeInfo.seatsNumber,
+            passportNumber: this.state.planeInfo.passportNumber,
+            airlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -73,13 +72,13 @@ export class AddPassengerModal extends Component {
         }
 
         this.setState({
-            passengerInfo: {
+            planeInfo: {
                 id: 0,
-                lastName: "",
-                firstName: "",
-                middleName: "",
+                modelName: "",
+                boardNumber: "",
+                seatsNumber: "",
                 passportNumber: "",
-                userLogin: ""
+                airlineId: ""
             }
         });
         this.props.onHide();
@@ -88,8 +87,8 @@ export class AddPassengerModal extends Component {
     // Обработчик изменения текста в текстовых полях
     handleChanged = (event) => {
         this.setState(prevState => ({
-            passengerInfo: {                   
-                ...prevState.passengerInfo,
+            planeInfo: {                   
+                ...prevState.planeInfo,
                 [event.target.name]: event.target.value
             }
         }))
@@ -101,7 +100,7 @@ export class AddPassengerModal extends Component {
             return;
 
         this.setState({
-            passengerInfo: props.editInfo,
+            planeInfo: props.editInfo,
             isEditMode: true
         });
     }
@@ -116,7 +115,7 @@ export class AddPassengerModal extends Component {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Данные пассажира
+                        Данные о самолете
                     </Modal.Title>
                     <Modal.Body>
                     <div className="container">
@@ -124,40 +123,33 @@ export class AddPassengerModal extends Component {
                         <Row>
                             <Col sm={6}>
                                 <Form onSubmit={this.handleSubmit}>
-                                    <Form.Group controlId="LastNameText">
-                                        <Form.Label>Фамилия</Form.Label>
+                                    <Form.Group controlId="PlaneModelNameText">
+                                        <Form.Label>Модель самолета</Form.Label>
                                         <Form.Control type="text"
-                                            name="lastName" required
+                                            name="modelName" required
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.lastName}/>
+                                            value={this.state.planeInfo.modelName}/>
                                     </Form.Group>
-                                    <Form.Group controlId="FirstNameText">
-                                        <Form.Label>Имя</Form.Label>
+                                    <Form.Group controlId="BoardNumberText">
+                                        <Form.Label>Бортовой номер</Form.Label>
                                         <Form.Control type="text"
-                                            name="firstName" required
+                                            name="boardNumber" required
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.firstName}/>
+                                            value={this.state.planeInfo.boardNumber}/>
                                     </Form.Group>
-                                    <Form.Group controlId="MiddleNameText">
-                                        <Form.Label>Отчество</Form.Label>
+                                    <Form.Group controlId="SeatsNumberText">
+                                        <Form.Label>Количество мест</Form.Label>
                                         <Form.Control type="text"
-                                            name="middleName"
+                                            name="seatsNumber"
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.middleName}/>
+                                            value={this.state.planeInfo.seatsNumber}/>
                                     </Form.Group>
-                                    <Form.Group controlId="PassportNumberText">
-                                        <Form.Label>Номер паспорта</Form.Label>
+                                    <Form.Group controlId="AirlineIdText">
+                                        <Form.Label>ID авиакомпании</Form.Label>
                                         <Form.Control type="text"
-                                            name="passportNumber" required
+                                            name="airlineId" required
                                             onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.passportNumber}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="UserSelectText">
-                                        <Form.Label>Логин пользователя</Form.Label>
-                                        <Form.Control type="text"
-                                            name="userLogin"
-                                            onChange={this.handleChanged}
-                                            value={this.state.passengerInfo.userLogin}/>
+                                            value={this.state.planeInfo.airlineId}/>
                                     </Form.Group>
                                     <Form.Group>
                                         <Button variant="primary"

@@ -2,9 +2,10 @@ import React from 'react';
 import SubchapterPage from '../../HelperComponents/SubchapterPage/SubchapterPage';
 import { ManageUsers } from './ManagementComps/ManageUsers';
 import { ManagePassengers } from './ManagementComps/ManagePassengers';
-import ManageCities from './ManagementComps/ManageCities';
-import ManagePlanes from './ManagementComps/ManagePlanes';
-import ManageFlights from './ManagementComps/ManageFlights';
+import { ManageCities } from './ManagementComps/ManageCities';
+import { ManagePlanes } from './ManagementComps/ManagePlanes';
+import { ManageAirlines } from './ManagementComps/ManageAirlines';
+import { ManageFlights } from './ManagementComps/ManageFlights';
 import ManageTickets from './ManagementComps/ManageTickets';
 import WelcomeAccount from './WelcomeAccount';
 import Cookies from 'js-cookie';
@@ -35,6 +36,7 @@ const AccountGeneral = () => {
                 { link: "/admin/passengers", name: "Пассажиры", component: <ManagePassengers />, key: "a_passengers" },
                 { link: "/admin/cities", name: "Города", component: <ManageCities />, key: "a_cities" },
                 { link: "/admin/planes", name: "Самолеты", component: <ManagePlanes />, key: "a_planes" },
+                { link: "/admin/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "a_airlines" },
                 { link: "/admin/flights", name: "Рейсы", component: <ManageFlights />, key: "a_flights" },
                 { link: "/admin/tickets", name: "Билеты", component: <ManageTickets />, key: "a_tickets" }],
                 main: { link: "/admin", component: <WelcomeAccount /> },
@@ -46,6 +48,7 @@ const AccountGeneral = () => {
                 { link: "/operator/passengers", name: "Пассажиры", component: <ManagePassengers />, key: "o_passengers" },
                 { link: "/operator/cities", name: "Города", component: <ManageCities />, key: "o_cities" },
                 { link: "/operator/planes", name: "Самолеты", component: <ManagePlanes />, key: "o_planes" },
+                { link: "/admin/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "a_airlines" },
                 { link: "/operator/flights", name: "Рейсы", component: <ManageFlights />, key: "o_flights" },
                 { link: "/operator/tickets", name: "Билеты", component: <ManageTickets />, key: "o_tickets" }],
                 main: { link: "/operator", component: <WelcomeAccount /> },

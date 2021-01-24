@@ -66,6 +66,13 @@ export class AddUserModal extends Component {
             return;
         }
 
+        this.setState({
+            id: 0,
+            login: "",
+            email: "",
+            password: "",
+            userTypeId: 2,
+        });
         this.props.onHide();
     }
 

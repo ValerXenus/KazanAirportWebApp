@@ -129,7 +129,7 @@ namespace KazanAirportWebApp.Controllers
                 return "Ошибка. Пользователь не найден";
             }
 
-            var existingDataValidation = ValidationLogic.ValidateExistingUserCompare(dbUser, user);
+            var existingDataValidation = ValidationLogic.ValidateExistingUserForEdit(dbUser, user);
             if (!string.IsNullOrEmpty(existingDataValidation))
             {
                 return existingDataValidation;

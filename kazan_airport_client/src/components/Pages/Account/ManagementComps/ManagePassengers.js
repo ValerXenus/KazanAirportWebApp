@@ -9,7 +9,6 @@ export class ManagePassengers extends Component {
         super(props);
         this.state = {
             passengersList: [],
-            usersList: [],
             addModalShow: false,
             editModalShow: false
         };
