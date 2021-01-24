@@ -1,13 +1,21 @@
 import React from 'react';
+import { Departures } from './Departures';
+import { Arrivals } from './Arrivals';
 import styles from './Schedule.module.css';
-import scheduleImg from './../../../images/about/test_dashboard.jpg';
+import SubchapterPage from './../../HelperComponents/SubchapterPage/SubchapterPage';
 
 const Schedule = () => {
-    return(
+    let collection = { data: [
+        { link: "/schedule/departures", name: "Вылет", component: <Departures />, key: "departures" }, 
+        { link: "/schedule/arrivals", name: "Прилет", component: <Arrivals />, key: "arrivals" }]
+    };
+    
+    return (
         <div className={styles.scheduleStyle}>
-            <img src={scheduleImg}/>
+            <SubchapterPage collection={collection}/>            
         </div>
     );
+    
 }
 
 export default Schedule;

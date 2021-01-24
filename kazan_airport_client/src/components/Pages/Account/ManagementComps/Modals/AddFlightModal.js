@@ -109,7 +109,6 @@ export class AddFlightModal extends Component {
 
     // Обработчик изменения текста в текстовых полях
     handleChanged = (event) => {
-        debugger;
         this.setState(prevState => ({
             flightInfo: {                   
                 ...prevState.flightInfo,

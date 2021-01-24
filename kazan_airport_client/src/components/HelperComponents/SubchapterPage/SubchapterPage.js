@@ -41,6 +41,15 @@ const SubchapterPage = (props) => {
         return null;
     }
 
+    let getChapterPage = () => {
+        if (collection.main != undefined)
+            return(
+                <Route path={collection.main.link} exact={true} render={() => { return (collection.main.component); } } />
+            );
+        
+        return null;
+    }
+
     return (
         <div className={styles.subchapterContainer}>
             {/* Submenu */}
@@ -50,9 +59,7 @@ const SubchapterPage = (props) => {
             </div>
             {/* Subchapter */}
             <div className={styles.subchapterContent}>
-                <Route path={collection.main.link} exact={true} render={() => {
-                    return (collection.main.component);
-                } } />
+                {getChapterPage()}
                 {routes}
             </div>
         </div>

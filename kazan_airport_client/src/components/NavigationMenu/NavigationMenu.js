@@ -52,7 +52,7 @@ const NavigationMenu = () => {
                     <img src={logo} className={styles.logoStyle} alt="logo" />
                 </NavLink>
                 <div className={styles.menuItems}>
-                    <NavLink to="/schedule" className={styles.menuItem}>Табло рейсов</NavLink>
+                    <NavLink to="/schedule/departures" className={styles.menuItem}>Табло рейсов</NavLink>
                     <NavLink to="/services" className={styles.menuItem}>Услуги</NavLink>
                     <NavLink to="/" className={styles.menuItem}>Онлайн-регистрация</NavLink>
                     <NavLink to="/" className={styles.menuItem}>Купить билет</NavLink>
