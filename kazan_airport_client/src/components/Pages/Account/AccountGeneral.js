@@ -5,7 +5,7 @@ import { ManagePassengers } from './ManagementComps/ManagePassengers';
 import { ManageCities } from './ManagementComps/ManageCities';
 import { ManagePlanes } from './ManagementComps/ManagePlanes';
 import { ManageAirlines } from './ManagementComps/ManageAirlines';
-import ManageFlights from './ManagementComps/ManageFlights';
+import { ManageFlights } from './ManagementComps/ManageFlights';
 import ManageTickets from './ManagementComps/ManageTickets';
 import WelcomeAccount from './WelcomeAccount';
 import Cookies from 'js-cookie';

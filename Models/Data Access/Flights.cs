@@ -18,8 +18,8 @@ namespace KazanAirportWebApp.Models.Data_Access
         public string flightNumber { get; set; }
         public System.DateTime departureScheduled { get; set; }
         public System.DateTime arrivalScheduled { get; set; }
-        public System.DateTime departureActual { get; set; }
-        public System.DateTime arrivalActual { get; set; }
+        public Nullable<System.DateTime> departureActual { get; set; }
+        public Nullable<System.DateTime> arrivalActual { get; set; }
         public int timeOnBoard { get; set; }
         public int flightType { get; set; }
         public int planeId { get; set; }

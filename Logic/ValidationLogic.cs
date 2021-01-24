@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Linq;
 using KazanAirportWebApp.Models.Data_Access;
 using KazanAirportWebApp.Models.Join_Models;

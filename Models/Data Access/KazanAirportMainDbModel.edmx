@@ -29,8 +29,8 @@
           <Property Name="flightNumber" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="departureScheduled" Type="datetime" Nullable="false" />
           <Property Name="arrivalScheduled" Type="datetime" Nullable="false" />
-          <Property Name="departureActual" Type="datetime" Nullable="false" />
-          <Property Name="arrivalActual" Type="datetime" Nullable="false" />
+          <Property Name="departureActual" Type="datetime" />
+          <Property Name="arrivalActual" Type="datetime" />
           <Property Name="timeOnBoard" Type="int" Nullable="false" />
           <Property Name="flightType" Type="int" Nullable="false" />
           <Property Name="planeId" Type="int" Nullable="false" />
@@ -103,22 +103,6 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="airlineName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
-        <EntityType Name="Flights">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="flightNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="departureScheduled" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="arrivalScheduled" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="departureActual" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="arrivalActual" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="timeOnBoard" Type="Int32" Nullable="false" />
-          <Property Name="flightType" Type="Int32" Nullable="false" />
-          <Property Name="planeId" Type="Int32" Nullable="false" />
-          <Property Name="cityId" Type="Int32" Nullable="false" />
-          <Property Name="statusId" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="FlightStatuses">
           <Key>
             <PropertyRef Name="id" />
@@ -149,13 +133,13 @@
         </EntityType>
         <EntityContainer Name="KazanAirportDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Airlines" EntityType="Self.Airlines" />
-          <EntitySet Name="Flights" EntityType="Self.Flights" />
           <EntitySet Name="FlightStatuses" EntityType="Self.FlightStatuses" />
           <EntitySet Name="Logins" EntityType="Self.Logins" />
           <EntitySet Name="Planes" EntityType="Self.Planes" />
           <EntitySet Name="Cities" EntityType="KazanAirportDbModel.Cities" />
           <EntitySet Name="UserTypes" EntityType="KazanAirportDbModel.UserTypes" />
           <EntitySet Name="Passengers" EntityType="KazanAirportDbModel.Passengers" />
+          <EntitySet Name="Flights" EntityType="KazanAirportDbModel.Flights" />
         </EntityContainer>
         <EntityType Name="Cities">
           <Key>
@@ -183,6 +167,22 @@
           <Property Name="middleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="passportNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Flights">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="flightNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="departureScheduled" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="arrivalScheduled" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="departureActual" Type="DateTime" Precision="3" />
+          <Property Name="arrivalActual" Type="DateTime" Precision="3" />
+          <Property Name="timeOnBoard" Type="Int32" Nullable="false" />
+          <Property Name="flightType" Type="Int32" Nullable="false" />
+          <Property Name="planeId" Type="Int32" Nullable="false" />
+          <Property Name="cityId" Type="Int32" Nullable="false" />
+          <Property Name="statusId" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -194,23 +194,6 @@
               <MappingFragment StoreEntitySet="Airlines">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="airlineName" ColumnName="airlineName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Flights">
-            <EntityTypeMapping TypeName="KazanAirportDbModel.Flights">
-              <MappingFragment StoreEntitySet="Flights">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="flightNumber" ColumnName="flightNumber" />
-                <ScalarProperty Name="departureScheduled" ColumnName="departureScheduled" />
-                <ScalarProperty Name="arrivalScheduled" ColumnName="arrivalScheduled" />
-                <ScalarProperty Name="departureActual" ColumnName="departureActual" />
-                <ScalarProperty Name="arrivalActual" ColumnName="arrivalActual" />
-                <ScalarProperty Name="timeOnBoard" ColumnName="timeOnBoard" />
-                <ScalarProperty Name="flightType" ColumnName="flightType" />
-                <ScalarProperty Name="planeId" ColumnName="planeId" />
-                <ScalarProperty Name="cityId" ColumnName="cityId" />
-                <ScalarProperty Name="statusId" ColumnName="statusId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -270,6 +253,23 @@
                 <ScalarProperty Name="middleName" ColumnName="middleName" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Flights">
+            <EntityTypeMapping TypeName="KazanAirportDbModel.Flights">
+              <MappingFragment StoreEntitySet="Flights">
+                <ScalarProperty Name="statusId" ColumnName="statusId" />
+                <ScalarProperty Name="cityId" ColumnName="cityId" />
+                <ScalarProperty Name="planeId" ColumnName="planeId" />
+                <ScalarProperty Name="flightType" ColumnName="flightType" />
+                <ScalarProperty Name="timeOnBoard" ColumnName="timeOnBoard" />
+                <ScalarProperty Name="arrivalActual" ColumnName="arrivalActual" />
+                <ScalarProperty Name="departureActual" ColumnName="departureActual" />
+                <ScalarProperty Name="arrivalScheduled" ColumnName="arrivalScheduled" />
+                <ScalarProperty Name="departureScheduled" ColumnName="departureScheduled" />
+                <ScalarProperty Name="flightNumber" ColumnName="flightNumber" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

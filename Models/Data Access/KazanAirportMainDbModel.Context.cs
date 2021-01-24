@@ -26,12 +26,12 @@ namespace KazanAirportWebApp.Models.Data_Access
         }
     
         public virtual DbSet<Airlines> Airlines { get; set; }
-        public virtual DbSet<Flights> Flights { get; set; }
         public virtual DbSet<FlightStatuses> FlightStatuses { get; set; }
         public virtual DbSet<Logins> Logins { get; set; }
         public virtual DbSet<Planes> Planes { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<UserTypes> UserTypes { get; set; }
         public virtual DbSet<Passengers> Passengers { get; set; }
+        public virtual DbSet<Flights> Flights { get; set; }
     }
 }
