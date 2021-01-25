@@ -174,7 +174,7 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PassengersController.cs" />
-    <Compile Include="Controllers\TicketController.cs" />
+    <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -277,6 +277,7 @@
     <Content Include="Models\Data Access\KazanAirportMainDbModel.edmx.diagram">
       <DependentUpon>KazanAirportMainDbModel.edmx</DependentUpon>
     </Content>
+    <Content Include=".editorconfig" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

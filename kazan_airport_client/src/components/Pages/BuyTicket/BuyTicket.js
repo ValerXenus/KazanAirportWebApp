@@ -4,6 +4,7 @@ import { flightsMethods, passengersMethods, ticketsMethods } from '../../HelperC
 import styles from './BuyTicket.module.css';
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { th } from 'date-fns/locale';
 
 export class BuyTicket extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ export class BuyTicket extends Component {
         this.state = {
             flightsList: [],
             selectedFlightId: 0,
+            isAborted: false,
             passengerInfo: {
                 id: 0,
                 lastName: "",
@@ -72,6 +74,9 @@ export class BuyTicket extends Component {
 
     // Добавление нового пассажира и возврат id
     addNewPassenger = (userLogin = "") => {
+        if (this.state.isAborted)
+            return;
+
         axios.post(passengersMethods.ADD_NEW_PASSENGER, {
             lastName: this.state.passengerInfo.lastName,
             firstName: this.state.passengerInfo.firstName,
@@ -82,7 +87,6 @@ export class BuyTicket extends Component {
         })
         .then((response) => {
             console.log("AddNewPassenger");
-
             this.completedSuccessfully(response); 
             this.getPassengerForTicket(); 
         })
@@ -92,15 +96,18 @@ export class BuyTicket extends Component {
     }
 
     // Метод покупки билета
-    buyTicket = () => {        
+    buyTicket = () => { 
+        debugger;       
+        if (this.state.isAborted)
+            return;
+
         axios.post(ticketsMethods.CREATE_TICKET, {
             passengerId: this.state.passengerInfo.id,
             flightId: this.state.selectedFlightId
         })
         .then((response) => {
-            console.log("BuyTicket");
-            console.log(response);
-            this.completedSuccessfully(response); 
+            this.completedSuccessfully(response);
+            alert("Вы купили билет. \nПосмотреть информацию о билетах можно на странице в личном кабинете.");
             window.location = "/";
         })
         .catch((error) => {
@@ -110,17 +117,22 @@ export class BuyTicket extends Component {
 
     // Получение id добавленного пассажира
     getPassengerForTicket = () => {
+        if (this.state.isAborted)
+            return;
+
         axios.post(passengersMethods.GET_PASSENGER_BY_PASSPORT, null, {
             params: { passportNumber: this.state.passengerInfo.passportNumber }
         })
         .then((response) => {
-            console.log("getPassengerForTicket");
-            console.log(response);
-            this.completedSuccessfully(response); 
+            if (!response.data){
+                this.setState({ isAborted: true });
+                return;
+            }
+
             this.setState(prevState => ({
                 passengerInfo: {                   
                     ...prevState.passengerInfo,
-                    passengerId: response.data.id
+                    id: response.data.id
                 }
             }))            
             this.buyTicket(); 
@@ -135,15 +147,19 @@ export class BuyTicket extends Component {
         console.log(response);
         debugger;
         if (response.data !== "Success") {
-            alert(`Ошибка:\n${response.data}`);
+            alert(`Ошибка:\n${response.data}\n${response}`);
+            this.setState({ isAborted: true });
             return;
         }
     }
 
     // Обработчик кнопки "Купить билет"
     handleSubmit = () => {
+        this.setState({ isAborted: false });
+
         if (this.state.selectedFlightId === 0) {
             alert("Выберите рейс, чтобы приступить к покупке билета");
+            this.setState({ isAborted: true });
             return;            
         }
 
@@ -160,7 +176,7 @@ export class BuyTicket extends Component {
                 this.setState(prevState => ({
                     passengerInfo: {                   
                         ...prevState.passengerInfo,
-                        passengerId: currentSession.passengerId
+                        id: currentSession.passengerId
                     }
                 }))
             }
@@ -238,7 +254,7 @@ export class BuyTicket extends Component {
                 </Table>
                 <hr/>
                 <div>                    
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form>
                         <div className={styles.passengerBlock} 
                             hidden={isUserHasPassengerInfo()}>
                             <h5 className={styles.centeredStyle}>Данные пассажира</h5>
@@ -278,7 +294,7 @@ export class BuyTicket extends Component {
                             <Form.Group>
                                 <Button variant="primary"
                                     className="float-right"
-                                    type="submit">
+                                    onClick={this.handleSubmit}>
                                     Купить билет
                                 </Button>
                             </Form.Group>
