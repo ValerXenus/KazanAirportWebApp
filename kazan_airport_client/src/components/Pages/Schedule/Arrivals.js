@@ -45,6 +45,8 @@ export class Arrivals extends Component {
                     if (Date.now() > Date.parse(currentFlight.arrivalScheduled))
                         return "Задерживается";
                         break;
+                default:
+                    break;
             }
 
             return null;

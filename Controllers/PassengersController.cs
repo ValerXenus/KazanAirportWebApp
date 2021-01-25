@@ -38,6 +38,38 @@ namespace KazanAirportWebApp.Controllers
         }
 
         /// <summary>
+        /// Получение пассажира по номеру паспорта
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetPassengerByPassport")]
+        public PassengerItem GetPassengerByPassport(string passportNumber)
+        {
+            try
+            {
+                List<PassengerItem> passengersList;
+                using (var db = new KazanAirportDbEntities())
+                {
+                    passengersList = db.Database.
+                        SqlQuery<PassengerItem>("Select * From dbo.Passengers as P " +
+                                                "Left Join dbo.Logins as L On P.id = L.passengerId " +
+                                                "Where P.passportNumber = @passportNumber",
+                            new SqlParameter("@passportNumber", passportNumber)).ToList();
+
+                    if (passengersList.Count == 0)
+                        return null;
+
+                }
+
+                return passengersList.First();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Получение пассажира по Id
         /// </summary>
         /// <returns></returns>

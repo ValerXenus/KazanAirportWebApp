@@ -11,6 +11,7 @@ import TerminalsScheme from './components/Pages/TerminalsSchemeComponents/Termin
 import AboutComponents from './components/Pages/AboutComponents/AboutComponents';
 import Login from './components/Pages/Account/Login/Login';
 import AccountGeneral from './components/Pages/Account/AccountGeneral';
+import { BuyTicket } from './components/Pages/BuyTicket/BuyTicket';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
             <Route path="/login" render={() => <Login /> } />
             <Route path="/admin" render={() => <AccountGeneral /> } />
             <Route path="/operator" render={() => <AccountGeneral /> } />
+            <Route path="/buy_ticket" render={() => <BuyTicket /> } />
           </div> 
         </div>
         <footer>

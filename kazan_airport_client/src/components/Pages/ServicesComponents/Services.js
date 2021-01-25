@@ -2,7 +2,6 @@ import React from 'react';
 import SubchapterPage from '../../HelperComponents/SubchapterPage/SubchapterPage';
 import Cafes from './Cafes/Cafes';
 import Parking from './Parking/Parking';
-import styles from './Services.module.css';
 import ServicesMain from './ServicesMain/ServicesMain';
 import Stores from './Stores/Stores';
 import Vip from './Vip/Vip';

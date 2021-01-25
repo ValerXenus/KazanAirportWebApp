@@ -1,0 +1,21 @@
+.pageContainer{
+    grid-area: ct;
+    min-height: 800px;
+    min-width: 1200px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.centeredStyle {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.selectedFlight {
+    background-color: rgb(230, 230, 230);
+}
+
+.passengerBlock {
+    width: 400px;
+    margin: 0 auto;
+}

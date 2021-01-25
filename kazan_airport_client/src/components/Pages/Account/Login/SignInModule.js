@@ -71,7 +71,9 @@ const SignInModule = () => {
 
         Cookies.set("authData", JSON.stringify({
             userId: userData.id,
+            userLogin: userData.login,
             role: userData.userTypeId,
+            passengerId: userData.passengerId,
             isAuth: true
         }));
 
