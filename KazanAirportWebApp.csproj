@@ -225,6 +225,7 @@
     </Compile>
     <Compile Include="Models\Join Models\FlightItem.cs" />
     <Compile Include="Models\Join Models\PassengerItem.cs" />
+    <Compile Include="Models\Join Models\PassengerTicket.cs" />
     <Compile Include="Models\Join Models\PlaneItem.cs" />
     <Compile Include="Models\Join Models\TicketItem.cs" />
     <Compile Include="Models\Join Models\UserItem.cs" />

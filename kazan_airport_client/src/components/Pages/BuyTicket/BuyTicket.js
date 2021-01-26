@@ -4,7 +4,6 @@ import { flightsMethods, passengersMethods, ticketsMethods } from '../../HelperC
 import styles from './BuyTicket.module.css';
 import axios from "axios";
 import Cookies from 'js-cookie';
-import { th } from 'date-fns/locale';
 
 export class BuyTicket extends Component {
     constructor(props) {

@@ -47,21 +47,7 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<PassengerItem> passengersList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    passengersList = db.Database.
-                        SqlQuery<PassengerItem>("Select * From dbo.Passengers as P " +
-                                                "Left Join dbo.Logins as L On P.id = L.passengerId " +
-                                                "Where P.passportNumber = @passportNumber",
-                            new SqlParameter("@passportNumber", passportNumber)).ToList();
-
-                    if (passengersList.Count == 0)
-                        return null;
-
-                }
-
-                return passengersList.First();
+                return DbHelpers.GetPassengerByPassport(passportNumber);
             }
             catch
             {

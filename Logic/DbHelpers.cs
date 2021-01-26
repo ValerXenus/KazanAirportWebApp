@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.Models.Join_Models;
 
 namespace KazanAirportWebApp.Logic
 {
@@ -91,6 +92,30 @@ namespace KazanAirportWebApp.Logic
             }
 
             return -1;
+        }
+
+        /// <summary>
+        /// Получение пассажира по номеру паспорта
+        /// </summary>
+        /// <param name="passportNumber"></param>
+        /// <returns></returns>
+        public static PassengerItem GetPassengerByPassport(string passportNumber)
+        {
+            List<PassengerItem> passengersList;
+            using (var db = new KazanAirportDbEntities())
+            {
+                passengersList = db.Database.
+                    SqlQuery<PassengerItem>("Select * From dbo.Passengers as P " +
+                                            "Left Join dbo.Logins as L On P.id = L.passengerId " +
+                                            "Where P.passportNumber = @passportNumber",
+                        new SqlParameter("@passportNumber", passportNumber)).ToList();
+
+                if (passengersList.Count == 0)
+                    return null;
+
+            }
+
+            return passengersList.First();
         }
     }
 }

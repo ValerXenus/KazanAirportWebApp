@@ -12,6 +12,7 @@ import AboutComponents from './components/Pages/AboutComponents/AboutComponents'
 import Login from './components/Pages/Account/Login/Login';
 import AccountGeneral from './components/Pages/Account/AccountGeneral';
 import { BuyTicket } from './components/Pages/BuyTicket/BuyTicket';
+import OnlineRegistration from './components/Pages/OnlineRegistration/OnlineRegistration';
 
 function App() {
 
@@ -32,7 +33,9 @@ function App() {
             <Route path="/login" render={() => <Login /> } />
             <Route path="/admin" render={() => <AccountGeneral /> } />
             <Route path="/operator" render={() => <AccountGeneral /> } />
+            <Route path="/passenger" render={() => <AccountGeneral /> } />
             <Route path="/buy_ticket" render={() => <BuyTicket /> } />
+            <Route path="/online_registration" render={() => <OnlineRegistration /> } />
           </div> 
         </div>
         <footer>

@@ -54,5 +54,7 @@ export const flightsMethods = {
 }
 
 export const ticketsMethods = {
-    CREATE_TICKET: apiUrl + "/Tickets/CreateTicket"
+    CREATE_TICKET: apiUrl + "/Tickets/CreateTicket",
+    GET_TICKET_FOR_PASSENGER: apiUrl + "/Tickets/GetTicketsByPassengerId",
+    ONLINE_REGISTER: apiUrl + "/Tickets/OnlineRegisterPassenger"
 }
