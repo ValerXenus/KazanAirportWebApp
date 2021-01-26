@@ -42,7 +42,7 @@ const SubchapterPage = (props) => {
     }
 
     let getChapterPage = () => {
-        if (collection.main != undefined)
+        if (collection.main !== undefined)
             return(
                 <Route path={collection.main.link} exact={true} render={() => { return (collection.main.component); } } />
             );

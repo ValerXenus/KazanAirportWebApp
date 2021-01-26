@@ -9,8 +9,8 @@ const Footer = () => {
                 <div className={styles.services}>
                     <h3>Сервисы</h3>
                     <div><NavLink className={styles.childItem} to="/schedule">Онлайн-табло</NavLink></div>
-                    <div><NavLink className={styles.childItem} to="/">Онлайн-регистрация</NavLink></div>
-                    <div><NavLink className={styles.childItem} to="/">Купить билет</NavLink></div>
+                    <div><NavLink className={styles.childItem} to="/online_registration">Онлайн-регистрация</NavLink></div>
+                    <div><NavLink className={styles.childItem} to="/buy_ticket">Купить билет</NavLink></div>
                 </div>
                 <div className={styles.otherServices}>
                     <h3>Услуги</h3>

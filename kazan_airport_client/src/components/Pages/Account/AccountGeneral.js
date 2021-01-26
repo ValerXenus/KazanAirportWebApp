@@ -9,6 +9,7 @@ import { ManageFlights } from './ManagementComps/ManageFlights';
 import ManageTickets from './ManagementComps/ManageTickets';
 import WelcomeAccount from './WelcomeAccount';
 import Cookies from 'js-cookie';
+import { PassengerTickets } from './PassengerComps/PassengerTickets';
 
 const AccountGeneral = () => {
 
@@ -48,7 +49,7 @@ const AccountGeneral = () => {
                 { link: "/operator/passengers", name: "Пассажиры", component: <ManagePassengers />, key: "o_passengers" },
                 { link: "/operator/cities", name: "Города", component: <ManageCities />, key: "o_cities" },
                 { link: "/operator/planes", name: "Самолеты", component: <ManagePlanes />, key: "o_planes" },
-                { link: "/admin/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "a_airlines" },
+                { link: "/operator/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "o_airlines" },
                 { link: "/operator/flights", name: "Рейсы", component: <ManageFlights />, key: "o_flights" },
                 { link: "/operator/tickets", name: "Билеты", component: <ManageTickets />, key: "o_tickets" }],
                 main: { link: "/operator", component: <WelcomeAccount /> },
@@ -56,6 +57,11 @@ const AccountGeneral = () => {
             };
             break;
         case 2:
+            collection = { data: [
+                { link: "/passenger/tickets", name: "Мои билеты", component: <PassengerTickets />, key: "p_tickets" }],
+                main: { link: "/passenger", component: <WelcomeAccount /> },
+                needShowLogout: true
+            };
             break;
         default:
             window.location = "/";

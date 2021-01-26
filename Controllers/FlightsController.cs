@@ -52,9 +52,6 @@ namespace KazanAirportWebApp.Controllers
                 List<FlightItem> flights;
                 using (var db = new KazanAirportDbEntities())
                 {
-                    var notBefore = DateTime.Now.AddHours(-12);
-                    var notAfter = DateTime.Now.AddHours(12);
-
                     flights = db.Database
                         .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
                                               "join dbo.Planes as P on F.planeId = P.id " +

@@ -1,0 +1,9 @@
+.pageContainer {
+    margin: 0 auto;
+    width: 400px;
+    min-height: 800px;
+}
+
+.pageFieldsTable {
+    margin: 0 auto;
+}

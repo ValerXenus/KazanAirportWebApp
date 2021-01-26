@@ -14,6 +14,7 @@ export const passengersMethods = {
     UPDATE_PASSENGER: apiUrl + "/Passengers/UpdatePassenger",
     GET_PASSENGERS_LIST: apiUrl + "/Passengers/GetPassengersList",
     GET_PASSENGER_BY_ID: apiUrl + "/Passengers/GetPassengerById",
+    GET_PASSENGER_BY_PASSPORT: apiUrl + "/Passengers/GetPassengerByPassport",
     REMOVE_PASSENGER: apiUrl + "/Passengers/RemovePassenger"
 }
 
@@ -50,4 +51,10 @@ export const flightsMethods = {
 
     GET_DEPARTURE_FLIGHTS: apiUrl + "/Flights/GetDepartureFlightsList",
     GET_ARRIVAL_FLIGHTS: apiUrl + "/Flights/GetArrivalFlightsList",
+}
+
+export const ticketsMethods = {
+    CREATE_TICKET: apiUrl + "/Tickets/CreateTicket",
+    GET_TICKET_FOR_PASSENGER: apiUrl + "/Tickets/GetTicketsByPassengerId",
+    ONLINE_REGISTER: apiUrl + "/Tickets/OnlineRegisterPassenger"
 }

@@ -38,6 +38,24 @@ namespace KazanAirportWebApp.Controllers
         }
 
         /// <summary>
+        /// Получение пассажира по номеру паспорта
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetPassengerByPassport")]
+        public PassengerItem GetPassengerByPassport(string passportNumber)
+        {
+            try
+            {
+                return DbHelpers.GetPassengerByPassport(passportNumber);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Получение пассажира по Id
         /// </summary>
         /// <returns></returns>

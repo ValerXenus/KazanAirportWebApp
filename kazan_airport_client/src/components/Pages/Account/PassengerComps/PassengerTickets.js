@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Table } from 'react-bootstrap';
-import { flightsMethods } from '../../HelperComponents/ApiUrls';
-import axios from "axios";
+import { ticketsMethods } from '../../../HelperComponents/ApiUrls';
+import Cookies from 'js-cookie';
 
-export class Departures extends Component {
+export class PassengerTickets extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            flightsList: []
+            ticketsList: []
         };
     }
 
@@ -23,9 +24,19 @@ export class Departures extends Component {
 
     // Обновление списка
     refreshList = () => {
-        axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)
+        let authCookie = Cookies.get("authData");
+        if (!authCookie) {
+            return;
+        }
+
+        let currentSession = JSON.parse(authCookie);
+
+        axios.post(ticketsMethods.GET_TICKET_FOR_PASSENGER, null, {
+            params: {passengerId: currentSession.passengerId}
+        })
         .then(response => {
-            this.setState({flightsList: response.data})
+            debugger;
+            this.setState({ticketsList: response.data})
         })
         .catch((error) => {
             alert(`Ошибка при получении данных: ${error}`);
@@ -33,53 +44,34 @@ export class Departures extends Component {
     }
 
     render() {
-        const { flightsList } = this.state;
-
-        const getNoteAboutFlight = (currentFlight) => {
-            switch (currentFlight.statusId) {
-                case 0:
-                    if (Date.now() > Date.parse(currentFlight.departureScheduled))
-                        return "Задержка взлета";
-                        break;
-                case 1:
-                    if (Date.now() > Date.parse(currentFlight.arrivalScheduled))
-                        return "Задерживается";
-                        break;
-                default:
-                    break;
-            }
-
-            return null;
-        }
+        const { ticketsList } = this.state;
 
         return(
             <div>
-                <h4>Вылет</h4>
                 <Table className="mt-4 striped bordered hover" size="sm">
                     <thead>
                         <tr>
                             <th>Рейс</th>
+                            <th>Номер билета</th>
                             <th>Город</th>
                             <th>Отправление</th>
                             <th>Прибытие</th>
                             <th>Авиакомпания</th>
-                            <th>Статус</th>
                             <th/>
                         </tr>
                     </thead>
                     <tbody>
-                        {flightsList.map(x => 
-                        <tr key = {x.id}>
+                        {ticketsList.map(x => 
+                        <tr key = {x.passengerId}>
                             <td>{x.flightNumber}</td>
+                            <td>{x.ticketNumber}</td>
                             <td>{x.cityName}</td>
                             <td>{x.departureScheduled}</td>
                             <td>{x.arrivalScheduled}</td>
                             <td>{x.airlineName}</td>
-                            <td>{x.statusName}</td>
-                            <td>{getNoteAboutFlight(x)}</td>
                         </tr>)}
                     </tbody>
-                </Table>
+                </Table>           
             </div>
         );
     }

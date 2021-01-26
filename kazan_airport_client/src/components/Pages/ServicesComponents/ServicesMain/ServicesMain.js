@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './ServicesMain.module.css';
 import servicesImageMain from './../../../../images/services/services_main_1.jpg';
 
 const ServicesMain = () => {
