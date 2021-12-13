@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
-using KazanAirportWebApp.Logic;
 using KazanAirportWebApp.Models.Data_Access;
 
 namespace KazanAirportWebApp.Controllers
