@@ -283,6 +283,5 @@ namespace KazanAirportWebApp.Logic
         }
 
         #endregion
-
     }
 }
