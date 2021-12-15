@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
-using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.DataAccess;
+using KazanAirportWebApp.Models;
 
 namespace KazanAirportWebApp.Controllers
 {
@@ -15,16 +16,12 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetAirlinesList")]
-        public List<Airlines> GetAirlinesList()
+        public List<DbAirlines> GetAirlinesList()
         {
             try
             {
-                List<Airlines> airlinesList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    airlinesList = db.Database.
-                        SqlQuery<Airlines>("Select * From dbo.Airlines").ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var airlinesList = db.Airlines.ToList();
 
                 return airlinesList;
             }
@@ -40,18 +37,16 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetAirlineById")]
-        public Airlines GetAirlineById(int airlineId)
+        public DbAirlines GetAirlineById(int airlineId)
         {
             try
             {
-                List<Airlines> airlinesList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    airlinesList = db.Database.SqlQuery<Airlines>("Select * From dbo.Airlines Where id = @id",
-                        new SqlParameter("@id", airlineId)).ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var airlinesList = db.Airlines.Where(x => x.Id == airlineId).ToList();
 
-                return airlinesList.Count == 0 ? null : airlinesList.First();
+                return airlinesList.Count == 0 
+                    ? null 
+                    : airlinesList.First();
             }
             catch
             {
@@ -65,16 +60,13 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewAirline")]
-        public string AddNewAirline(Airlines airlineData)
+        public string AddNewAirline(DbAirlines airlineData)
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Airlines(airlineName) Values (@airlineName)",
-                        new SqlParameter("@airlineName", airlineData.airlineName));
-                }
+                using var db = new KazanAirportDbContext();
+                db.Airlines.Add(airlineData);
+                db.SaveChanges();
 
                 return "Success";
             }
@@ -90,19 +82,19 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateAirline")]
-        public string UpdateAirline(Airlines airlineData)
+        public string UpdateAirline(DbAirlines airlineData)
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Update dbo.Airlines set airlineName = @airlineName Where id = @id",
-                        new SqlParameter("@airlineName", airlineData.airlineName),
-                        new SqlParameter("id", airlineData.id));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentAirline = db.Airlines.FirstOrDefault(x => x.Id == airlineData.Id);
+                if (currentAirline == null)
+                    return $"Airline with ID = {airlineData.Id} wasn't found";
 
-                return "Success";
+                currentAirline.Name = airlineData.Name;
+                db.SaveChanges();
+
+                return $"Airline name with ID = {currentAirline.Id} has changed to \"{currentAirline.Name}\"";
             }
             catch (Exception exception)
             {
@@ -120,13 +112,15 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand("Delete From dbo.Airlines where id = @id",
-                        new SqlParameter("@id", airlineId));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentAirline = db.Airlines.FirstOrDefault(x => x.Id == airlineId);
+                if (currentAirline == null)
+                    return $"Airline with ID = {airlineId} wasn't found";
 
-                return "Success";
+                db.Airlines.Remove(currentAirline);
+                db.SaveChanges();
+
+                return $"Airline \"{currentAirline.Name}\" removed successfully";
             }
             catch (Exception exception)
             {
