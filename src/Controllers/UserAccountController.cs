@@ -1,62 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Logic;
-using KazanAirportWebApp.Models.Data_Access;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.Models;
 
 namespace KazanAirportWebApp.Controllers
 {
     public class UserAccountController : ApiController
     {
         /// <summary>
-        /// Using as a sample SQL query in EF
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [ActionName("GetUserTypes")]
-        public HttpResponseMessage GetUserTypes()
-        {
-            List<UserTypes> types;
-            using (var db = new KazanAirportDbEntities())
-            {
-                types = db.UserTypes.SqlQuery("Select * from dbo.UserTypes").ToList();
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, types);
-        }
-
-        /// <summary>
         /// Добавить нового пользователя
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewUser")]
-        public string AddNewUser(Logins user)
+        public string AddNewUser(DbUsers user)
         {
             var existingDataValidation = ValidationLogic.ValidateExistingUserData(user);
             if (!string.IsNullOrEmpty(existingDataValidation))
-            {
                 return existingDataValidation;
-            }
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Logins ([login], [passWord], email, userTypeId) Values (@login, @password, @email, @role)",
-                        new SqlParameter("@login", user.login), 
-                        new SqlParameter("@password", user.passWord),
-                        new SqlParameter("@email", user.email),
-                        new SqlParameter("@role", user.userTypeId));
-                }
+                using var db = new KazanAirportDbContext();
 
-                return "Success";
+                user.UserPassword = ProtectLogic.GetMd5Hash(user.UserPassword);
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                return $"User {user.UserLogin} added successfully.";
             }
             catch (Exception exception)
             {
@@ -70,19 +44,16 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("LoginUser")]
-        public Logins LoginUser(Logins user)
+        public DbUsers LoginUser(DbUsers user)
         {
             try
             {
-                List<Logins> loginsList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    loginsList = db.Database.SqlQuery<Logins>("Select * From dbo.Logins Where ([login] = @login) and ([passWord] = @password)",
-                        new SqlParameter("@login", user.login),
-                        new SqlParameter("@password", user.passWord)).ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var hashedPassword = ProtectLogic.GetMd5Hash(user.UserPassword);
+                var currentUser = db.Users.FirstOrDefault(x =>
+                    x.UserLogin == user.UserLogin && x.UserPassword == hashedPassword);
 
-                return loginsList.Count == 0 ? null : loginsList.First();
+                return currentUser;
             }
             catch
             {
@@ -96,18 +67,13 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetUserById")]
-        public Logins GetUserById(int id)
+        public DbUsers GetUserById(int id)
         {
             try
             {
-                List<Logins> loginsList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    loginsList = db.Database.SqlQuery<Logins>("Select * From dbo.Logins Where id = @id",
-                        new SqlParameter("@id", id)).ToList();
-                }
-
-                return loginsList.Count == 0 ? null : loginsList.First();
+                using var db = new KazanAirportDbContext();
+                var user = db.Users.FirstOrDefault(x => x.Id == id);
+                return user;
             }
             catch
             {
@@ -121,33 +87,30 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateUser")]
-        public string UpdateUser(Logins user)
+        public string UpdateUser(DbUsers user)
         {
-            var dbUser = GetUserById(user.id);
+            var dbUser = GetUserById(user.Id);
             if (dbUser == null)
-            {
                 return "Ошибка. Пользователь не найден";
-            }
 
             var existingDataValidation = ValidationLogic.ValidateExistingUserForEdit(dbUser, user);
             if (!string.IsNullOrEmpty(existingDataValidation))
-            {
                 return existingDataValidation;
-            }
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Update dbo.Logins set[login] = @login, email = @email, userTypeId = @userTypeId where id = @id",
-                        new SqlParameter("@login", user.login),
-                        new SqlParameter("@email", user.email),
-                        new SqlParameter("@userTypeId", user.userTypeId),
-                        new SqlParameter("@id", user.id));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentUser = db.Users.FirstOrDefault(x => x.Id == user.Id);
+                if (currentUser == null)
+                    return $"User with ID = {user.Id} wasn't found";
 
-                return "Success";
+                currentUser.UserLogin = user.UserLogin;
+                currentUser.Email = user.Email;
+                currentUser.PassengerId = user.PassengerId;
+                currentUser.UserTypeId = currentUser.UserTypeId;
+                db.SaveChanges();
+
+                return $"User {user.UserLogin} has been updated";
             }
             catch (Exception exception)
             {
@@ -161,18 +124,14 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetUsersList")]
-        public List<UserItem> GetUsersList()
+        public List<DbUsers> GetUsersList()
         {
             try
             {
-                List<UserItem> loginsList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    loginsList = db.Database.SqlQuery<UserItem>("Select * From dbo.Logins as L " +
-                                                      "join dbo.UserTypes as UT on L.userTypeId = UT.id").ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var users = db.Users.ToList();
 
-                return ProtectLogic.FilterPasswords(loginsList);
+                return ProtectLogic.FilterPasswords(users);
             }
             catch
             {
@@ -190,13 +149,15 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand("Delete From dbo.Logins where id = @id",
-                        new SqlParameter("@id", id));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentUser = db.Users.FirstOrDefault(x => x.Id == id);
+                if (currentUser == null)
+                    return $"User with ID = {id} wasn't found";
 
-                return "Success";
+                db.Users.Remove(currentUser);
+                db.SaveChanges();
+
+                return $"User {currentUser.UserLogin} deleted successfully";
             }
             catch (Exception exception)
             {
