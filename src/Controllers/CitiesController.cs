@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
+using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Logic;
-using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.Models;
 
 namespace KazanAirportWebApp.Controllers
 {
@@ -16,17 +16,12 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetCitiesList")]
-        public List<Cities> GetCitiesList()
+        public List<DbCities> GetCitiesList()
         {
             try
             {
-                List<Cities> citiesList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    citiesList = db.Database.
-                        SqlQuery<Cities>("Select * From dbo.Cities").ToList();
-                }
-
+                using var db = new KazanAirportDbContext();
+                var citiesList = db.Cities.ToList();
                 return citiesList;
             }
             catch
@@ -41,17 +36,12 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetCityById")]
-        public Cities GetCityById(int cityId)
+        public DbCities GetCityById(int cityId)
         {
             try
             {
-                List<Cities> citiesList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    citiesList = db.Database.SqlQuery<Cities>("Select * From dbo.Cities Where id = @id",
-                        new SqlParameter("@id", cityId)).ToList();
-                }
-
+                using var db = new KazanAirportDbContext();
+                var citiesList = db.Cities.Where(x => x.Id == cityId).ToList();
                 return citiesList.Count == 0 ? null : citiesList.First();
             }
             catch
@@ -66,26 +56,18 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewCity")]
-        public string AddNewCity(Cities cityData)
+        public string AddNewCity(DbCities cityData)
         {
             var existingDataValidation = ValidationLogic.ValidateExistingAirportCodes(cityData);
             if (!string.IsNullOrEmpty(existingDataValidation))
-            {
                 return existingDataValidation;
-            }
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Cities (cityName, icaoCode, iataCode) Values (@cityName, @icaoCode, @iataCode)",
-                        new SqlParameter("@cityName", cityData.cityName),
-                        new SqlParameter("@icaoCode", cityData.icaoCode),
-                        new SqlParameter("@iataCode", cityData.iataCode));
-                }
-
-                return "Success";
+                using var db = new KazanAirportDbContext();
+                db.Cities.Add(cityData);
+                db.SaveChanges();
+                return $"New info about city \"{cityData.Name}\" added successfully";
             }
             catch (Exception exception)
             {
@@ -99,29 +81,27 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateCity")]
-        public string UpdateCity(Cities cityData)
+        public string UpdateCity(DbCities cityData)
         {
-            var dbCity = GetCityById(cityData.id);
+            var dbCity = GetCityById(cityData.Id);
 
             var existingDataValidation = ValidationLogic.ValidateExistingAirportDataForEdit(dbCity, cityData);
             if (!string.IsNullOrEmpty(existingDataValidation))
-            {
                 return existingDataValidation;
-            }
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Update dbo.Cities Set cityName = @cityName, icaoCode = @icaoCode, iataCode = @iataCode Where id = @id",
-                        new SqlParameter("@cityName", cityData.cityName),
-                        new SqlParameter("@icaoCode", cityData.icaoCode),
-                        new SqlParameter("@iataCode", cityData.iataCode),
-                        new SqlParameter("id", cityData.id));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentCity = db.Cities.FirstOrDefault(x => x.Id == cityData.Id);
+                if (currentCity == null)
+                    return $"City with ID = {cityData.Id} wasn't found.";
 
-                return "Success";
+                currentCity.Name = cityData.Name;
+                currentCity.IcaoCode = cityData.IcaoCode;
+                currentCity.IataCode = cityData.IataCode;
+
+                db.SaveChanges();
+                return $"Info about city {cityData.Name} has updated";
             }
             catch (Exception exception)
             {
@@ -139,13 +119,15 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand("Delete From dbo.Cities where id = @id",
-                        new SqlParameter("@id", cityId));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentCity = db.Cities.FirstOrDefault(x => x.Id == cityId);
+                if (currentCity == null)
+                    return $"City with ID = {cityId} wasn't found.";
 
-                return "Success";
+                db.Cities.Remove(currentCity);
+                db.SaveChanges();
+
+                return $"City {currentCity.Name} removed successfully";
             }
             catch (Exception exception)
             {

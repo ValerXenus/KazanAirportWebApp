@@ -1,6 +1,7 @@
-﻿using System.Data.SqlClient;
+﻿using System;
 using System.Linq;
-using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.DataAccess;
+using KazanAirportWebApp.Models;
 using KazanAirportWebApp.Models.Join_Models;
 
 namespace KazanAirportWebApp.Logic
@@ -17,11 +18,11 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string ValidateExistingUserData(Logins user)
+        public static string ValidateExistingUserData(DbUsers user)
         {
             var outcome = "";
-            outcome += validateExistingEmail(user.email);
-            outcome += validateExistingLogin(user.login);
+            outcome += validateExistingEmail(user.Email);
+            outcome += validateExistingLogin(user.UserLogin);
 
             return outcome;
         }
@@ -32,15 +33,15 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbUser"></param>
         /// <param name="receivedUser"></param>
         /// <returns></returns>
-        public static string ValidateExistingUserForEdit(Logins dbUser, Logins receivedUser)
+        public static string ValidateExistingUserForEdit(DbUsers dbUser, DbUsers receivedUser)
         {
             var outcome = "";
 
-            if (dbUser.login != receivedUser.login)
-                outcome += validateExistingLogin(receivedUser.login);
+            if (dbUser.UserLogin != receivedUser.UserLogin)
+                outcome += validateExistingLogin(receivedUser.UserLogin);
 
-            if (dbUser.email != receivedUser.email)
-                outcome += validateExistingEmail(receivedUser.email);
+            if (dbUser.Email != receivedUser.Email)
+                outcome += validateExistingEmail(receivedUser.Email);
 
             return outcome;
         }
@@ -50,46 +51,27 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="passenger"></param>
         /// <returns></returns>
-        public static string ValidatePassengerData(Passengers passenger)
+        public static string ValidatePassengerData(DbPassengers passenger)
         {
             var outcome = "";
 
-            outcome += validateExistingPassport(passenger.passportNumber);
+            outcome += validateExistingPassport(passenger.PassportNumber);
 
             return outcome;
         }
 
         /// <summary>
-        /// Проверка, на существующий логин и номера паспорта в БД, сравнивая с введенным
+        /// Проверка номера паспорта в БД, сравнивая с введенным
         /// </summary>
         /// <param name="dbPassenger"></param>
         /// <param name="receivedPassenger"></param>
         /// <returns></returns>
-        public static string ValidatePassengerDataForEdit(PassengerItem dbPassenger, PassengerItem receivedPassenger)
+        public static string ValidatePassengerDataForEdit(DbPassengers dbPassenger, DbPassengers receivedPassenger)
         {
             var outcome = "";
 
-            if (dbPassenger.passportNumber != receivedPassenger.passportNumber)
-                outcome += validateExistingPassport(receivedPassenger.passportNumber);
-
-            if (dbPassenger.login != null 
-                && dbPassenger.login != receivedPassenger.login)
-            {
-                // Проверяем, что логин ни кем не используется, и обновляем
-                using (var db = new KazanAirportDbEntities())
-                {
-                    var userLogins = db.Database
-                        .SqlQuery<Logins>("Select * From dbo.Logins Where [login] = @login",
-                            new SqlParameter("@login", receivedPassenger.login)).ToList();
-
-                    if (userLogins.Count > 0
-                        && userLogins.First().id != dbPassenger.id)
-                    {
-                        outcome += "Нельзя добавить данные пассажира к пользователю, у которого уже указаны " +
-                                   "другие данные пассажира";
-                    }
-                }
-            }
+            if (dbPassenger.PassportNumber != receivedPassenger.PassportNumber)
+                outcome += validateExistingPassport(receivedPassenger.PassportNumber);
 
             return outcome;
         }
@@ -99,11 +81,11 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="cityData"></param>
         /// <returns></returns>
-        public static string ValidateExistingAirportCodes(Cities cityData)
+        public static string ValidateExistingAirportCodes(DbCities cityData)
         {
             var outcome = "";
-            outcome += validateExistingIcaoCode(cityData.icaoCode);
-            outcome += validateExistingIataCode(cityData.iataCode);
+            outcome += validateExistingIcaoCode(cityData.IcaoCode);
+            outcome += validateExistingIataCode(cityData.IataCode);
 
             return outcome;
         }
@@ -111,18 +93,18 @@ namespace KazanAirportWebApp.Logic
         /// <summary>
         /// Проверка, на существующие коды в БД
         /// </summary>
-        /// <param name="dbUser"></param>
-        /// <param name="receivedUser"></param>
+        /// <param name="dbCity"></param>
+        /// <param name="receivedCity"></param>
         /// <returns></returns>
-        public static string ValidateExistingAirportDataForEdit(Cities dbCity, Cities receivedCity)
+        public static string ValidateExistingAirportDataForEdit(DbCities dbCity, DbCities receivedCity)
         {
             var outcome = "";
 
-            if (dbCity.icaoCode != receivedCity.icaoCode)
-                outcome += validateExistingIcaoCode(receivedCity.icaoCode);
+            if (dbCity.IcaoCode != receivedCity.IcaoCode)
+                outcome += validateExistingIcaoCode(receivedCity.IcaoCode);
 
-            if (dbCity.iataCode != receivedCity.iataCode)
-                outcome += validateExistingEmail(receivedCity.iataCode);
+            if (dbCity.IataCode != receivedCity.IataCode)
+                outcome += validateExistingEmail(receivedCity.IataCode);
 
             return outcome;
         }
@@ -167,16 +149,9 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         private static string validateExistingLogin(string login)
         {
-            var outcome = string.Empty;
-            using (var db = new KazanAirportDbEntities())
-            {
-                var loginIds = db.Database.SqlQuery<int>("Select id From dbo.Logins Where login = @login",
-                    new SqlParameter("@login", login)).ToList();
-                if (loginIds.Count > 0)
-                    outcome += "- Пользователь с таким логином уже зарегистрирован в системе\n";
-            }
-
-            return outcome;
+            return checkExistanceInDb(login,
+                (db, paramValue) => db.Users.Any(x => x.UserLogin == paramValue),
+                "- Пользователь с таким логином уже зарегистрирован в системе\n");
         }
 
         /// <summary>
@@ -186,16 +161,9 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         private static string validateExistingEmail(string email)
         {
-            var outcome = string.Empty;
-            using (var db = new KazanAirportDbEntities())
-            {
-                var loginIds = db.Database.SqlQuery<int>("Select id From dbo.Logins Where email = @email",
-                    new SqlParameter("@email", email)).ToList();
-                if (loginIds.Count > 0)
-                    outcome += "- Пользователь с таким Email уже присутствует в системе\n";
-            }
-
-            return outcome;
+            return checkExistanceInDb(email,
+                (db, paramValue) => db.Users.Any(x => x.Email == paramValue),
+                "- Пользователь с таким Email уже присутствует в системе\n");
         }
 
         /// <summary>
@@ -205,18 +173,9 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         private static string validateExistingPassport(string passportNumber)
         {
-            var outcome = string.Empty;
-
-            using (var db = new KazanAirportDbEntities())
-            {
-                var loginIds = db.Database
-                    .SqlQuery<int>("Select id From dbo.Passengers Where passportNumber = @passportNumber",
-                    new SqlParameter("@passportNumber", passportNumber)).ToList();
-                if (loginIds.Count > 0)
-                    outcome += "- Пассажир с таким номером паспорта уже присутствует в системе\n";
-            }
-
-            return outcome;
+            return checkExistanceInDb(passportNumber,
+                (db, paramValue) => db.Passengers.Any(x => x.PassportNumber == paramValue),
+                "- Пассажир с таким номером паспорта уже присутствует в системе\n");
         }
 
         /// <summary>
@@ -226,39 +185,21 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         private static string validateExistingIcaoCode(string icao)
         {
-            var outcome = string.Empty;
-
-            using (var db = new KazanAirportDbEntities())
-            {
-                var foundCities = db.Database
-                    .SqlQuery<Cities>("Select * From dbo.Cities Where icaoCode = @icaoCode",
-                        new SqlParameter("@icaoCode", icao)).ToList();
-                if (foundCities.Count > 0)
-                    outcome += "Аэропорт с таким ICAO уже присутствует в БД";
-            }
-
-            return outcome;
+            return checkExistanceInDb(icao,
+                (db, paramValue) => db.Cities.Any(x => x.IcaoCode == paramValue),
+                "Аэропорт с таким ICAO уже присутствует в БД");
         }
 
         /// <summary>
         /// Проверка на существование данного IATA кода в БД
         /// </summary>
-        /// <param name="iato"></param>
+        /// <param name="iata"></param>
         /// <returns></returns>
         private static string validateExistingIataCode(string iata)
         {
-            var outcome = string.Empty;
-
-            using (var db = new KazanAirportDbEntities())
-            {
-                var foundCities = db.Database
-                    .SqlQuery<Cities>("Select * From dbo.Cities Where iataCode = @iataCode",
-                        new SqlParameter("@iataCode", iata)).ToList();
-                if (foundCities.Count > 0)
-                    outcome += "Аэропорт с таким IATA уже присутствует в БД";
-            }
-
-            return outcome;
+            return checkExistanceInDb(iata,
+                (db, paramValue) => db.Cities.Any(x => x.IataCode == paramValue),
+                "Аэропорт с таким IATA уже присутствует в БД");
         }
 
         /// <summary>
@@ -268,16 +209,25 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         private static string validateExistingBoardNumber(string boardNumber)
         {
+            return checkExistanceInDb(boardNumber, 
+                (db, paramValue) => db.Planes.Any(x => x.Number == paramValue),
+                "Самолет с данным бортовым номером уже присутствует в БД");
+        }
+
+        /// <summary>
+        /// Проверить на существование некоторого значения в БД
+        /// </summary>
+        /// <param name="paramValue">Проверяемое значение</param>
+        /// <param name="condition">Условие проверки</param>
+        /// <param name="errorText">Текст ошибки</param>
+        /// <returns></returns>
+        private static string checkExistanceInDb(string paramValue, Func<KazanAirportDbContext, string, bool> condition, string errorText)
+        {
             var outcome = string.Empty;
 
-            using (var db = new KazanAirportDbEntities())
-            {
-                var foundPlanes = db.Database
-                    .SqlQuery<Planes>("Select * From dbo.Planes Where boardNumber = @boardNumber",
-                        new SqlParameter("@boardNumber", boardNumber)).ToList();
-                if (foundPlanes.Count > 0)
-                    outcome += "Самолет с данным бортовым номером уже присутствует в БД";
-            }
+            using var db = new KazanAirportDbContext();
+            if (condition(db, paramValue))
+                outcome += errorText;
 
             return outcome;
         }
