@@ -4,22 +4,22 @@ namespace KazanAirportWebApp.Models.JoinModels
 {
     public class FlightItem
     {
-        public int id { get; set; }
-        public string flightNumber { get; set; }
-        public DateTime departureScheduled { get; set; }
-        public DateTime arrivalScheduled { get; set; }
-        public DateTime? departureActual { get; set; }
-        public DateTime? arrivalActual { get; set; }
-        public int timeOnBoard { get; set; }
-        public int flightType { get; set; }
-        public int planeId { get; set; }
-        public int cityId { get; set; }
-        public int statusId { get; set; }
-        public string modelName { get; set; }
-        public string boardNumber { get; set; }
-        public int airlineId { get; set; }
-        public string airlineName { get; set; }
-        public string cityName { get; set; }
-        public string statusName { get; set; }
+        public int Id { get; set; }
+        public string FlightNumber { get; set; }
+        public DateTime DepartureScheduled { get; set; }
+        public DateTime ArrivalScheduled { get; set; }
+        public DateTime? DepartureActual { get; set; }
+        public DateTime? ArrivalActual { get; set; }
+        public int TimeOnBoard { get; set; }
+        public int FlightType { get; set; }
+        public int PlaneId { get; set; }
+        public int CityId { get; set; }
+        public int StatusId { get; set; }
+        public string ModelName { get; set; }
+        public string BoardNumber { get; set; }
+        public int AirlineId { get; set; }
+        public string AirlineName { get; set; }
+        public string CityName { get; set; }
+        public string StatusName { get; set; }
     }
 }

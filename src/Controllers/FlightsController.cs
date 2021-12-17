@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
-using KazanAirportWebApp.Models.Data_Access;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.DataAccess;
+using KazanAirportWebApp.Models;
+using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Controllers
 {
@@ -20,16 +20,31 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<FlightItem> flights;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    flights = db.Database
-                        .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
-                                              "join dbo.Planes as P on F.planeId = P.id " +
-                                              "join dbo.Cities as C on F.cityId = C.id " +
-                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
-                                              "join dbo.Airlines as A on P.airlineId = A.id").ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var flights = (from f in db.Flights
+                    join p in db.Planes on f.PlaneId equals p.Id
+                    join c in db.Cities on f.CityId equals c.Id
+                    join a in db.Airlines on p.AirlineId equals a.Id
+                    select new FlightItem
+                    {
+                        Id = f.Id,
+                        FlightNumber = f.FlightNumber,
+                        DepartureScheduled = f.DepartureScheduled,
+                        ArrivalScheduled = f.ArrivalScheduled,
+                        DepartureActual = f.DepartureActual,
+                        ArrivalActual = f.ArrivalActual,
+                        TimeOnBoard = f.TimeOnBoard,
+                        FlightType = f.FlightType,
+                        PlaneId = f.PlaneId,
+                        CityId = f.CityId,
+                        StatusId = f.StatusId,
+                        ModelName = p.Name,
+                        BoardNumber = p.Number,
+                        CityName = c.Name,
+                        AirlineId = p.AirlineId,
+                        AirlineName = a.Name,
+                        StatusName = "ToDo"
+                    }).ToList();
 
                 return flights;
             }
@@ -49,20 +64,34 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<FlightItem> flights;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    flights = db.Database
-                        .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
-                                              "join dbo.Planes as P on F.planeId = P.id " +
-                                              "join dbo.Cities as C on F.cityId = C.id " +
-                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
-                                              "join dbo.Airlines as A on P.airlineId = A.id " +
-                                              "Where flightType = 0 and departureScheduled > @notBefore " +
-                                              "and departureScheduled < @notAfter",
-                                              new SqlParameter("@notBefore", DateTime.Now.AddHours(-12)),
-                                              new SqlParameter("@notAfter", DateTime.Now.AddHours(12))).ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var flights = (from f in db.Flights
+                    join p in db.Planes on f.PlaneId equals p.Id
+                    join c in db.Cities on f.CityId equals c.Id
+                    join a in db.Airlines on p.AirlineId equals a.Id
+                    where f.FlightType == 0 
+                          && f.DepartureScheduled > DateTime.Now.AddHours(-12) 
+                          && f.DepartureScheduled < DateTime.Now.AddHours(12)
+                               select new FlightItem
+                    {
+                        Id = f.Id,
+                        FlightNumber = f.FlightNumber,
+                        DepartureScheduled = f.DepartureScheduled,
+                        ArrivalScheduled = f.ArrivalScheduled,
+                        DepartureActual = f.DepartureActual,
+                        ArrivalActual = f.ArrivalActual,
+                        TimeOnBoard = f.TimeOnBoard,
+                        FlightType = f.FlightType,
+                        PlaneId = f.PlaneId,
+                        CityId = f.CityId,
+                        StatusId = f.StatusId,
+                        ModelName = p.Name,
+                        BoardNumber = p.Number,
+                        CityName = c.Name,
+                        AirlineId = p.AirlineId,
+                        AirlineName = a.Name,
+                        StatusName = "ToDo"
+                    }).ToList();
 
                 return flights;
             }
@@ -82,20 +111,34 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<FlightItem> flights;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    flights = db.Database
-                        .SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
-                                              "join dbo.Planes as P on F.planeId = P.id " +
-                                              "join dbo.Cities as C on F.cityId = C.id " +
-                                              "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
-                                              "join dbo.Airlines as A on P.airlineId = A.id " +
-                                              "Where flightType = 1 and departureScheduled > @notBefore " +
-                                              "and departureScheduled < @notAfter",
-                                              new SqlParameter("@notBefore", DateTime.Now.AddHours(-12)),
-                                              new SqlParameter("@notAfter", DateTime.Now.AddHours(12))).ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var flights = (from f in db.Flights
+                    join p in db.Planes on f.PlaneId equals p.Id
+                    join c in db.Cities on f.CityId equals c.Id
+                    join a in db.Airlines on p.AirlineId equals a.Id
+                    where f.FlightType == 1
+                          && f.DepartureScheduled > DateTime.Now.AddHours(-12)
+                          && f.DepartureScheduled < DateTime.Now.AddHours(12)
+                    select new FlightItem
+                    {
+                        Id = f.Id,
+                        FlightNumber = f.FlightNumber,
+                        DepartureScheduled = f.DepartureScheduled,
+                        ArrivalScheduled = f.ArrivalScheduled,
+                        DepartureActual = f.DepartureActual,
+                        ArrivalActual = f.ArrivalActual,
+                        TimeOnBoard = f.TimeOnBoard,
+                        FlightType = f.FlightType,
+                        PlaneId = f.PlaneId,
+                        CityId = f.CityId,
+                        StatusId = f.StatusId,
+                        ModelName = p.Name,
+                        BoardNumber = p.Number,
+                        CityName = c.Name,
+                        AirlineId = p.AirlineId,
+                        AirlineName = a.Name,
+                        StatusName = "ToDo"
+                    }).ToList();
 
                 return flights;
             }
@@ -115,18 +158,34 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<FlightItem> flights;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    flights = db.Database.SqlQuery<FlightItem>("Select * From dbo.Flights as F " +
-                                                               "join dbo.Planes as P on F.planeId = P.id " +
-                                                               "join dbo.Cities as C on F.cityId = C.id " +
-                                                               "join dbo.FlightStatuses as FS on F.statusId = FS.id " +
-                                                               "Where F.id = @id",
-                        new SqlParameter("@id", flightId)).ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var flight = (from f in db.Flights
+                    join p in db.Planes on f.PlaneId equals p.Id
+                    join c in db.Cities on f.CityId equals c.Id
+                    join a in db.Airlines on p.AirlineId equals a.Id
+                    where f.Id == flightId
+                    select new FlightItem
+                    {
+                        Id = f.Id,
+                        FlightNumber = f.FlightNumber,
+                        DepartureScheduled = f.DepartureScheduled,
+                        ArrivalScheduled = f.ArrivalScheduled,
+                        DepartureActual = f.DepartureActual,
+                        ArrivalActual = f.ArrivalActual,
+                        TimeOnBoard = f.TimeOnBoard,
+                        FlightType = f.FlightType,
+                        PlaneId = f.PlaneId,
+                        CityId = f.CityId,
+                        StatusId = f.StatusId,
+                        ModelName = p.Name,
+                        BoardNumber = p.Number,
+                        CityName = c.Name,
+                        AirlineId = p.AirlineId,
+                        AirlineName = a.Name,
+                        StatusName = "ToDo"
+                    }).FirstOrDefault();
 
-                return flights.Count == 0 ? null : flights.First();
+                return flight;
             }
             catch
             {
@@ -140,36 +199,15 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewFlight")]
-        public string AddNewFlight(Flights flight)
+        public string AddNewFlight(DbFlight flight)
         {
             try
             {
-                if (flight.departureActual == null)
-                    flight.departureActual = new DateTime(2000, 1, 1, 0, 0, 0);
+                using var db = new KazanAirportDbContext();
+                db.Flights.Add(flight);
+                db.SaveChanges();
 
-                if (flight.arrivalActual == null)
-                    flight.arrivalActual = new DateTime(2000, 1, 1, 0, 0, 0);
-
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Flights(flightNumber, departureScheduled, arrivalScheduled, " +
-                        "departureActual, arrivalActual, timeOnBoard, flightType, planeId, cityId, statusId) " +
-                        "Values (@flightNumber, @departureScheduled, @arrivalScheduled, @departureActual, " +
-                        "@arrivalActual, @timeOnBoard, @flightType, @planeId, @cityId, @statusId)",
-                        new SqlParameter("@flightNumber", flight.flightNumber),
-                        new SqlParameter("@departureScheduled", flight.departureScheduled),
-                        new SqlParameter("@arrivalScheduled", flight.arrivalScheduled),
-                        new SqlParameter("@departureActual", flight.departureActual),
-                        new SqlParameter("@arrivalActual", flight.arrivalActual),
-                        new SqlParameter("@timeOnBoard", flight.timeOnBoard),
-                        new SqlParameter("@flightType", flight.flightType),
-                        new SqlParameter("@planeId", flight.planeId),
-                        new SqlParameter("@cityId", flight.cityId),
-                        new SqlParameter("@statusId", flight.statusId));
-                }
-
-                return "Success";
+                return "New flight added successfully.";
             }
             catch (Exception exception)
             {
@@ -183,37 +221,28 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateFlight")]
-        public string UpdateFlight(Flights flight)
+        public string UpdateFlight(DbFlight flight)
         {
             try
             {
-                if (flight.departureActual == null)
-                    flight.departureActual = new DateTime(2000, 1, 1, 0, 0, 0);
+                using var db = new KazanAirportDbContext();
+                var currentFlight = db.Flights.FirstOrDefault(x => x.Id == flight.Id);
+                if (currentFlight == null)
+                    return $"Flight with ID = {flight.Id} wasn't found.";
 
-                if (flight.arrivalActual == null)
-                    flight.departureActual = new DateTime(2000, 1, 1, 0, 0, 0);
+                currentFlight.FlightNumber = flight.FlightNumber;
+                currentFlight.DepartureScheduled = flight.DepartureScheduled;
+                currentFlight.DepartureActual = flight.DepartureActual;
+                currentFlight.ArrivalScheduled = flight.ArrivalScheduled;
+                currentFlight.ArrivalActual = flight.ArrivalActual;
+                currentFlight.TimeOnBoard = flight.TimeOnBoard;
+                currentFlight.FlightType = flight.FlightType;
+                currentFlight.PlaneId = flight.PlaneId;
+                currentFlight.CityId = flight.CityId;
+                currentFlight.StatusId = flight.StatusId;
+                db.SaveChanges();
 
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Update dbo.Flights Set flightNumber = @flightNumber, departureScheduled = @departureScheduled, " +
-                        "arrivalScheduled = @arrivalScheduled, departureActual = @departureActual, " +
-                        "arrivalActual = @arrivalActual, timeOnBoard = @timeOnBoard, flightType = @flightType, " +
-                        "planeId = @planeId, cityId = @cityId, statusId = @statusId Where id = @id",
-                        new SqlParameter("@flightNumber", flight.flightNumber),
-                        new SqlParameter("@departureScheduled", flight.departureScheduled),
-                        new SqlParameter("@arrivalScheduled", flight.arrivalScheduled),
-                        new SqlParameter("@departureActual", flight.departureActual),
-                        new SqlParameter("@arrivalActual", flight.arrivalActual),
-                        new SqlParameter("@timeOnBoard", flight.timeOnBoard),
-                        new SqlParameter("@flightType", flight.flightType),
-                        new SqlParameter("@planeId", flight.planeId),
-                        new SqlParameter("@cityId", flight.cityId),
-                        new SqlParameter("@statusId", flight.statusId),
-                        new SqlParameter("@id", flight.id));
-                }
-
-                return "Success";
+                return "Flight updated successfully.";
             }
             catch (Exception exception)
             {
@@ -231,11 +260,13 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand("Delete From dbo.Flights where id = @id",
-                        new SqlParameter("@id", flightId));
-                }
+                using var db = new KazanAirportDbContext();
+                var flight = db.Flights.FirstOrDefault(x => x.Id == flightId);
+                if (flight == null)
+                    return $"Flight with ID = {flight.Id} wasn't found.";
+
+                db.Flights.Remove(flight);
+                db.SaveChanges();
 
                 return "Success";
             }
