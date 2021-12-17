@@ -7,7 +7,7 @@ namespace KazanAirportWebApp.Models
     /// Database class for airlines list
     /// </summary>
     [Table("Airlines")]
-    public class DbAirlines
+    public class DbAirline
     {
         /// <summary>
         /// Airline ID

@@ -14,7 +14,7 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="users">Список пользователей</param>
         /// <returns></returns>
-        public static List<DbUsers> FilterPasswords(List<DbUsers> users)
+        public static List<DbUser> FilterPasswords(List<DbUser> users)
         {
             users.ForEach(x => x.UserPassword = null);
             return users;

@@ -16,7 +16,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetCitiesList")]
-        public List<DbCities> GetCitiesList()
+        public List<DbCity> GetCitiesList()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetCityById")]
-        public DbCities GetCityById(int cityId)
+        public DbCity GetCityById(int cityId)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewCity")]
-        public string AddNewCity(DbCities cityData)
+        public string AddNewCity(DbCity cityData)
         {
             var existingDataValidation = ValidationLogic.ValidateExistingAirportCodes(cityData);
             if (!string.IsNullOrEmpty(existingDataValidation))
@@ -81,7 +81,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateCity")]
-        public string UpdateCity(DbCities cityData)
+        public string UpdateCity(DbCity cityData)
         {
             var dbCity = GetCityById(cityData.Id);
 

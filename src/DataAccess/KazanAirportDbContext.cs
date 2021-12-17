@@ -9,17 +9,17 @@ namespace KazanAirportWebApp.DataAccess
     /// </summary>
     public class KazanAirportDbContext : DbContext
     {
-        public DbSet<DbAirlines> Airlines { get; set; }
+        public DbSet<DbAirline> Airlines { get; set; }
 
-        public DbSet<DbCities> Cities { get; set; }
+        public DbSet<DbCity> Cities { get; set; }
 
-        public DbSet<DbFlights> Flights { get; set; }
+        public DbSet<DbFlight> Flights { get; set; }
 
-        public DbSet<DbPassengers> Passengers { get; set;}
+        public DbSet<DbPassenger> Passengers { get; set;}
 
-        public DbSet<DbPlanes> Planes { get; set; }
+        public DbSet<DbPlane> Planes { get; set; }
 
-        public DbSet<DbUsers> Users { get; set; }
+        public DbSet<DbUser> Users { get; set; }
 
         public KazanAirportDbContext() 
             : base(ConfigurationManager.ConnectionStrings["KazanAirportDbContext"].ConnectionString)

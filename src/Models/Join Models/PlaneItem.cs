@@ -1,12 +1,15 @@
 ﻿namespace KazanAirportWebApp.Models.Join_Models
 {
+    /// <summary>
+    /// Информация о самолете (ВС)
+    /// </summary>
     public class PlaneItem
     {
-        public int id { get; set; }
-        public string modelName { get; set; }
-        public string boardNumber { get; set; }
-        public int seatsNumber { get; set; }
-        public int airlineId { get; set; }
-        public string airlineName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Number { get; set; }
+        public int SeatsNumber { get; set; }
+        public int AirlineId { get; set; }
+        public string AirlineName { get; set; }
     }
 }

@@ -175,6 +175,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AirlinesController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\PlanesController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="DataAccess\KazanAirportDbContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -189,12 +190,12 @@
       <DependentUpon>202112142019271_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\DbCities.cs" />
-    <Compile Include="Models\DbAirlines.cs" />
-    <Compile Include="Models\DbFlights.cs" />
-    <Compile Include="Models\DbPassengers.cs" />
-    <Compile Include="Models\DbPlanes.cs" />
-    <Compile Include="Models\DbUsers.cs" />
+    <Compile Include="Models\DbCity.cs" />
+    <Compile Include="Models\DbAirline.cs" />
+    <Compile Include="Models\DbFlight.cs" />
+    <Compile Include="Models\DbPassenger.cs" />
+    <Compile Include="Models\DbPlane.cs" />
+    <Compile Include="Models\DbUser.cs" />
     <Compile Include="Models\Join Models\FlightItem.cs" />
     <Compile Include="Models\Join Models\PassengerTicket.cs" />
     <Compile Include="Models\Join Models\PlaneItem.cs" />

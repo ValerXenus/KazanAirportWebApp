@@ -16,7 +16,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewUser")]
-        public string AddNewUser(DbUsers user)
+        public string AddNewUser(DbUser user)
         {
             var existingDataValidation = ValidationLogic.ValidateExistingUserData(user);
             if (!string.IsNullOrEmpty(existingDataValidation))
@@ -44,7 +44,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("LoginUser")]
-        public DbUsers LoginUser(DbUsers user)
+        public DbUser LoginUser(DbUser user)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetUserById")]
-        public DbUsers GetUserById(int id)
+        public DbUser GetUserById(int id)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateUser")]
-        public string UpdateUser(DbUsers user)
+        public string UpdateUser(DbUser user)
         {
             var dbUser = GetUserById(user.Id);
             if (dbUser == null)
@@ -124,7 +124,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetUsersList")]
-        public List<DbUsers> GetUsersList()
+        public List<DbUser> GetUsersList()
         {
             try
             {

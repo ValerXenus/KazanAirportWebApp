@@ -4,47 +4,37 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KazanAirportWebApp.Models
 {
     /// <summary>
-    /// Context for Users
+    /// Cities directory
     /// </summary>
-    [Table("Users")]
-    public class DbUsers
+    [Table("Cities")]
+    public class DbCity
     {
         /// <summary>
-        /// User ID
+        /// City ID
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
-        /// Login
+        /// City name
         /// </summary>
         [Column(TypeName = "VARCHAR")]
         [StringLength(50)]
-        public string UserLogin { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Password
+        /// ICAO code of city airport
         /// </summary>
         [Column(TypeName = "VARCHAR")]
-        [StringLength(50)]
-        public string UserPassword { get; set; }
+        [StringLength(4)]
+        public string IcaoCode { get; set; }
 
         /// <summary>
-        /// Email
+        /// IATA code of city airport
         /// </summary>
         [Column(TypeName = "VARCHAR")]
-        [StringLength(50)]
-        public string? Email { get; set; }
-
-        /// <summary>
-        /// Reference Id to the passenger info
-        /// </summary>
-        public int? PassengerId { get; set; }
-
-        /// <summary>
-        /// User type
-        /// </summary>
-        public int UserTypeId { get; set; }
+        [StringLength(3)]
+        public string IataCode { get; set; }
     }
 }

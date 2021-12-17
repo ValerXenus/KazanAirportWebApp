@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
+using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Logic;
-using KazanAirportWebApp.Models.Data_Access;
+using KazanAirportWebApp.Models;
 using KazanAirportWebApp.Models.Join_Models;
 
 namespace KazanAirportWebApp.Controllers
@@ -21,15 +21,20 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<PlaneItem> planeItems;
-                using (var db = new KazanAirportDbEntities())
+                using var db = new KazanAirportDbContext();
+                var planes = db.Planes.Join(db.Airlines, 
+                    p => p.AirlineId, 
+                    a => a.Id, 
+                    (p, a) => new PlaneItem
                 {
-                    planeItems = db.Database
-                        .SqlQuery<PlaneItem>("Select * From dbo.Planes as P Join dbo.Airlines as A on " +
-                                             "P.airlineId = A.id").ToList();
-                }
-
-                return planeItems;
+                    Id = p.Id,
+                    Number = p.Number,
+                    Name = p.Name,
+                    SeatsNumber = p.SeatsNumber,
+                    AirlineId = p.AirlineId,
+                    AirlineName = a.Name
+                }).ToList();
+                return planes;
             }
             catch
             {
@@ -43,19 +48,13 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetPlaneById")]
-        public PlaneItem GetPlaneById(int planeId)
+        public DbPlane GetPlaneById(int planeId)
         {
             try
             {
-                List<PlaneItem> planeItems;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    planeItems = db.Database.SqlQuery<PlaneItem>("Select * From dbo.Planes as P Join dbo.Airlines as A " +
-                                                                 "on P.airlineId = A.id Where P.id = @id",
-                        new SqlParameter("@id", planeId)).ToList();
-                }
-
-                return planeItems.Count == 0 ? null : planeItems.First();
+                using var db = new KazanAirportDbContext();
+                var plane = db.Planes.FirstOrDefault(x => x.Id == planeId);
+                return plane;
             }
             catch
             {
@@ -69,26 +68,19 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewPlane")]
-        public string AddNewPlane(PlaneItem planeItem)
+        public string AddNewPlane(DbPlane plane)
         {
-            var validationResult = ValidationLogic.ValidateExistingBoardNumbers(planeItem);
+            var validationResult = ValidationLogic.ValidateExistingBoardNumbers(plane);
             if (!string.IsNullOrEmpty(validationResult))
                 return validationResult;
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Planes (modelName, boardNumber, seatsNumber, airlineId) " +
-                        "Values (@modelName, @boardNumber, @seatsNumber, @airlineId)",
-                        new SqlParameter("@modelName", planeItem.modelName),
-                        new SqlParameter("@boardNumber", planeItem.boardNumber),
-                        new SqlParameter("@seatsNumber", planeItem.seatsNumber),
-                        new SqlParameter("@airlineId", planeItem.airlineId));
-                }
+                using var db = new KazanAirportDbContext();
+                db.Planes.Add(plane);
+                db.SaveChanges();
 
-                return "Success";
+                return $"Plane {plane.Name} added successfully.";
             }
             catch (Exception exception)
             {
@@ -102,27 +94,27 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdatePlane")]
-        public string UpdatePlane(PlaneItem planeItem)
+        public string UpdatePlane(DbPlane plane)
         {
-            var dbPlaneItem = GetPlaneById(planeItem.id);
-            var validationResult = ValidationLogic.ValidateExistingBoardNumbersForEdit(dbPlaneItem, planeItem);
+            var dbPlaneItem = GetPlaneById(plane.Id);
+            var validationResult = ValidationLogic.ValidateExistingBoardNumbersForEdit(dbPlaneItem, plane);
             if (!string.IsNullOrEmpty(validationResult))
                 return validationResult;
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Update dbo.Planes Set modelName = @modelName, boardNumber = @boardNumber, " +
-                        "seatsNumber = @seatsNumber, airlineId = @airlineId",
-                        new SqlParameter("@modelName", planeItem.modelName),
-                        new SqlParameter("@boardNumber", planeItem.boardNumber),
-                        new SqlParameter("@seatsNumber", planeItem.seatsNumber),
-                        new SqlParameter("@airlineId", planeItem.airlineId));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentPlane = db.Planes.FirstOrDefault(x => x.Id == plane.Id);
+                if (currentPlane == null)
+                    return $"Plane with ID = {plane.Id} wasn't found.";
 
-                return "Success";
+                currentPlane.Name = plane.Name;
+                currentPlane.AirlineId = plane.AirlineId;
+                currentPlane.Number = plane.Number;
+                currentPlane.SeatsNumber = plane.SeatsNumber;
+                db.SaveChanges();
+
+                return $"Plane {plane.Name} updated successfully.";
             }
             catch (Exception exception)
             {
@@ -140,13 +132,15 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand("Delete From dbo.Planes where id = @id",
-                        new SqlParameter("@id", planeId));
-                }
+                using var db = new KazanAirportDbContext();
+                var currentPlane = db.Planes.FirstOrDefault(x => x.Id == planeId);
+                if (currentPlane == null)
+                    return $"Plane with ID = {planeId} wasn't found.";
 
-                return "Success";
+                db.Planes.Remove(currentPlane);
+                db.SaveChanges();
+
+                return $"Plane {currentPlane.Name} removed successfully.";
             }
             catch (Exception exception)
             {

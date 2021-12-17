@@ -18,7 +18,7 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public static string ValidateExistingUserData(DbUsers user)
+        public static string ValidateExistingUserData(DbUser user)
         {
             var outcome = "";
             outcome += validateExistingEmail(user.Email);
@@ -33,7 +33,7 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbUser"></param>
         /// <param name="receivedUser"></param>
         /// <returns></returns>
-        public static string ValidateExistingUserForEdit(DbUsers dbUser, DbUsers receivedUser)
+        public static string ValidateExistingUserForEdit(DbUser dbUser, DbUser receivedUser)
         {
             var outcome = "";
 
@@ -51,7 +51,7 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="passenger"></param>
         /// <returns></returns>
-        public static string ValidatePassengerData(DbPassengers passenger)
+        public static string ValidatePassengerData(DbPassenger passenger)
         {
             var outcome = "";
 
@@ -66,7 +66,7 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbPassenger"></param>
         /// <param name="receivedPassenger"></param>
         /// <returns></returns>
-        public static string ValidatePassengerDataForEdit(DbPassengers dbPassenger, DbPassengers receivedPassenger)
+        public static string ValidatePassengerDataForEdit(DbPassenger dbPassenger, DbPassenger receivedPassenger)
         {
             var outcome = "";
 
@@ -81,7 +81,7 @@ namespace KazanAirportWebApp.Logic
         /// </summary>
         /// <param name="cityData"></param>
         /// <returns></returns>
-        public static string ValidateExistingAirportCodes(DbCities cityData)
+        public static string ValidateExistingAirportCodes(DbCity cityData)
         {
             var outcome = "";
             outcome += validateExistingIcaoCode(cityData.IcaoCode);
@@ -96,7 +96,7 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbCity"></param>
         /// <param name="receivedCity"></param>
         /// <returns></returns>
-        public static string ValidateExistingAirportDataForEdit(DbCities dbCity, DbCities receivedCity)
+        public static string ValidateExistingAirportDataForEdit(DbCity dbCity, DbCity receivedCity)
         {
             var outcome = "";
 
@@ -112,12 +112,12 @@ namespace KazanAirportWebApp.Logic
         /// <summary>
         /// Проверка, что в БД больше нет самолета с таким же бортовым номером
         /// </summary>
-        /// <param name="planeItem"></param>
+        /// <param name="plane"></param>
         /// <returns></returns>
-        public static string ValidateExistingBoardNumbers(PlaneItem planeItem)
+        public static string ValidateExistingBoardNumbers(DbPlane plane)
         {
             var outcome = "";
-            outcome += validateExistingBoardNumber(planeItem.boardNumber);
+            outcome += validateExistingBoardNumber(plane.Number);
 
             return outcome;
         }
@@ -125,15 +125,17 @@ namespace KazanAirportWebApp.Logic
         /// <summary>
         /// Проверка, что в БД больше нет самолета с таким же бортовым номером, для редактирования
         /// </summary>
-        /// <param name="dbPlaneItem"></param>
-        /// <param name="receivedPlaneItem"></param>
+        /// <param name="dbPlane"></param>
+        /// <param name="receivedPlane"></param>
         /// <returns></returns>
-        public static string ValidateExistingBoardNumbersForEdit(PlaneItem dbPlaneItem, PlaneItem receivedPlaneItem)
+        public static string ValidateExistingBoardNumbersForEdit(DbPlane dbPlane, DbPlane receivedPlane)
         {
             var outcome = "";
+            if (dbPlane == null || receivedPlane == null)
+                return outcome;
 
-            if (dbPlaneItem.boardNumber != receivedPlaneItem.boardNumber)
-                outcome += validateExistingBoardNumber(receivedPlaneItem.boardNumber);
+            if (dbPlane.Number != receivedPlane.Number)
+                outcome += validateExistingBoardNumber(receivedPlane.Number);
 
             return outcome;
         }

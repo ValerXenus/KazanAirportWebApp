@@ -4,40 +4,44 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KazanAirportWebApp.Models
 {
     /// <summary>
-    /// Context for planes
+    /// Passengers context
     /// </summary>
-    [Table("Planes")]
-    public class DbPlanes
+    [Table("Passengers")]
+    public class DbPassenger
     {
         /// <summary>
-        /// Plane ID
+        /// Passenger ID
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
-        /// Model name
+        /// Last name
         /// </summary>
         [Column(TypeName = "VARCHAR")]
         [StringLength(50)]
-        public string Name { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
-        /// Board number
+        /// First name
         /// </summary>
         [Column(TypeName = "VARCHAR")]
         [StringLength(50)]
-        public string Number { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
-        /// Number of seats
+        /// Middle name
         /// </summary>
-        public int SeatsNumber { get; set; }
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(50)]
+        public string? MiddleName { get; set; }
 
         /// <summary>
-        /// Airline which owns current plane
+        /// Passport numbers
         /// </summary>
-        public int AirlineId { get; set; }
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(10)]
+        public string PassportNumber { get; set; }
     }
 }

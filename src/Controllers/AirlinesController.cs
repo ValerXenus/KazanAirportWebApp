@@ -15,7 +15,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetAirlinesList")]
-        public List<DbAirlines> GetAirlinesList()
+        public List<DbAirline> GetAirlinesList()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetAirlineById")]
-        public DbAirlines GetAirlineById(int airlineId)
+        public DbAirline GetAirlineById(int airlineId)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewAirline")]
-        public string AddNewAirline(DbAirlines airlineData)
+        public string AddNewAirline(DbAirline airlineData)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("UpdateAirline")]
-        public string UpdateAirline(DbAirlines airlineData)
+        public string UpdateAirline(DbAirline airlineData)
         {
             try
             {

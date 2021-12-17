@@ -8,7 +8,7 @@ namespace KazanAirportWebApp.Models
     /// Flights context
     /// </summary>
     [Table("Flights")]
-    public class DbFlights
+    public class DbFlight
     {
         /// <summary>
         /// Flight ID
