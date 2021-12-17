@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using KazanAirportWebApp.Models.Data_Access;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.DataAccess;
+using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Logic
 {
@@ -20,41 +18,33 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         public static string AddPassengerToUser(string passengerPassport, string userLogin)
         {
-            var outcome = "";
+            var outcome = string.Empty;
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    // Получение пассажира по номеру паспорта
-                    var passengers = db.Database
-                        .SqlQuery<Passengers>("Select * From dbo.Passengers Where passportNumber = @passportNumber",
-                            new SqlParameter("@passportNumber", passengerPassport)).ToList();
-                    if (passengers.Count == 0)
-                        return "Пассажир с таким номером паспорта не найден";
+                using var db = new KazanAirportDbContext();
+                // Получение пассажира по номеру паспорта
+                var passenger = db.Passengers.FirstOrDefault(x => x.PassportNumber == passengerPassport);
+                if (passenger == null)
+                    return "Пассажир с таким номером паспорта не найден";
 
-                    // Проверка, что указанный индекс пассажира еще не прицеплен ни к одному пользователю
-                    var userWithPassengerId = db.Database
-                        .SqlQuery<Logins>("Select * From dbo.Logins Where passengerId = @passengerId",
-                            new SqlParameter("@passengerId", passengers.First().id)).ToList();
-                    if (userWithPassengerId.Count > 0)
-                        return "Указанный пассажир уже добавлен к пользователю";
+                // Проверка, что указанный индекс пассажира еще не привязан ни к одному пользователю
+                var userWithPassengerId = db.Users.FirstOrDefault(x => x.PassengerId == passenger.Id);
+                if (userWithPassengerId != null)
+                    return "Указанный пассажир уже добавлен к пользователю";
 
-                    // Проверка, что на указанного пользователя еще не повешен id какого-либо пассажира
-                    var foundUsers = db.Database
-                        .SqlQuery<Logins>("Select * From dbo.Logins Where [login] = @userLogin",
-                            new SqlParameter("@userLogin", userLogin)).ToList();
-                    if (foundUsers.Count == 0)
-                        return $"Пользователь с логином: {userLogin} не найден";
-                    if (foundUsers.First().passengerId != null)
-                        return $"У пользователя с ID: {foundUsers.First().id} уже указан другой пассажир";
+                // Проверка, что на указанного пользователя еще не привязан id какого-либо пассажира
+                var currentUser = db.Users.FirstOrDefault(x => x.UserLogin == userLogin);
+                if (currentUser == null)
+                    return $"Пользователь с логином: {userLogin} не найден";
 
-                    db.Database
-                        .ExecuteSqlCommand("Update dbo.Logins Set passengerId = @passengerId Where id = @id",
-                            new SqlParameter("@passengerId", passengers.First().id),
-                            new SqlParameter("@id", foundUsers.First().id));
-                    outcome = "Success";
-                }
+                if (currentUser.PassengerId != null)
+                    return $"К пользователю {currentUser.UserLogin} уже привязан другой пассажир";
+
+                // Привязка пассажира к пользователю
+                currentUser.PassengerId = passenger.Id;
+                db.SaveChanges();
+                outcome = "Success";
             }
             catch (Exception exception)
             {
@@ -65,33 +55,31 @@ namespace KazanAirportWebApp.Logic
         }
 
         /// <summary>
-        /// Получение Id пользователя по id пассажира или логину
+        /// Получение Id пользователя по id пассажира
         /// </summary>
         /// <returns></returns>
-        public static int GetUserId(int passengerId, string userLogin = "")
+        public static int GetUserId(int passengerId)
         {
-            using (var db = new KazanAirportDbEntities())
-            {
-                List<Logins> userLogins;
+            using var db = new KazanAirportDbContext();
+            var passengerItem = db.Passengers
+                .Where(x => x.Id == passengerId)
+                .Join(db.Users,
+                    p => p.Id,
+                    u => u.PassengerId,
+                    (p, u) => new PassengerItem
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        MiddleName = p.MiddleName,
+                        PassportNumber = p.PassportNumber,
+                        UserId = u.Id,
+                        UserLogin = u.UserLogin,
+                        Email = u.Email
+                    })
+                .FirstOrDefault();
 
-                if (!string.IsNullOrEmpty(userLogin))
-                {
-                    userLogins = db.Database
-                        .SqlQuery<Logins>("Select * From dbo.Logins Where login = @userLogin",
-                            new SqlParameter("@userLogin", userLogin)).ToList();
-
-                    if (userLogins.Count > 0)
-                        return userLogins.First().id;
-                }
-
-                userLogins = db.Database
-                    .SqlQuery<Logins>("Select * From dbo.Logins Where passengerId = @passengerId",
-                        new SqlParameter("@passengerId", passengerId)).ToList();
-                if (userLogins.Count > 0)
-                    return userLogins.First().id;
-            }
-
-            return -1;
+            return passengerItem?.UserId ?? -1;
         }
 
         /// <summary>
@@ -101,21 +89,26 @@ namespace KazanAirportWebApp.Logic
         /// <returns></returns>
         public static PassengerItem GetPassengerByPassport(string passportNumber)
         {
-            List<PassengerItem> passengersList;
-            using (var db = new KazanAirportDbEntities())
-            {
-                passengersList = db.Database.
-                    SqlQuery<PassengerItem>("Select * From dbo.Passengers as P " +
-                                            "Left Join dbo.Logins as L On P.id = L.passengerId " +
-                                            "Where P.passportNumber = @passportNumber",
-                        new SqlParameter("@passportNumber", passportNumber)).ToList();
+            using var db = new KazanAirportDbContext();
+            var passengerItem = db.Passengers
+                .Where(x => x.PassportNumber == passportNumber)
+                .Join(db.Users,
+                    p => p.Id,
+                    u => u.PassengerId,
+                    (p, u) => new PassengerItem
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        MiddleName = p.MiddleName,
+                        PassportNumber = p.PassportNumber,
+                        UserId = u.Id,
+                        UserLogin = u.UserLogin,
+                        Email = u.Email
+                    })
+                .FirstOrDefault();
 
-                if (passengersList.Count == 0)
-                    return null;
-
-            }
-
-            return passengersList.First();
+            return passengerItem;
         }
     }
 }

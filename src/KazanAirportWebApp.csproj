@@ -175,12 +175,14 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AirlinesController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\PassengersController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="DataAccess\KazanAirportDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\DbHelpers.cs" />
     <Compile Include="Logic\Enums\UserType.cs" />
     <Compile Include="Logic\InfoGenerators.cs" />
     <Compile Include="Logic\ProtectLogic.cs" />
@@ -196,10 +198,11 @@
     <Compile Include="Models\DbPassenger.cs" />
     <Compile Include="Models\DbPlane.cs" />
     <Compile Include="Models\DbUser.cs" />
-    <Compile Include="Models\Join Models\FlightItem.cs" />
-    <Compile Include="Models\Join Models\PassengerTicket.cs" />
-    <Compile Include="Models\Join Models\PlaneItem.cs" />
-    <Compile Include="Models\Join Models\TicketItem.cs" />
+    <Compile Include="Models\JoinModels\FlightItem.cs" />
+    <Compile Include="Models\JoinModels\PassengerItem.cs" />
+    <Compile Include="Models\JoinModels\PassengerTicket.cs" />
+    <Compile Include="Models\JoinModels\PlaneItem.cs" />
+    <Compile Include="Models\JoinModels\TicketItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

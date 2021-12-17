@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KazanAirportWebApp.Models.Join_Models
+namespace KazanAirportWebApp.Models.JoinModels
 {
     public class FlightItem
     {

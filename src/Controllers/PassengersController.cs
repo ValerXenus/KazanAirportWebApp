@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
+using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Logic;
-using KazanAirportWebApp.Models.Data_Access;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.Models;
+using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Controllers
 {
@@ -21,13 +21,23 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<PassengerItem> passengersList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    passengersList = db.Database.
-                        SqlQuery<PassengerItem>("Select * From dbo.Passengers as P " +
-                                                "Left Join dbo.Logins as L On P.id = L.passengerId").ToList();
-                }
+                using var db = new KazanAirportDbContext();
+                var passengersList = db.Passengers
+                    .Join(db.Users,
+                    p => p.Id,
+                    u => u.PassengerId,
+                    (p, u) => new PassengerItem
+                        {
+                            Id = p.Id,
+                            FirstName = p.FirstName,
+                            LastName = p.LastName,
+                            MiddleName = p.MiddleName,
+                            PassportNumber = p.PassportNumber,
+                            UserId = u.Id,
+                            UserLogin = u.UserLogin,
+                            Email = u.Email
+                        })
+                    .ToList();
 
                 return passengersList;
             }
@@ -65,21 +75,26 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                List<PassengerItem> passengersList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    passengersList = db.Database.
-                        SqlQuery<PassengerItem>("Select * From dbo.Passengers as P " +
-                                                "Left Join dbo.Logins as L On P.id = L.passengerId " +
-                                                "Where P.id = @passengerId",
-                            new SqlParameter("@passengerId", passengerId)).ToList();
+                using var db = new KazanAirportDbContext();
+                var passengerItem = db.Passengers
+                    .Where(x => x.Id == passengerId)
+                    .Join(db.Users,
+                        p => p.Id,
+                        u => u.PassengerId,
+                        (p, u) => new PassengerItem
+                        {
+                            Id = p.Id,
+                            FirstName = p.FirstName,
+                            LastName = p.LastName,
+                            MiddleName = p.MiddleName,
+                            PassportNumber = p.PassportNumber,
+                            UserId = u.Id,
+                            UserLogin = u.UserLogin,
+                            Email = u.Email
+                        })
+                    .FirstOrDefault();
 
-                    if (passengersList.Count == 0)
-                        return null;
-
-                }
-
-                return passengersList.First();
+                return passengerItem;
             }
             catch
             {
@@ -98,37 +113,25 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("AddNewPassenger")]
-        public string AddNewPassenger(Passengers passenger, string userLogin = "")
+        public string AddNewPassenger(DbPassenger passenger, string userLogin = "")
         {
             var existingDataValidation = ValidationLogic.ValidatePassengerData(passenger);
             if (!string.IsNullOrEmpty(existingDataValidation))
-            {
                 return existingDataValidation;
-            }
 
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand(
-                        "Insert Into dbo.Passengers(lastName, firstName, middleName, passportNumber) " +
-                        "Values (@lastName, @firstName, @middleName, @passportNumber)",
-                        new SqlParameter("@lastName", passenger.lastName),
-                        new SqlParameter("@firstName", passenger.firstName),
-                        new SqlParameter("@middleName", passenger.middleName),
-                        new SqlParameter("@passportNumber", passenger.passportNumber));
-                }
+                using var db = new KazanAirportDbContext();
+                db.Passengers.Add(passenger);
+                db.SaveChanges();
 
-                if (!string.IsNullOrEmpty(userLogin))
-                {
-                    var addPassengerResult = DbHelpers.AddPassengerToUser(passenger.passportNumber, userLogin);
-                    if (!addPassengerResult.Equals("Success"))
-                    {
-                        return addPassengerResult;
-                    }
-                }
+                if (string.IsNullOrEmpty(userLogin))
+                    return "Success";
 
-                return "Success";
+                var addPassengerResult = DbHelpers.AddPassengerToUser(passenger.PassportNumber, userLogin);
+                return !addPassengerResult.Equals("Success") 
+                    ? addPassengerResult 
+                    : "Success";
             }
             catch (Exception exception)
             {
@@ -147,21 +150,21 @@ namespace KazanAirportWebApp.Controllers
         {
             try
             {
-                var userId = DbHelpers.GetUserId(passengerId);
+                using var db = new KazanAirportDbContext();
+                var passenger = db.Passengers.FirstOrDefault(x => x.Id == passengerId);
+                if (passenger == null)
+                    return $"Passenger with ID = {passengerId} wasn't found";
 
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database.ExecuteSqlCommand("Delete From dbo.Passengers where id = @passengerId",
-                        new SqlParameter("@passengerId", passengerId));
+                db.Passengers.Remove(passenger);
+                db.SaveChanges();
 
-                    // Если пассажир был прикреплен к некоторому пользователю, то открепляем
-                    if (userId != -1)
-                    {
-                        db.Database
-                            .ExecuteSqlCommand("Update dbo.Logins Set passengerId = -1 Where id = @userId",
-                                new SqlParameter("@userId", userId));
-                    }
-                }
+                // Если пассажир был прикреплен к некоторому пользователю, то открепляем
+                var referencedUser = db.Users.FirstOrDefault(x => x.PassengerId == passengerId);
+                if (referencedUser == null)
+                    return "Success";
+
+                referencedUser.PassengerId = null;
+                db.SaveChanges();
 
                 return "Success";
             }
@@ -180,47 +183,18 @@ namespace KazanAirportWebApp.Controllers
         [ActionName("UpdatePassenger")]
         public string UpdatePassenger(PassengerItem passenger)
         {
-            var dbPassenger = GetPassengerById(passenger.id);
-            if (dbPassenger == null)
-            {
-                return "Ошибка. Пассажир не найден";
-            }
-
-            var existingDataValidation = ValidationLogic.ValidatePassengerDataForEdit(dbPassenger, passenger);
-            if (!string.IsNullOrEmpty(existingDataValidation))
-            {
-                return existingDataValidation;
-            }
-
-            var userId = DbHelpers.GetUserId(passenger.id, passenger.login);
-
             try
             {
-                using (var db = new KazanAirportDbEntities())
-                {
-                    db.Database
-                        .ExecuteSqlCommand("Update dbo.Passengers Set lastName = @lastName, firstName = @firstName, middleName = @middleName, " +
-                                           "passportNumber = @passportNumber Where id = @id",
-                            new SqlParameter("@lastName", passenger.lastName),
-                            new SqlParameter("@firstName", passenger.firstName),
-                            new SqlParameter("@middleName", passenger.middleName),
-                            new SqlParameter("@passportNumber", passenger.passportNumber),
-                            new SqlParameter("@id", passenger.id));
+                using var db = new KazanAirportDbContext();
+                var currentPassenger = db.Passengers.FirstOrDefault(x => x.Id == passenger.Id);
+                if (currentPassenger == null)
+                    return $"Пассажир с ID = {passenger.Id} не был найден";
 
-                    if (userId == -1)
-                        return "Success";
-
-                    int passengerId = passenger.id;
-
-                    // Удаляем пассажира от пользователя, если поле логина стало пустым
-                    if (string.IsNullOrEmpty(passenger.login))
-                        passengerId = -1;
-
-                    db.Database
-                        .ExecuteSqlCommand("Update dbo.Logins Set passengerId = @passengerId Where id = @id",
-                            new SqlParameter("@passengerId", passengerId),
-                            new SqlParameter("@id", userId));
-                }
+                currentPassenger.FirstName = passenger.FirstName;
+                currentPassenger.LastName = passenger.LastName;
+                currentPassenger.MiddleName = passenger.MiddleName;
+                currentPassenger.PassportNumber = passenger.PassportNumber;
+                db.SaveChanges();
 
                 return "Success";
             }

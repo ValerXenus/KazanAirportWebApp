@@ -5,7 +5,7 @@ using System.Web.Http;
 using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Logic;
 using KazanAirportWebApp.Models;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Controllers
 {

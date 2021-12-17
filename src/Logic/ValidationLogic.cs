@@ -2,7 +2,7 @@
 using System.Linq;
 using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Models;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Logic
 {
@@ -66,7 +66,7 @@ namespace KazanAirportWebApp.Logic
         /// <param name="dbPassenger"></param>
         /// <param name="receivedPassenger"></param>
         /// <returns></returns>
-        public static string ValidatePassengerDataForEdit(DbPassenger dbPassenger, DbPassenger receivedPassenger)
+        public static string ValidatePassengerDataForEdit(PassengerItem dbPassenger, PassengerItem receivedPassenger)
         {
             var outcome = "";
 
