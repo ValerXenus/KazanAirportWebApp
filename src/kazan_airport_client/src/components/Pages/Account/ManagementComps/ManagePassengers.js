@@ -103,7 +103,7 @@ export class ManagePassengers extends Component {
                             <td>{x.FirstName}</td>
                             <td>{x.MiddleName}</td>
                             <td>{x.PassportNumber}</td>
-                            <td>{x.Login}</td>
+                            <td>{x.UserLogin}</td>
                             <td>{x.Email}</td>
                             <td>
                                 <ButtonToolbar>

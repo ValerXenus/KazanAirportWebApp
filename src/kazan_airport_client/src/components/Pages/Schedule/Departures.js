@@ -25,6 +25,9 @@ export class Departures extends Component {
     refreshList = () => {
         axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)
         .then(response => {
+            if (response.data === null)
+                return;
+                
             this.setState({flightsList: response.data})
         })
         .catch((error) => {
@@ -36,6 +39,9 @@ export class Departures extends Component {
         const { flightsList } = this.state;
 
         const getNoteAboutFlight = (currentFlight) => {
+            if (currentFlight === undefined)
+                return null;
+
             switch (currentFlight.StatusId) {
                 case 0:
                     if (Date.now() > Date.parse(currentFlight.DepartureScheduled))

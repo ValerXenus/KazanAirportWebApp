@@ -22,22 +22,20 @@ namespace KazanAirportWebApp.Controllers
             try
             {
                 using var db = new KazanAirportDbContext();
-                var passengersList = db.Passengers
-                    .Join(db.Users,
-                    p => p.Id,
-                    u => u.PassengerId,
-                    (p, u) => new PassengerItem
-                        {
-                            Id = p.Id,
-                            FirstName = p.FirstName,
-                            LastName = p.LastName,
-                            MiddleName = p.MiddleName,
-                            PassportNumber = p.PassportNumber,
-                            UserId = u.Id,
-                            UserLogin = u.UserLogin,
-                            Email = u.Email
-                        })
-                    .ToList();
+                var passengersList = (from p in db.Passengers
+                    join u in db.Users on p.Id equals u.PassengerId into du
+                    from subUser in du.DefaultIfEmpty()
+                    select new PassengerItem
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        MiddleName = p.MiddleName,
+                        PassportNumber = p.PassportNumber,
+                        UserId = (subUser == null ? 0 : subUser.Id),
+                        UserLogin = (subUser == null ? string.Empty : subUser.UserLogin),
+                        Email = (subUser == null ? string.Empty : subUser.Email)
+                    }).ToList();
 
                 return passengersList;
             }
@@ -76,23 +74,21 @@ namespace KazanAirportWebApp.Controllers
             try
             {
                 using var db = new KazanAirportDbContext();
-                var passengerItem = db.Passengers
-                    .Where(x => x.Id == passengerId)
-                    .Join(db.Users,
-                        p => p.Id,
-                        u => u.PassengerId,
-                        (p, u) => new PassengerItem
-                        {
-                            Id = p.Id,
-                            FirstName = p.FirstName,
-                            LastName = p.LastName,
-                            MiddleName = p.MiddleName,
-                            PassportNumber = p.PassportNumber,
-                            UserId = u.Id,
-                            UserLogin = u.UserLogin,
-                            Email = u.Email
-                        })
-                    .FirstOrDefault();
+                var passengerItem = (from p in db.Passengers
+                    where p.Id == passengerId
+                    join u in db.Users on p.Id equals u.PassengerId into du
+                    from subUser in du.DefaultIfEmpty()
+                    select new PassengerItem
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        MiddleName = p.MiddleName,
+                        PassportNumber = p.PassportNumber,
+                        UserId = (subUser == null ? 0 : subUser.Id),
+                        UserLogin = (subUser == null ? string.Empty : subUser.UserLogin),
+                        Email = (subUser == null ? string.Empty : subUser.Email)
+                    }).FirstOrDefault();
 
                 return passengerItem;
             }

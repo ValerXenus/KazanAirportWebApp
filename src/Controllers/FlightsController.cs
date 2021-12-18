@@ -45,7 +45,7 @@ namespace KazanAirportWebApp.Controllers
                         CityName = c.Name,
                         AirlineId = p.AirlineId,
                         AirlineName = a.Name,
-                        StatusName = EnumTranslator.GetEnumDescription((FlightStatus)f.StatusId)
+                        StatusName = "test"
                     }).ToList();
 
                 return flights;

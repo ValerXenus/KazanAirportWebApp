@@ -25,6 +25,9 @@ export class Arrivals extends Component {
     refreshList = () => {
         axios.post(flightsMethods.GET_ARRIVAL_FLIGHTS)
         .then(response => {
+            if (response.data === null)
+                return;
+
             this.setState({flightsList: response.data})
         })
         .catch((error) => {

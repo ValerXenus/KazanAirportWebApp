@@ -28,6 +28,9 @@ export class ManageFlights extends Component {
     refreshList = () => {
         axios.post(flightsMethods.GET_FLIGHTS_LIST)
         .then(response => {
+            if (response.data === null)
+                return;
+
             this.setState({flightsList: response.data})
         })
         .catch((error) => {

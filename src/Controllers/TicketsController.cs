@@ -82,26 +82,26 @@ namespace KazanAirportWebApp.Controllers
         /// Онлайн регистрация пассажира
         /// </summary>
         /// <param name="passportNumber">Номер паспорта пассажира</param>
-        /// <param name="ticketId">Идентификатор билета</param>
+        /// <param name="ticketNumber">Номер билета</param>
         /// <returns></returns>
         [HttpPost]
         [ActionName("OnlineRegisterPassenger")]
-        public string OnlineRegisterPassenger(string passportNumber, int ticketId)
+        public string OnlineRegisterPassenger(string passportNumber, string ticketNumber)
         {
             try
             {
                 using var db = new KazanAirportDbContext();
                 var currentTicket = (from t in db.Tickets
                     join p in db.Passengers on t.PassengerId equals p.Id
-                    where t.Id == ticketId && p.PassportNumber == passportNumber
+                    where t.TicketNumber == ticketNumber && p.PassportNumber == passportNumber
                     select t)
                     .FirstOrDefault();
                 if (currentTicket == null)
-                    return $"Ticket with ID = {ticketId} and passenger's passport number {passportNumber} wasn't found";
+                    return $"Билет с номером {ticketNumber} и указанным номером паспорта {passportNumber} не найден";
 
-                var ticket = db.Tickets.FirstOrDefault(x => x.Id == ticketId);
+                var ticket = db.Tickets.FirstOrDefault(x => x.Id == currentTicket.Id);
                 if (ticket == null)
-                    return $"Ticket with ID = {ticketId} wasn't found";
+                    return $"Ticket with ID = {currentTicket.Id} wasn't found";
 
                 ticket.SeatNumber = InfoGenerators.GenerateSeatNumber();
                 db.SaveChanges();

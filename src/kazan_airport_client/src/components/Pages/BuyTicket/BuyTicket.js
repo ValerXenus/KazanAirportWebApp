@@ -36,6 +36,9 @@ export class BuyTicket extends Component {
     refreshList = () => {
         axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)
         .then(response => {
+            if (response.data === null)
+                return;
+
             this.setState({flightsList: response.data})
         })
         .catch((error) => {

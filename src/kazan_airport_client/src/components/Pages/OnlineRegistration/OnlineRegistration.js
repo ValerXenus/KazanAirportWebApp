@@ -8,7 +8,8 @@ const OnlineRegistration = () => {
 
     // Временное хранилище
     const [state, setState] = useState({
-        passportNumber: ""
+        passportNumber: "",
+        ticketNumber: ""
     });
 
     // Обработчик заполнения текстовых полей
@@ -24,7 +25,8 @@ const OnlineRegistration = () => {
     const validateInputs = () => {
         let errorText = "";
 
-        errorText += InputValidations.validateRequiredField(state.passportNumber, "Номер паспорта");
+        errorText += InputValidations.validateRequiredField(state.ticketNumber, "Номер билета");
+        errorText += InputValidations.validateRequiredField(state.passportNumber, "Номер паспорта");        
 
         if (errorText.length !== 0) {
             alert(`Некоторые поля заполнены не верно. Подробности:\n${errorText}`)
@@ -34,13 +36,16 @@ const OnlineRegistration = () => {
         return true;
     }
 
-    // Обработчик кнопки "Войти"
-    const handleSignInButton = () => {
+    // Обработчик кнопки "Подтвердить"
+    const handleCheckInButton = () => {
         if (!validateInputs())
             return;
 
         axios.post(ticketsMethods.ONLINE_REGISTER, null, {
-            params: {passportNumber: state.passportNumber }
+            params: {
+                passportNumber: state.passportNumber,
+                ticketNumber: state.ticketNumber
+            }
         })
         .then((response) => completedSuccessfully(response))
         .catch((error) => {
@@ -74,11 +79,15 @@ const OnlineRegistration = () => {
                     </tr>
                     <tr><td colSpan="2"><h6>Введите номер паспорта, чтобы подтвердить онлайн-регистрацию</h6></td></tr>
                     <tr>
+                        <td><div>Номер билета</div></td>
+                        <td><div><input name="ticketNumber" value={state.ticketNumber} onChange={handleTextInputChange} type="text"/></div></td>
+                    </tr>
+                    <tr>
                         <td><div>Номер паспорта</div></td>
                         <td><div><input name="passportNumber" value={state.passportNumber} onChange={handleTextInputChange} type="text"/></div></td>
                     </tr>
                     <tr>
-                        <td colSpan="2"><button onClick={handleSignInButton}>Подтвержить</button></td>
+                        <td colSpan="2"><button onClick={handleCheckInButton}>Подтвердить</button></td>
                     </tr>
                 </tbody>
             </table>
