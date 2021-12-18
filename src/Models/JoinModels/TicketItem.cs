@@ -2,8 +2,8 @@
 {
     public class TicketItem
     {
-        public int passengerId { get; set; }
+        public int PassengerId { get; set; }
 
-        public int flightId { get; set; }
+        public int FlightId { get; set; }
     }
 }

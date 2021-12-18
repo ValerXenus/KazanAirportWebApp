@@ -50,9 +50,9 @@ namespace KazanAirportWebApp.Models
         public int TimeOnBoard { get; set; }
 
         /// <summary>
-        /// Flight type: 0 - Departure, 1 - Arrival
+        /// Flight type: 0 (false) - Departure, 1 (true) - Arrival
         /// </summary>
-        public int FlightType { get; set; }
+        public bool FlightType { get; set; }
 
         /// <summary>
         /// ID of the plane

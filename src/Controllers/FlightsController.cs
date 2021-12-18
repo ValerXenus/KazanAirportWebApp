@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using KazanAirportWebApp.DataAccess;
+using KazanAirportWebApp.Logic;
+using KazanAirportWebApp.Logic.Enums;
 using KazanAirportWebApp.Models;
 using KazanAirportWebApp.Models.JoinModels;
 
@@ -43,7 +45,7 @@ namespace KazanAirportWebApp.Controllers
                         CityName = c.Name,
                         AirlineId = p.AirlineId,
                         AirlineName = a.Name,
-                        StatusName = "ToDo"
+                        StatusName = EnumTranslator.GetEnumDescription((FlightStatus)f.StatusId)
                     }).ToList();
 
                 return flights;
@@ -69,7 +71,7 @@ namespace KazanAirportWebApp.Controllers
                     join p in db.Planes on f.PlaneId equals p.Id
                     join c in db.Cities on f.CityId equals c.Id
                     join a in db.Airlines on p.AirlineId equals a.Id
-                    where f.FlightType == 0 
+                    where f.FlightType == false 
                           && f.DepartureScheduled > DateTime.Now.AddHours(-12) 
                           && f.DepartureScheduled < DateTime.Now.AddHours(12)
                                select new FlightItem
@@ -90,7 +92,7 @@ namespace KazanAirportWebApp.Controllers
                         CityName = c.Name,
                         AirlineId = p.AirlineId,
                         AirlineName = a.Name,
-                        StatusName = "ToDo"
+                        StatusName = EnumTranslator.GetEnumDescription((FlightStatus)f.StatusId)
                     }).ToList();
 
                 return flights;
@@ -116,7 +118,7 @@ namespace KazanAirportWebApp.Controllers
                     join p in db.Planes on f.PlaneId equals p.Id
                     join c in db.Cities on f.CityId equals c.Id
                     join a in db.Airlines on p.AirlineId equals a.Id
-                    where f.FlightType == 1
+                    where f.FlightType
                           && f.DepartureScheduled > DateTime.Now.AddHours(-12)
                           && f.DepartureScheduled < DateTime.Now.AddHours(12)
                     select new FlightItem
@@ -137,7 +139,7 @@ namespace KazanAirportWebApp.Controllers
                         CityName = c.Name,
                         AirlineId = p.AirlineId,
                         AirlineName = a.Name,
-                        StatusName = "ToDo"
+                        StatusName = EnumTranslator.GetEnumDescription((FlightStatus)f.StatusId)
                     }).ToList();
 
                 return flights;
@@ -182,7 +184,7 @@ namespace KazanAirportWebApp.Controllers
                         CityName = c.Name,
                         AirlineId = p.AirlineId,
                         AirlineName = a.Name,
-                        StatusName = "ToDo"
+                        StatusName = EnumTranslator.GetEnumDescription((FlightStatus)f.StatusId)
                     }).FirstOrDefault();
 
                 return flight;

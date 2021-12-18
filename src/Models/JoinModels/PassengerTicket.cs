@@ -2,14 +2,44 @@
 
 namespace KazanAirportWebApp.Models.JoinModels
 {
+    /// <summary>
+    /// Билет пассажира
+    /// </summary>
     public class PassengerTicket
     {
-        public int passengerId { get; set; }
-        public string flightNumber { get; set; }
-        public string ticketNumber { get; set; }
-        public string cityName { get; set; }
-        public DateTime departureScheduled { get; set; }
-        public DateTime arrivalScheduled { get; set; }
-        public string airlineName { get; set; }
+        /// <summary>
+        /// ID пассажира
+        /// </summary>
+        public int PassengerId { get; set; }
+
+        /// <summary>
+        /// Номер рейса
+        /// </summary>
+        public string FlightNumber { get; set; }
+
+        /// <summary>
+        /// Номер билета
+        /// </summary>
+        public string TicketNumber { get; set; }
+
+        /// <summary>
+        /// Город назначения
+        /// </summary>
+        public string CityName { get; set; }
+
+        /// <summary>
+        /// Дата и время вылета по расписанию
+        /// </summary>
+        public DateTime DepartureScheduled { get; set; }
+
+        /// <summary>
+        /// Дата и время прибытия по расписанию
+        /// </summary>
+        public DateTime ArrivalScheduled { get; set; }
+
+        /// <summary>
+        /// Наименование авиакомпании
+        /// </summary>
+        public string AirlineName { get; set; }
     }
 }

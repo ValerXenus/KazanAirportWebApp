@@ -178,13 +178,16 @@
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\PassengersController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
+    <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="DataAccess\KazanAirportDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\DbHelpers.cs" />
+    <Compile Include="Logic\Enums\FlightStatus.cs" />
     <Compile Include="Logic\Enums\UserType.cs" />
+    <Compile Include="Logic\EnumTranslator.cs" />
     <Compile Include="Logic\InfoGenerators.cs" />
     <Compile Include="Logic\ProtectLogic.cs" />
     <Compile Include="Logic\ValidationLogic.cs" />
@@ -192,12 +195,21 @@
     <Compile Include="Migrations\202112142019271_InitialCreate.designer.cs">
       <DependentUpon>202112142019271_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112172152351_Tickets.cs" />
+    <Compile Include="Migrations\202112172152351_Tickets.designer.cs">
+      <DependentUpon>202112172152351_Tickets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112181021051_TicketsFix.cs" />
+    <Compile Include="Migrations\202112181021051_TicketsFix.designer.cs">
+      <DependentUpon>202112181021051_TicketsFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DbCity.cs" />
     <Compile Include="Models\DbAirline.cs" />
     <Compile Include="Models\DbFlight.cs" />
     <Compile Include="Models\DbPassenger.cs" />
     <Compile Include="Models\DbPlane.cs" />
+    <Compile Include="Models\DbTicket.cs" />
     <Compile Include="Models\DbUser.cs" />
     <Compile Include="Models\JoinModels\FlightItem.cs" />
     <Compile Include="Models\JoinModels\PassengerItem.cs" />
@@ -296,6 +308,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202112142019271_InitialCreate.resx">
       <DependentUpon>202112142019271_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112172152351_Tickets.resx">
+      <DependentUpon>202112172152351_Tickets.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112181021051_TicketsFix.resx">
+      <DependentUpon>202112181021051_TicketsFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

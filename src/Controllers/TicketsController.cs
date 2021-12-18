@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
+using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Logic;
-using KazanAirportWebApp.Models.Data_Access;
-using KazanAirportWebApp.Models.Join_Models;
+using KazanAirportWebApp.Models;
+using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Controllers
 {
@@ -25,22 +24,18 @@ namespace KazanAirportWebApp.Controllers
             {
                 var ticketNumber = InfoGenerators.GenerateTicketNumber();
 
-                var connectionString = ConfigurationManager.ConnectionStrings["KazanAirportAdoConnection"].ConnectionString;
-                using (var connection = new SqlConnection(connectionString))
+                using var db = new KazanAirportDbContext();
+                db.Tickets.Add(new DbTicket
                 {
-                    connection.Open();
-                    var query = "Insert OpenQuery (AIRPORT_TICKETS, 'Select number, price, passengerId, flightId From tickets') " +
-                                "Values (@ticketNumber, 3000, @passengerId, @flightId)";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.Add("@ticketNumber", ticketNumber);
-                        command.Parameters.Add("@passengerId", ticketItem.passengerId);
-                        command.Parameters.Add("@flightId", ticketItem.flightId);
-                        command.ExecuteNonQuery();
-                    }
-                }
+                    FlightId = ticketItem.FlightId,
+                    PassengerId = ticketItem.PassengerId,
+                    Price = 3000,
+                    TicketNumber = ticketNumber
+                });
+                db.SaveChanges();
 
-                return "Success";
+                return
+                    $"Passenger with ID = {ticketItem.PassengerId} successfully added to the flight with ID = {ticketItem.FlightId}";
             }
             catch (Exception exception)
             {
@@ -49,28 +44,34 @@ namespace KazanAirportWebApp.Controllers
         }
 
         /// <summary>
-        /// Получение пассажира по номеру паспорта
+        /// Получение списка билетов по пассажиру
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetTicketsByPassengerId")]
-        public List<PassengerTicket> GetTicketsByPassengerId(string passengerId)
+        public List<PassengerTicket> GetTicketsByPassengerId(int passengerId)
         {
             try
             {
-                List<PassengerTicket> passengersList;
-                using (var db = new KazanAirportDbEntities())
-                {
-                    passengersList = db.Database.
-                        SqlQuery<PassengerTicket>("Select * From PassengerTickets Where passengerId = @passengerId",
-                            new SqlParameter("@passengerId", passengerId)).ToList();
+                using var db = new KazanAirportDbContext();
+                var tickets = (from t in db.Tickets
+                    join f in db.Flights on t.FlightId equals f.Id
+                    join c in db.Cities on f.CityId equals c.Id
+                    join p in db.Planes on f.PlaneId equals p.Id
+                    join a in db.Airlines on p.AirlineId equals a.Id
+                    where t.PassengerId == passengerId
+                    select new PassengerTicket
+                    {
+                        PassengerId = passengerId,
+                        TicketNumber = t.TicketNumber,
+                        FlightNumber = f.FlightNumber,
+                        DepartureScheduled = f.DepartureScheduled,
+                        ArrivalScheduled = f.ArrivalScheduled,
+                        AirlineName = a.Name,
+                        CityName = c.Name
+                    }).ToList();
 
-                    if (passengersList.Count == 0)
-                        return null;
-
-                }
-
-                return passengersList;
+                return tickets;
             }
             catch
             {
@@ -79,30 +80,32 @@ namespace KazanAirportWebApp.Controllers
         }
 
         /// <summary>
-        /// Покупка билета
+        /// Онлайн регистрация пассажира
         /// </summary>
         /// <param name="passportNumber">Номер паспорта пассажира</param>
+        /// <param name="ticketId">Идентификатор билета</param>
         /// <returns></returns>
         [HttpPost]
         [ActionName("OnlineRegisterPassenger")]
-        public string OnlineRegisterPassenger(string passportNumber)
+        public string OnlineRegisterPassenger(string passportNumber, int ticketId)
         {
             try
             {
-                var seatNumber = InfoGenerators.GenerateSeatNumber();
+                using var db = new KazanAirportDbContext();
+                var currentTicket = (from t in db.Tickets
+                    join p in db.Passengers on t.PassengerId equals p.Id
+                    where t.Id == ticketId && p.PassportNumber == passportNumber
+                    select t)
+                    .FirstOrDefault();
+                if (currentTicket == null)
+                    return $"Ticket with ID = {ticketId} and passenger's passport number {passportNumber} wasn't found";
 
-                var connectionString = ConfigurationManager.ConnectionStrings["KazanAirportAdoConnection"].ConnectionString;
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    var query = "Exec RegisterPassenger @passportNumber = @passNum, @seatNumber = @seatNum";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.Add("@passNum", passportNumber);
-                        command.Parameters.Add("@seatNum", seatNumber);
-                        command.ExecuteNonQuery();
-                    }
-                }
+                var ticket = db.Tickets.FirstOrDefault(x => x.Id == ticketId);
+                if (ticket == null)
+                    return $"Ticket with ID = {ticketId} wasn't found";
+
+                ticket.SeatNumber = InfoGenerators.GenerateSeatNumber();
+                db.SaveChanges();
 
                 return "Success";
             }
