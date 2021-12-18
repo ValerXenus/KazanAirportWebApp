@@ -176,6 +176,7 @@
     <Compile Include="Controllers\AirlinesController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PassengersController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
