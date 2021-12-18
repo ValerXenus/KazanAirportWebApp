@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import logo from './../../logo_kzn.svg';
+// import logo from './../../logo_kzn.svg';
 import styles from './NavigationMenu.module.css';
 import Cookies from 'js-cookie';
 
@@ -49,7 +49,7 @@ const NavigationMenu = () => {
         <div className={styles.menuStyle}>            
             <nav className={styles.menuContainer}>
                 <NavLink to="/">
-                    <img src={logo} className={styles.logoStyle} alt="logo" />
+                    {/* <img src={logo} className={styles.logoStyle} alt="logo" /> */}
                 </NavLink>
                 <div className={styles.menuItems}>
                     <NavLink to="/schedule/departures" className={styles.menuItem}>Табло рейсов</NavLink>

@@ -25,12 +25,10 @@ namespace KazanAirportWebApp.Controllers
             try
             {
                 using var db = new KazanAirportDbContext();
-
-                user.UserPassword = ProtectLogic.GetMd5Hash(user.UserPassword);
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                return $"User {user.UserLogin} added successfully.";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -49,9 +47,8 @@ namespace KazanAirportWebApp.Controllers
             try
             {
                 using var db = new KazanAirportDbContext();
-                var hashedPassword = ProtectLogic.GetMd5Hash(user.UserPassword);
                 var currentUser = db.Users.FirstOrDefault(x =>
-                    x.UserLogin == user.UserLogin && x.UserPassword == hashedPassword);
+                    x.UserLogin == user.UserLogin && x.UserPassword == user.UserPassword);
 
                 return currentUser;
             }
@@ -110,7 +107,7 @@ namespace KazanAirportWebApp.Controllers
                 currentUser.UserTypeId = currentUser.UserTypeId;
                 db.SaveChanges();
 
-                return $"User {user.UserLogin} has been updated";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -157,7 +154,7 @@ namespace KazanAirportWebApp.Controllers
                 db.Users.Remove(currentUser);
                 db.SaveChanges();
 
-                return $"User {currentUser.UserLogin} deleted successfully";
+                return "Success";
             }
             catch (Exception exception)
             {

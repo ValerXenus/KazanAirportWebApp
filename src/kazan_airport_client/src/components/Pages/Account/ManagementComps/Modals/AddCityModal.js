@@ -39,9 +39,9 @@ export class AddCityModal extends Component {
         }
         
         axios.post(citiesMethods.ADD_NEW_CITY, {
-            cityName: this.state.cityInfo.cityName,
-            icaoCode: this.state.cityInfo.icaoCode,
-            iataCode: this.state.cityInfo.iataCode
+            Name: this.state.cityInfo.cityName,
+            IcaoCode: this.state.cityInfo.icaoCode,
+            IataCode: this.state.cityInfo.iataCode
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -51,10 +51,10 @@ export class AddCityModal extends Component {
 
     updateInfo = () => {
         axios.post(citiesMethods.UPDATE_CITY, {
-            id: this.state.cityInfo.id,
-            cityName: this.state.cityInfo.cityName,
-            icaoCode: this.state.cityInfo.icaoCode,
-            iataCode: this.state.cityInfo.iataCode
+            Id: this.state.cityInfo.id,
+            Name: this.state.cityInfo.cityName,
+            IcaoCode: this.state.cityInfo.icaoCode,
+            IataCode: this.state.cityInfo.iataCode
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {

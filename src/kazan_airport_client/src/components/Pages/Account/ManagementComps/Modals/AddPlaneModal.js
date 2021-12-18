@@ -37,11 +37,10 @@ export class AddPlaneModal extends Component {
         }
         
         axios.post(planesMethods.ADD_NEW_PLANE, {
-            modelName: this.state.planeInfo.modelName,
-            boardNumber: this.state.planeInfo.boardNumber,
-            seatsNumber: this.state.planeInfo.seatsNumber,
-            passportNumber: this.state.planeInfo.passportNumber,
-            airlineId: this.state.planeInfo.airlineId
+            Name: this.state.planeInfo.modelName,
+            Number: this.state.planeInfo.boardNumber,
+            SeatsNumber: this.state.planeInfo.seatsNumber,
+            AirlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -51,12 +50,11 @@ export class AddPlaneModal extends Component {
 
     updateInfo = () => {
         axios.post(planesMethods.UPDATE_PLANE, {
-            id: this.state.planeInfo.id,
-            modelName: this.state.planeInfo.modelName,
-            boardNumber: this.state.planeInfo.boardNumber,
-            seatsNumber: this.state.planeInfo.seatsNumber,
-            passportNumber: this.state.planeInfo.passportNumber,
-            airlineId: this.state.planeInfo.airlineId
+            Id: this.state.planeInfo.id,
+            Name: this.state.planeInfo.modelName,
+            Number: this.state.planeInfo.boardNumber,
+            SeatsNumber: this.state.planeInfo.seatsNumber,
+            AirlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {

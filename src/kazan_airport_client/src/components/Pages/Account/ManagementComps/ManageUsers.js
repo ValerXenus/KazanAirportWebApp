@@ -45,9 +45,9 @@ export class ManageUsers extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    login: response.data.login,
-                    email: response.data.email,
-                    role: response.data.userTypeId
+                    login: response.data.UserLogin,
+                    email: response.data.Email,
+                    role: response.data.UserTypeId
                 }});
         })
         .catch((error) => {
@@ -56,7 +56,7 @@ export class ManageUsers extends Component {
     }
 
     removeRecord = (id) => {
-        if (window.confirm("Вы действитель хотите удалить запись?")) {
+        if (window.confirm("Вы действительно хотите удалить запись?")) {
             axios.post(usersMethods.REMOVE_USER, null, {
                 params: {id: id}
             })
@@ -78,6 +78,17 @@ export class ManageUsers extends Component {
             this.setState({addModalShow: false, editModalShow: false});
         }
 
+        let getUserTypeName = (typeId) => {
+            switch (typeId){
+                case 1:
+                    return "Оператор";
+                case 2:
+                    return "Администратор";
+                default:
+                    return "Пользователь";
+            }
+        }
+
         return(
             <div>
                 <Table className="mt-4 striped bordered hover" size="sm">
@@ -92,21 +103,21 @@ export class ManageUsers extends Component {
                     </thead>
                     <tbody>
                         {usersList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.id}</td>
-                            <td>{x.login}</td>
-                            <td>{x.email}</td>
-                            <td>{x.typeName}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.Id}</td>
+                            <td>{x.UserLogin}</td>
+                            <td>{x.Email}</td>
+                            <td>{getUserTypeName(x.UserTypeId)}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.id); }}>
+                                        onClick={() => { this.showModalEdit(x.Id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.Id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

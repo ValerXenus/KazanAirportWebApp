@@ -80,7 +80,7 @@ namespace KazanAirportWebApp.Controllers
                 db.Planes.Add(plane);
                 db.SaveChanges();
 
-                return $"Plane {plane.Name} added successfully.";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -114,7 +114,7 @@ namespace KazanAirportWebApp.Controllers
                 currentPlane.SeatsNumber = plane.SeatsNumber;
                 db.SaveChanges();
 
-                return $"Plane {plane.Name} updated successfully.";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -140,7 +140,7 @@ namespace KazanAirportWebApp.Controllers
                 db.Planes.Remove(currentPlane);
                 db.SaveChanges();
 
-                return $"Plane {currentPlane.Name} removed successfully.";
+                return "Success";
             }
             catch (Exception exception)
             {

@@ -12,7 +12,7 @@ export class AddUserModal extends Component {
             login: "",
             email: "",
             password: "",
-            userTypeId: 2,
+            userTypeId: 0,
             isEditMode: false
         }
     }
@@ -35,10 +35,10 @@ export class AddUserModal extends Component {
         
         let encryptedPassword = md5(this.state.password);
         axios.post(usersMethods.ADD_NEW_USER, {
-            login: this.state.login,
-            passWord: encryptedPassword,
-            email: this.state.email,
-            userTypeId: this.state.userTypeId
+            UserLogin: this.state.login,
+            UserPassword: encryptedPassword,
+            Email: this.state.email,
+            UserTypeId: this.state.userTypeId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -48,10 +48,10 @@ export class AddUserModal extends Component {
 
     updateUserInfo = () => {
         axios.post(usersMethods.UPDATE_USER, {
-            id: this.state.id,
-            login: this.state.login,
-            email: this.state.email,
-            userTypeId: this.state.userTypeId
+            Id: this.state.id,
+            UserLogin: this.state.login,
+            Email: this.state.email,
+            UserTypeId: this.state.userTypeId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -71,7 +71,7 @@ export class AddUserModal extends Component {
             login: "",
             email: "",
             password: "",
-            userTypeId: 2,
+            userTypeId: 0,
         });
         this.props.onHide();
     }
@@ -152,9 +152,9 @@ export class AddUserModal extends Component {
                                         <Form.Label>Тип пользователя</Form.Label>
                                         <select value={this.state.userTypeId} 
                                             onChange={this.handleUserTypeChange}>
-                                            <option value={2}>Пассажир</option>
+                                            <option value={0}>Пассажир</option>
                                             <option value={1}>Оператор</option>
-                                            <option value={0}>Администратор</option>
+                                            <option value={2}>Администратор</option>
                                         </select>
                                     </Form.Group>
                                     <Form.Group>

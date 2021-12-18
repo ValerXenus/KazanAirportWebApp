@@ -45,9 +45,9 @@ export class ManageCities extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    cityName: response.data.cityName,
-                    icaoCode: response.data.icaoCode,
-                    iataCode: response.data.iataCode
+                    cityName: response.data.Name,
+                    icaoCode: response.data.IcaoCode,
+                    iataCode: response.data.IataCode
                 }});
         })
         .catch((error) => {
@@ -56,7 +56,7 @@ export class ManageCities extends Component {
     }
 
     removeRecord = (id) => {
-        if (window.confirm("Вы действитель хотите удалить запись?")) {
+        if (window.confirm("Вы действительно хотите удалить запись?")) {
             axios.post(citiesMethods.REMOVE_CITY, null, {
                 params: {cityId: id}
             })
@@ -92,21 +92,21 @@ export class ManageCities extends Component {
                     </thead>
                     <tbody>
                         {citiesList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.id}</td>
-                            <td>{x.cityName}</td>
-                            <td>{x.icaoCode}</td>
-                            <td>{x.iataCode}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.Id}</td>
+                            <td>{x.Name}</td>
+                            <td>{x.IcaoCode}</td>
+                            <td>{x.IataCode}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.id); }}>
+                                        onClick={() => { this.showModalEdit(x.Id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.Id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

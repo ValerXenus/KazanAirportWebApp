@@ -45,16 +45,16 @@ export class AddFlightModal extends Component {
         }
         
         axios.post(flightsMethods.ADD_NEW_FLIGHT, {
-            flightNumber: this.state.flightInfo.flightNumber,
-            departureScheduled: this.state.flightInfo.departureScheduled,
-            arrivalScheduled: this.state.flightInfo.arrivalScheduled,
-            departureActual: this.state.flightInfo.departureActual,
-            arrivalActual: this.state.flightInfo.arrivalActual,
-            timeOnBoard: this.state.flightInfo.timeOnBoard,
-            flightType: this.state.flightInfo.flightType,
-            planeId: this.state.flightInfo.planeId,
-            cityId: this.state.flightInfo.cityId,
-            statusId: this.state.flightInfo.statusId
+            FlightNumber: this.state.flightInfo.flightNumber,
+            DepartureScheduled: this.state.flightInfo.departureScheduled,
+            ArrivalScheduled: this.state.flightInfo.arrivalScheduled,
+            DepartureActual: this.state.flightInfo.departureActual,
+            ArrivalActual: this.state.flightInfo.arrivalActual,
+            TimeOnBoard: this.state.flightInfo.timeOnBoard,
+            FlightType: this.state.flightInfo.flightType,
+            PlaneId: this.state.flightInfo.planeId,
+            CityId: this.state.flightInfo.cityId,
+            StatusId: this.state.flightInfo.statusId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -64,17 +64,17 @@ export class AddFlightModal extends Component {
 
     updateInfo = () => {
         axios.post(flightsMethods.UPDATE_FLIGHT, {
-            id: this.state.flightInfo.id,
-            flightNumber: this.state.flightInfo.flightNumber,
-            departureScheduled: this.state.flightInfo.departureScheduled,
-            arrivalScheduled: this.state.flightInfo.arrivalScheduled,
-            departureActual: this.state.flightInfo.departureActual,
-            arrivalActual: this.state.flightInfo.arrivalActual,
-            timeOnBoard: this.state.flightInfo.timeOnBoard,
-            flightType: this.state.flightInfo.flightType,
-            planeId: this.state.flightInfo.planeId,
-            cityId: this.state.flightInfo.cityId,
-            statusId: this.state.flightInfo.statusId
+            Id: this.state.flightInfo.id,
+            FlightNumber: this.state.flightInfo.flightNumber,
+            DepartureScheduled: this.state.flightInfo.departureScheduled,
+            ArrivalScheduled: this.state.flightInfo.arrivalScheduled,
+            DepartureActual: this.state.flightInfo.departureActual,
+            ArrivalActual: this.state.flightInfo.arrivalActual,
+            TimeOnBoard: this.state.flightInfo.timeOnBoard,
+            FlightType: this.state.flightInfo.flightType,
+            PlaneId: this.state.flightInfo.planeId,
+            CityId: this.state.flightInfo.cityId,
+            StatusId: this.state.flightInfo.statusId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {

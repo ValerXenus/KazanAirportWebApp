@@ -45,11 +45,11 @@ export class ManagePassengers extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    lastName: response.data.lastName,
-                    firstName: response.data.firstName,
-                    middleName: response.data.middleName,
-                    passportNumber: response.data.passportNumber,
-                    userLogin: response.data.login
+                    lastName: response.data.LastName,
+                    firstName: response.data.FirstName,
+                    middleName: response.data.MiddleName,
+                    passportNumber: response.data.PassportNumber,
+                    userLogin: response.data.UserLogin
                 }});
         })
         .catch((error) => {
@@ -58,7 +58,7 @@ export class ManagePassengers extends Component {
     }
 
     removeRecord = (id) => {
-        if (window.confirm("Вы действитель хотите удалить запись?")) {
+        if (window.confirm("Вы действительно хотите удалить запись?")) {
             axios.post(passengersMethods.REMOVE_PASSENGER, null, {
                 params: {passengerId: id}
             })
@@ -97,24 +97,24 @@ export class ManagePassengers extends Component {
                     </thead>
                     <tbody>
                         {passengersList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.id}</td>
-                            <td>{x.lastName}</td>
-                            <td>{x.firstName}</td>
-                            <td>{x.middleName}</td>
-                            <td>{x.passportNumber}</td>
-                            <td>{x.login}</td>
-                            <td>{x.email}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.Id}</td>
+                            <td>{x.LastName}</td>
+                            <td>{x.FirstName}</td>
+                            <td>{x.MiddleName}</td>
+                            <td>{x.PassportNumber}</td>
+                            <td>{x.Login}</td>
+                            <td>{x.Email}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.id); }}>
+                                        onClick={() => { this.showModalEdit(x.Id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.Id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

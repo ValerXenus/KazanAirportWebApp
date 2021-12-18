@@ -45,16 +45,16 @@ export class ManageFlights extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    flightNumber: response.data.flightNumber,
-                    departureScheduled: response.data.departureScheduled,
-                    arrivalScheduled: response.data.arrivalScheduled,
-                    departureActual: response.data.departureActual,
+                    flightNumber: response.data.FlightNumber,
+                    departureScheduled: response.data.DepartureScheduled,
+                    arrivalScheduled: response.data.ArrivalScheduled,
+                    departureActual: response.data.DepartureActual,
                     arrivalActual: response.data.arrivalActual,
-                    timeOnBoard: response.data.timeOnBoard,
-                    flightType: response.data.flightType,
-                    planeId: response.data.planeId,
-                    cityId: response.data.cityId,
-                    statusId: response.data.statusId
+                    timeOnBoard: response.data.TimeOnBoard,
+                    flightType: response.data.FlightType,
+                    planeId: response.data.PlaneId,
+                    cityId: response.data.CityId,
+                    statusId: response.data.StatusId
                 }});
         })
         .catch((error) => {
@@ -63,7 +63,7 @@ export class ManageFlights extends Component {
     }
 
     removeRecord = (id) => {
-        if (window.confirm("Вы действитель хотите удалить запись?")) {
+        if (window.confirm("Вы действительно хотите удалить запись?")) {
             axios.post(flightsMethods.REMOVE_FLIGHT, null, {
                 params: {flightId: id}
             })
@@ -114,29 +114,29 @@ export class ManageFlights extends Component {
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.id}</td>
-                            <td>{getFlightType(x.flightType)}</td>
-                            <td>{x.flightNumber}</td>
-                            <td>{x.departureScheduled}</td>
-                            <td>{x.arrivalScheduled}</td>
-                            <td>{x.departureActual}</td>
-                            <td>{x.arrivalActual}</td>
-                            <td>{x.timeOnBoard}</td>
-                            <td>{x.boardNumber}</td>
-                            <td>{x.airlineName}</td>
-                            <td>{x.cityName}</td>
-                            <td>{x.statusName}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.Id}</td>
+                            <td>{getFlightType(x.FlightType)}</td>
+                            <td>{x.FlightNumber}</td>
+                            <td>{x.DepartureScheduled}</td>
+                            <td>{x.ArrivalScheduled}</td>
+                            <td>{x.DepartureActual}</td>
+                            <td>{x.ArrivalActual}</td>
+                            <td>{x.TimeOnBoard}</td>
+                            <td>{x.BoardNumber}</td>
+                            <td>{x.AirlineName}</td>
+                            <td>{x.CityName}</td>
+                            <td>{x.StatusName}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.id); }}>
+                                        onClick={() => { this.showModalEdit(x.Id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.Id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

@@ -49,14 +49,14 @@ export class BuyTicket extends Component {
 
         if (this.state.selectedFlightId !== 0){
             this.setState(prevState => ({
-                flightsList: prevState.flightsList.map(x => (x.id === flight.id 
+                flightsList: prevState.flightsList.map(x => (x.Id === flight.Id 
                     ? Object.assign(x, { isSelected: false })
                     : x))
             }));
         }
 
         this.setState({
-            selectedFlightId: flight.id
+            selectedFlightId: flight.Id
         });
         this.refreshList();
     }
@@ -77,10 +77,10 @@ export class BuyTicket extends Component {
             return;
 
         axios.post(passengersMethods.ADD_NEW_PASSENGER, {
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
+            LastName: this.state.passengerInfo.lastName,
+            FirstName: this.state.passengerInfo.firstName,
+            MiddleName: this.state.passengerInfo.middleName,
+            PassportNumber: this.state.passengerInfo.passportNumber,
         }, {
             params: { userLogin: userLogin }
         })
@@ -101,8 +101,8 @@ export class BuyTicket extends Component {
             return;
 
         axios.post(ticketsMethods.CREATE_TICKET, {
-            passengerId: this.state.passengerInfo.id,
-            flightId: this.state.selectedFlightId
+            PassengerId: this.state.passengerInfo.id,
+            FlightId: this.state.selectedFlightId
         })
         .then((response) => {
             this.completedSuccessfully(response);
@@ -131,7 +131,7 @@ export class BuyTicket extends Component {
             this.setState(prevState => ({
                 passengerInfo: {                   
                     ...prevState.passengerInfo,
-                    id: response.data.id
+                    id: response.data.Id
                 }
             }))            
             this.buyTicket(); 
@@ -233,12 +233,12 @@ export class BuyTicket extends Component {
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
-                        <tr key = {x.id} className={getClassIfActive(x)}>
-                            <td>{x.flightNumber}</td>
-                            <td>{x.cityName}</td>
-                            <td>{x.departureScheduled}</td>
-                            <td>{x.arrivalScheduled}</td>
-                            <td>{x.airlineName}</td>
+                        <tr key = {x.Id} className={getClassIfActive(x)}>
+                            <td>{x.FlightNumber}</td>
+                            <td>{x.CityName}</td>
+                            <td>{x.DepartureScheduled}</td>
+                            <td>{x.ArrivalScheduled}</td>
+                            <td>{x.AirlineName}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button

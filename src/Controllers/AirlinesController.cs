@@ -93,7 +93,7 @@ namespace KazanAirportWebApp.Controllers
                 currentAirline.Name = airlineData.Name;
                 db.SaveChanges();
 
-                return $"Airline name with ID = {currentAirline.Id} has changed to \"{currentAirline.Name}\"";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -119,7 +119,7 @@ namespace KazanAirportWebApp.Controllers
                 db.Airlines.Remove(currentAirline);
                 db.SaveChanges();
 
-                return $"Airline \"{currentAirline.Name}\" removed successfully";
+                return "Success";
             }
             catch (Exception exception)
             {

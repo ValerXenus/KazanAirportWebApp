@@ -67,7 +67,7 @@ namespace KazanAirportWebApp.Controllers
                 using var db = new KazanAirportDbContext();
                 db.Cities.Add(cityData);
                 db.SaveChanges();
-                return $"New info about city \"{cityData.Name}\" added successfully";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -101,7 +101,7 @@ namespace KazanAirportWebApp.Controllers
                 currentCity.IataCode = cityData.IataCode;
 
                 db.SaveChanges();
-                return $"Info about city {cityData.Name} has updated";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -127,7 +127,7 @@ namespace KazanAirportWebApp.Controllers
                 db.Cities.Remove(currentCity);
                 db.SaveChanges();
 
-                return $"City {currentCity.Name} removed successfully";
+                return "Success";
             }
             catch (Exception exception)
             {

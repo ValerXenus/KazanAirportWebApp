@@ -36,13 +36,13 @@ export class Arrivals extends Component {
         const { flightsList } = this.state;
 
         const getNoteAboutFlight = (currentFlight) => {
-            switch (currentFlight.statusId) {
+            switch (currentFlight.StatusId) {
                 case 0:
-                    if (Date.now() > Date.parse(currentFlight.departureScheduled))
+                    if (Date.now() > Date.parse(currentFlight.DepartureScheduled))
                         return "Задержка взлета";
                         break;
                 case 1:
-                    if (Date.now() > Date.parse(currentFlight.arrivalScheduled))
+                    if (Date.now() > Date.parse(currentFlight.ArrivalScheduled))
                         return "Задерживается";
                         break;
                 default:
@@ -69,13 +69,13 @@ export class Arrivals extends Component {
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.flightNumber}</td>
-                            <td>{x.cityName}</td>
-                            <td>{x.departureScheduled}</td>
-                            <td>{x.arrivalScheduled}</td>
-                            <td>{x.airlineName}</td>
-                            <td>{x.statusName}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.FlightNumber}</td>
+                            <td>{x.CityName}</td>
+                            <td>{x.DepartureScheduled}</td>
+                            <td>{x.ArrivalScheduled}</td>
+                            <td>{x.AirlineName}</td>
+                            <td>{x.StatusName}</td>
                             <td>{getNoteAboutFlight(x)}</td>
                         </tr>)}
                     </tbody>

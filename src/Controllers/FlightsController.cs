@@ -209,7 +209,7 @@ namespace KazanAirportWebApp.Controllers
                 db.Flights.Add(flight);
                 db.SaveChanges();
 
-                return "New flight added successfully.";
+                return "Success";
             }
             catch (Exception exception)
             {
@@ -244,7 +244,7 @@ namespace KazanAirportWebApp.Controllers
                 currentFlight.StatusId = flight.StatusId;
                 db.SaveChanges();
 
-                return "Flight updated successfully.";
+                return "Success";
             }
             catch (Exception exception)
             {

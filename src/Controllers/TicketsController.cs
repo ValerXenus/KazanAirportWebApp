@@ -34,8 +34,7 @@ namespace KazanAirportWebApp.Controllers
                 });
                 db.SaveChanges();
 
-                return
-                    $"Passenger with ID = {ticketItem.PassengerId} successfully added to the flight with ID = {ticketItem.FlightId}";
+                return "Success";
             }
             catch (Exception exception)
             {

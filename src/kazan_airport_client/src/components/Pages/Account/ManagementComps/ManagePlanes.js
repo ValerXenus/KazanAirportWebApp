@@ -45,10 +45,10 @@ export class ManagePlanes extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    modelName: response.data.modelName,
-                    boardNumber: response.data.boardNumber,
-                    seatsNumber: response.data.seatsNumber,
-                    airlineId: response.data.airlineId
+                    modelName: response.data.Name,
+                    boardNumber: response.data.Number,
+                    seatsNumber: response.data.SeatsNumber,
+                    airlineId: response.data.AirlineId
                 }});
         })
         .catch((error) => {
@@ -57,7 +57,7 @@ export class ManagePlanes extends Component {
     }
 
     removeRecord = (id) => {
-        if (window.confirm("Вы действитель хотите удалить запись?")) {
+        if (window.confirm("Вы действительно хотите удалить запись?")) {
             axios.post(planesMethods.REMOVE_PLANE, null, {
                 params: {planeId: id}
             })
@@ -94,22 +94,22 @@ export class ManagePlanes extends Component {
                     </thead>
                     <tbody>
                         {planesList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.id}</td>
-                            <td>{x.modelName}</td>
-                            <td>{x.boardNumber}</td>
-                            <td>{x.seatsNumber}</td>
-                            <td>{x.airlineName}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.Id}</td>
+                            <td>{x.Name}</td>
+                            <td>{x.Number}</td>
+                            <td>{x.SeatsNumber}</td>
+                            <td>{x.AirlineName}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.id); }}>
+                                        onClick={() => { this.showModalEdit(x.Id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.Id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

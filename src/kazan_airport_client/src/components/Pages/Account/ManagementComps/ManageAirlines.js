@@ -45,7 +45,7 @@ export class ManageAirlines extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    airlineName: response.data.airlineName
+                    airlineName: response.data.Name
                 }});
         })
         .catch((error) => {
@@ -54,7 +54,7 @@ export class ManageAirlines extends Component {
     }
 
     removeRecord = (id) => {
-        if (window.confirm("Вы действитель хотите удалить запись?")) {
+        if (window.confirm("Вы действительно хотите удалить запись?")) {
             axios.post(airlinesMethods.REMOVE_AIRLINE, null, {
                 params: {airlineId: id}
             })
@@ -88,19 +88,19 @@ export class ManageAirlines extends Component {
                     </thead>
                     <tbody>
                         {airlinesList.map(x => 
-                        <tr key = {x.id}>
-                            <td>{x.id}</td>
-                            <td>{x.airlineName}</td>
+                        <tr key = {x.Id}>
+                            <td>{x.Id}</td>
+                            <td>{x.Name}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.id); }}>
+                                        onClick={() => { this.showModalEdit(x.Id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.id); }}>
+                                        onClick={() => { this.removeRecord(x.Id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

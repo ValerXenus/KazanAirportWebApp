@@ -47,10 +47,10 @@ const SignUpModule = () => {
         let encryptedPassword = md5(state.password);
 
         axios.post(usersMethods.ADD_NEW_USER, {
-            login: state.login,
-            passWord: encryptedPassword,
-            email: state.email,
-            userTypeId: 2
+            UserLogin: state.login,
+            UserPassword: encryptedPassword,
+            Email: state.email,
+            UserTypeId: 0
         })
         .then((response) => completedSuccessfully(response))
         .catch((error) => {

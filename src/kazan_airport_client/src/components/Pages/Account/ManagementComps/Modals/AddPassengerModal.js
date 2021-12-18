@@ -37,10 +37,10 @@ export class AddPassengerModal extends Component {
         }
         
         axios.post(passengersMethods.ADD_NEW_PASSENGER, {
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
+            LastName: this.state.passengerInfo.lastName,
+            FirstName: this.state.passengerInfo.firstName,
+            MiddleName: this.state.passengerInfo.middleName,
+            PassportNumber: this.state.passengerInfo.passportNumber,
         }, {
             params: { userLogin: this.state.passengerInfo.userLogin }
         })
@@ -52,12 +52,12 @@ export class AddPassengerModal extends Component {
 
     updateInfo = () => {
         axios.post(passengersMethods.UPDATE_PASSENGER, {
-            id: this.state.passengerInfo.id,
-            lastName: this.state.passengerInfo.lastName,
-            firstName: this.state.passengerInfo.firstName,
-            middleName: this.state.passengerInfo.middleName,
-            passportNumber: this.state.passengerInfo.passportNumber,
-            login: this.state.passengerInfo.userLogin
+            Id: this.state.passengerInfo.id,
+            LastName: this.state.passengerInfo.lastName,
+            FirstName: this.state.passengerInfo.firstName,
+            MiddleName: this.state.passengerInfo.middleName,
+            PassportNumber: this.state.passengerInfo.passportNumber,
+            UserLogin: this.state.passengerInfo.userLogin
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
