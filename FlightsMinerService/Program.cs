@@ -1,6 +1,6 @@
 ﻿using System.ServiceProcess;
 
-namespace FlightsMinerService
+namespace GetFlightsService
 {
     internal static class Program
     {

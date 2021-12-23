@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel;
 using System.ServiceProcess;
 
-namespace FlightsMinerService
+namespace GetFlightsService
 {
     [RunInstaller(true)]
-    public partial class FlightsMinerInstaller : System.Configuration.Install.Installer
+    public partial class GetFlightsInstaller : System.Configuration.Install.Installer
     {
         private ServiceInstaller _serviceInstaller;
 
         private ServiceProcessInstaller _processInstaller;
 
-        public FlightsMinerInstaller()
+        public GetFlightsInstaller()
         {
             InitializeComponent();
             _serviceInstaller = new ServiceInstaller();

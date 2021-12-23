@@ -1,6 +1,6 @@
-﻿namespace FlightsMinerService
+﻿namespace GetFlightsService
 {
-    partial class FlightsMinerInstaller
+    partial class GetFlightsInstaller
     {
         /// <summary>
         /// Required designer variable.

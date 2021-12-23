@@ -1,4 +1,4 @@
-﻿namespace FlightsMinerService
+﻿namespace GetFlightsService
 {
     partial class FlightsService
     {

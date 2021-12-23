@@ -65,11 +65,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FlightsMinerInstaller.cs">
+    <Compile Include="GetFlightsInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FlightsMinerInstaller.Designer.cs">
-      <DependentUpon>FlightsMinerInstaller.cs</DependentUpon>
+    <Compile Include="GetFlightsInstaller.Designer.cs">
+      <DependentUpon>GetFlightsInstaller.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

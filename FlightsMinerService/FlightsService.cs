@@ -5,7 +5,7 @@ using System.ServiceProcess;
 using System.Threading;
 using Serilog;
 
-namespace FlightsMinerService
+namespace GetFlightsService
 {
     public partial class FlightsService : ServiceBase
     {
