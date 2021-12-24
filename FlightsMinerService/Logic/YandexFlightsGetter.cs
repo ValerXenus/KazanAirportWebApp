@@ -43,22 +43,15 @@ namespace GetFlightsService.Logic
         }
 
         /// <summary>
-        /// Получить список вылетающих рейсов
+        /// Получить список рейсов
         /// </summary>
         /// <returns></returns>
-        public List<YandexFlight> GetDepartureFlights()
+        public List<YandexFlight> GetFlights(DirectionType directionType)
         {
-            var response = sendRequest(_departureFlights);
-            return processResponse(response);
-        }
-
-        /// <summary>
-        /// Получить список прилетающих рейсов
-        /// </summary>
-        /// <returns></returns>
-        public List<YandexFlight> GetArrivalFlights()
-        {
-            var response = sendRequest(_arrivalFlights);
+            var url = directionType == DirectionType.Departure
+                ? _departureFlights
+                : _arrivalFlights;
+            var response = sendRequest(url);
             return processResponse(response);
         }
 

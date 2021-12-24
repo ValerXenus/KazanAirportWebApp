@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.ServiceProcess;
 using System.Threading;
+using GetFlightsService.Common;
+using GetFlightsService.Logic;
+using GetFlightsService.Objects;
 using Serilog;
 
 namespace GetFlightsService
@@ -31,6 +36,11 @@ namespace GetFlightsService
         /// </summary>
         private string _flightsFilePath;
 
+        /// <summary>
+        /// Путь до папки с Google Chrome
+        /// </summary>
+        private string _chromePath;
+
         #endregion
         
         public FlightsService()
@@ -40,6 +50,7 @@ namespace GetFlightsService
             _scheduleInterval = Convert.ToInt32(ConfigurationManager.AppSettings["ThreadSleepTimeInMin"]);
             _logFilePath = ConfigurationManager.AppSettings["LogFilePath"];
             _flightsFilePath = ConfigurationManager.AppSettings["OutputFilePath"];
+            _chromePath = ConfigurationManager.AppSettings["ChromePath"];
         }
 
         /// <summary>
@@ -91,6 +102,8 @@ namespace GetFlightsService
             }
         }
 
+        #region Private methods
+
         /// <summary>
         /// Получение списка авиарейсов каждые _scheduleInterval минут
         /// </summary>
@@ -98,13 +111,80 @@ namespace GetFlightsService
         {
             while (true)
             {
-                using (var writer = new StreamWriter(_flightsFilePath, true))
-                {
-                    writer.WriteLine(string.Format("Windows Service Called on " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt")));
-                    writer.Close();
-                }
+                var flightsJson = getFlightsData();
                 Thread.Sleep(_scheduleInterval * 60 * 1000);
             }
         }
+
+        /// <summary>
+        /// Получить списки авиарейсов
+        /// </summary>
+        /// <returns></returns>
+        private string getFlightsData()
+        {
+            try
+            {
+                var yandexGetter = new YandexFlightsGetter();
+                var dashboardGetter = new DashboardFlightsGetter(_chromePath);
+                dashboardGetter.ProcessFlights();
+
+                var yandexDepartureFlights = yandexGetter.GetFlights(DirectionType.Departure);
+                var dashboardDepartureFlights = dashboardGetter.GetDepartureFlights();
+                var departureFlights = mergeFlightLists(yandexDepartureFlights, dashboardDepartureFlights);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "Ошибка!");
+                throw;
+            }
+
+            return string.Empty;
+
+            //var yandexArrivalFlights = yandexGetter.GetFlights(DirectionType.Arrival);
+            //throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Смержить списки из Яндекс.Расписания и Онлайн-табло
+        /// </summary>
+        /// <param name="yandexFlights">Список авиарейсов из Яндекс.Расписания</param>
+        /// <param name="dashboardFlights">Список авиарейсов из Онлайн-табло</param>
+        /// <returns></returns>
+        private List<FlightItem> mergeFlightLists(List<YandexFlight> yandexFlights,
+            List<DashboardFlight> dashboardFlights)
+        {
+            var outcome = new List<FlightItem>();
+            foreach (var yandexFlight in yandexFlights)
+            {
+                var dashboardFlight = dashboardFlights.FirstOrDefault(x => x.FlightNumber == yandexFlight.FlightNumber);
+                if (dashboardFlight == null)
+                    continue;
+
+                Log.Information("{0}|{1}|{2}|{3}|{4}|{5}|{6}", 
+                    dashboardFlight.FlightNumber,
+                    yandexFlight.PlaneName,
+                    dashboardFlight.Destination,
+                    dashboardFlight.Airline,
+                    dashboardFlight.ScheduledDateTime,
+                    dashboardFlight.ActualDateTime,
+                    dashboardFlight.Status);
+
+                //outcome.Add(new FlightItem
+                //{
+                //    FlightNumber = dashboardFlight.FlightNumber,
+                //    PlaneName = yandexFlight.PlaneName,
+                //    DirectionType = dashboardFlight.DirectionType,
+                //    Destination = dashboardFlight.Destination,
+                //    Airline = dashboardFlight.Airline,
+                //    ScheduledDateTime = dashboardFlight.ScheduledDateTime,
+                //    ActualDateTime = dashboardFlight.ActualDateTime,
+                //    Status = dashboardFlight.Status
+                //});
+            }
+
+            return outcome;
+        }
+
+        #endregion
     }
 }
