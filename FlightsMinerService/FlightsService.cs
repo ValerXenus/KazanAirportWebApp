@@ -32,8 +32,7 @@ namespace GetFlightsService
         private string _flightsFilePath;
 
         #endregion
-
-
+        
         public FlightsService()
         {
             InitializeComponent();
