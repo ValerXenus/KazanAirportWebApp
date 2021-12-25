@@ -8,14 +8,19 @@ namespace GetFlightsService.Objects
     internal class FlightItem
     {
         /// <summary>
+        /// ID
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Номер рейса
         /// </summary>
         public string FlightNumber { get; set; }
 
         /// <summary>
-        /// Пункт назначения
+        /// Наименование город
         /// </summary>
-        public string Destination { get; set; }
+        public string CityName { get; set; }
 
         /// <summary>
         /// Наименование модели самолета
@@ -25,7 +30,7 @@ namespace GetFlightsService.Objects
         /// <summary>
         /// Авиакомпания
         /// </summary>
-        public string Airline { get; set; }
+        public string AirlineName { get; set; }
 
         /// <summary>
         /// Дата и время (вылета/прибытия) по расписанию
@@ -40,6 +45,6 @@ namespace GetFlightsService.Objects
         /// <summary>
         /// Статус рейса
         /// </summary>
-        public string Status { get; set; }
+        public string StatusName { get; set; }
     }
 }

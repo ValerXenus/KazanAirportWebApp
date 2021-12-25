@@ -43,11 +43,8 @@ export const planesMethods = {
 }
 
 export const flightsMethods = {
-    ADD_NEW_FLIGHT: apiUrl + "/Flights/AddNewFlight",
-    UPDATE_FLIGHT: apiUrl + "/Flights/UpdateFlight",
-    GET_FLIGHTS_LIST: apiUrl + "/Flights/GetFlightsList",
+    SAVE_FLIGHT: apiUrl + "/Flights/SaveFlight",
     GET_FLIGHT_BY_ID: apiUrl + "/Flights/GetFlightById",
-    REMOVE_FLIGHT: apiUrl + "/Flights/RemoveFlight",
 
     GET_DEPARTURE_FLIGHTS: apiUrl + "/Flights/GetDepartureFlightsList",
     GET_ARRIVAL_FLIGHTS: apiUrl + "/Flights/GetArrivalFlightsList",

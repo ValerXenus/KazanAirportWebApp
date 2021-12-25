@@ -170,6 +170,8 @@ namespace GetFlightsService
             List<DashboardFlight> dashboardFlights)
         {
             var outcome = new List<FlightItem>();
+            var idx = 0;
+
             foreach (var yandexFlight in yandexFlights)
             {
                 var dashboardFlight = dashboardFlights.FirstOrDefault(x => x.FlightNumber == yandexFlight.FlightNumber);
@@ -178,13 +180,14 @@ namespace GetFlightsService
 
                 outcome.Add(new FlightItem
                 {
+                    Id = idx++,
                     FlightNumber = dashboardFlight.FlightNumber,
                     PlaneName = yandexFlight.PlaneName,
-                    Destination = dashboardFlight.Destination,
-                    Airline = dashboardFlight.Airline,
+                    CityName = dashboardFlight.Destination,
+                    AirlineName = dashboardFlight.Airline,
                     ScheduledDateTime = dashboardFlight.ScheduledDateTime,
                     ActualDateTime = dashboardFlight.ActualDateTime,
-                    Status = dashboardFlight.Status
+                    StatusName = dashboardFlight.Status
                 });
             }
 

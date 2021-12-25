@@ -64,8 +64,8 @@ namespace KazanAirportWebApp.Controllers
                         PassengerId = passengerId,
                         TicketNumber = t.TicketNumber,
                         FlightNumber = f.FlightNumber,
-                        DepartureScheduled = f.DepartureScheduled,
-                        ArrivalScheduled = f.ArrivalScheduled,
+                        DepartureScheduled = f.ScheduledDateTime,
+                        ArrivalScheduled = f.ActualDateTime ?? DateTime.MinValue,
                         AirlineName = a.Name,
                         CityName = c.Name
                     }).ToList();

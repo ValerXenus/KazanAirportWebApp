@@ -4,6 +4,7 @@ import { flightsMethods, passengersMethods, ticketsMethods } from '../../HelperC
 import styles from './BuyTicket.module.css';
 import axios from "axios";
 import Cookies from 'js-cookie';
+import UtilityMethods from '../../HelperComponents/Logic/UtilityMethods';
 
 export class BuyTicket extends Component {
     constructor(props) {
@@ -226,28 +227,30 @@ export class BuyTicket extends Component {
                 <Table className="mt-4 striped bordered hover" size="sm">
                     <thead>
                         <tr>
+                            <th>Авиакомпания</th>
                             <th>Рейс</th>
                             <th>Город</th>
-                            <th>Отправление</th>
-                            <th>Прибытие</th>
-                            <th>Авиакомпания</th>
+                            <th>Самолет</th>
+                            <th>Вылет по расписанию</th>
+                            <th>Вылет (приблизительно)</th>
                             <th/>
                         </tr>
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
                         <tr key = {x.Id} className={getClassIfActive(x)}>
+                            <td>{x.AirlineName}</td>
                             <td>{x.FlightNumber}</td>
                             <td>{x.CityName}</td>
-                            <td>{x.DepartureScheduled}</td>
-                            <td>{x.ArrivalScheduled}</td>
-                            <td>{x.AirlineName}</td>
+                            <td>{x.PlaneName}</td>
+                            <td>{UtilityMethods.convertDateTime(x.ScheduledDateTime)}</td>
+                            <td>{UtilityMethods.convertDateTime(x.ActualDateTime)}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
                                         onClick={() => { this.selectFlight(x); }}>
-                                        Выбрать рейс
+                                        Выбрать
                                     </Button>
                                 </ButtonToolbar>
                             </td>

@@ -25,29 +25,14 @@ namespace KazanAirportWebApp.Models
         public string FlightNumber { get; set; }
 
         /// <summary>
-        /// Date and time of scheduled departure
+        /// Дата и время (вылета/прибытия) по расписанию
         /// </summary>
-        public DateTime DepartureScheduled { get; set; }
+        public DateTime ScheduledDateTime { get; set; }
 
         /// <summary>
-        /// Date and time of scheduled arrival
+        /// Дата и время (вылета/прибытия) реальное
         /// </summary>
-        public DateTime ArrivalScheduled { get; set; }
-
-        /// <summary>
-        /// Actual date and time of departure
-        /// </summary>
-        public DateTime? DepartureActual { get; set; }
-
-        /// <summary>
-        /// Actual date and time of arrival
-        /// </summary>
-        public DateTime? ArrivalActual { get; set; }
-
-        /// <summary>
-        /// Approximate time on board (in minutes)
-        /// </summary>
-        public int TimeOnBoard { get; set; }
+        public DateTime? ActualDateTime { get; set; }
 
         /// <summary>
         /// Flight type: 0 (false) - Departure, 1 (true) - Arrival
