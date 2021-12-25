@@ -46,7 +46,7 @@ namespace GetFlightsService.Logic
             return _departureFlights;
         }
 
-        public List<DashboardFlight> GetDepartureArrival()
+        public List<DashboardFlight> GetArrivalFlights()
         {
             return _arrivalFlights;
         }

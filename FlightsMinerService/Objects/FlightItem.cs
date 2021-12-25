@@ -1,5 +1,4 @@
 ﻿using System;
-using GetFlightsService.Common;
 
 namespace GetFlightsService.Objects
 {
@@ -27,11 +26,6 @@ namespace GetFlightsService.Objects
         /// Авиакомпания
         /// </summary>
         public string Airline { get; set; }
-
-        /// <summary>
-        /// Тип направления (Вылет/Прилет)
-        /// </summary>
-        public DirectionType DirectionType { get; set; }
 
         /// <summary>
         /// Дата и время (вылета/прибытия) по расписанию

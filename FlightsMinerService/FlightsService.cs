@@ -8,6 +8,7 @@ using System.Threading;
 using GetFlightsService.Common;
 using GetFlightsService.Logic;
 using GetFlightsService.Objects;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace GetFlightsService
@@ -111,16 +112,16 @@ namespace GetFlightsService
         {
             while (true)
             {
-                var flightsJson = getFlightsData();
+                getAndSaveFlightsData();
                 Thread.Sleep(_scheduleInterval * 60 * 1000);
             }
         }
 
         /// <summary>
-        /// Получить списки авиарейсов
+        /// Получить списки авиарейсов и сохранить
         /// </summary>
         /// <returns></returns>
-        private string getFlightsData()
+        private void getAndSaveFlightsData()
         {
             try
             {
@@ -128,20 +129,35 @@ namespace GetFlightsService
                 var dashboardGetter = new DashboardFlightsGetter(_chromePath);
                 dashboardGetter.ProcessFlights();
 
+                Log.Information("Получение списка вылетающих рейсов");
                 var yandexDepartureFlights = yandexGetter.GetFlights(DirectionType.Departure);
                 var dashboardDepartureFlights = dashboardGetter.GetDepartureFlights();
                 var departureFlights = mergeFlightLists(yandexDepartureFlights, dashboardDepartureFlights);
+
+                Log.Information("Получение списка прилетающих рейсов");
+                var yandexArrivalFlights = yandexGetter.GetFlights(DirectionType.Arrival);
+                var dashboardArrivalFlights = dashboardGetter.GetArrivalFlights();
+                var arrivalFlights = mergeFlightLists(yandexArrivalFlights, dashboardArrivalFlights);
+
+                var flights = new
+                {
+                    DepartureFlights = departureFlights,
+                    ArrivalFlights = arrivalFlights
+                };
+
+                Log.Information("Получение списка рейсов в файл");
+                using (var file = File.CreateText(_flightsFilePath))
+                {
+                    var serializer = new JsonSerializer();
+                    serializer.Serialize(file, flights);
+                }
+                Log.Information("Файл с авиарейсами успешно сохранен");
             }
             catch (Exception exception)
             {
                 Log.Error(exception, "Ошибка!");
                 throw;
             }
-
-            return string.Empty;
-
-            //var yandexArrivalFlights = yandexGetter.GetFlights(DirectionType.Arrival);
-            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -160,28 +176,19 @@ namespace GetFlightsService
                 if (dashboardFlight == null)
                     continue;
 
-                Log.Information("{0}|{1}|{2}|{3}|{4}|{5}|{6}", 
-                    dashboardFlight.FlightNumber,
-                    yandexFlight.PlaneName,
-                    dashboardFlight.Destination,
-                    dashboardFlight.Airline,
-                    dashboardFlight.ScheduledDateTime,
-                    dashboardFlight.ActualDateTime,
-                    dashboardFlight.Status);
-
-                //outcome.Add(new FlightItem
-                //{
-                //    FlightNumber = dashboardFlight.FlightNumber,
-                //    PlaneName = yandexFlight.PlaneName,
-                //    DirectionType = dashboardFlight.DirectionType,
-                //    Destination = dashboardFlight.Destination,
-                //    Airline = dashboardFlight.Airline,
-                //    ScheduledDateTime = dashboardFlight.ScheduledDateTime,
-                //    ActualDateTime = dashboardFlight.ActualDateTime,
-                //    Status = dashboardFlight.Status
-                //});
+                outcome.Add(new FlightItem
+                {
+                    FlightNumber = dashboardFlight.FlightNumber,
+                    PlaneName = yandexFlight.PlaneName,
+                    Destination = dashboardFlight.Destination,
+                    Airline = dashboardFlight.Airline,
+                    ScheduledDateTime = dashboardFlight.ScheduledDateTime,
+                    ActualDateTime = dashboardFlight.ActualDateTime,
+                    Status = dashboardFlight.Status
+                });
             }
 
+            Log.Information("Список авиарейсов успешно смержен");
             return outcome;
         }
 

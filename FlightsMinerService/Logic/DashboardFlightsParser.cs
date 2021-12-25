@@ -40,7 +40,6 @@ namespace GetFlightsService.Logic
 
             var outcome = new DashboardFlight
             {
-                DirectionType = direction,
                 FlightNumber = parseFlightNumber(node),
                 Airline = parseAirline(node),
                 Destination = parseCityName(node),
