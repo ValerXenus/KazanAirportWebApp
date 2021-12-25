@@ -209,6 +209,10 @@
     <Compile Include="Migrations\202112251607395_DbFlightsUpdate.designer.cs">
       <DependentUpon>202112251607395_DbFlightsUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112252217065_UpdateForFlightSave.cs" />
+    <Compile Include="Migrations\202112252217065_UpdateForFlightSave.designer.cs">
+      <DependentUpon>202112252217065_UpdateForFlightSave.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DbCity.cs" />
     <Compile Include="Models\DbAirline.cs" />
@@ -324,6 +328,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112251607395_DbFlightsUpdate.resx">
       <DependentUpon>202112251607395_DbFlightsUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112252217065_UpdateForFlightSave.resx">
+      <DependentUpon>202112252217065_UpdateForFlightSave.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

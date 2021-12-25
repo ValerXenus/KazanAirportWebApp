@@ -2,7 +2,6 @@
 using System.Linq;
 using KazanAirportWebApp.DataAccess;
 using KazanAirportWebApp.Models;
-using KazanAirportWebApp.Models.JoinModels;
 
 namespace KazanAirportWebApp.Logic
 {
@@ -61,22 +60,6 @@ namespace KazanAirportWebApp.Logic
         }
 
         /// <summary>
-        /// Проверка номера паспорта в БД, сравнивая с введенным
-        /// </summary>
-        /// <param name="dbPassenger"></param>
-        /// <param name="receivedPassenger"></param>
-        /// <returns></returns>
-        public static string ValidatePassengerDataForEdit(PassengerItem dbPassenger, PassengerItem receivedPassenger)
-        {
-            var outcome = "";
-
-            if (dbPassenger.PassportNumber != receivedPassenger.PassportNumber)
-                outcome += validateExistingPassport(receivedPassenger.PassportNumber);
-
-            return outcome;
-        }
-
-        /// <summary>
         /// Проверка полей, что в БД больше нет таких же ICAO и IATA кодов
         /// </summary>
         /// <param name="cityData"></param>
@@ -105,37 +88,6 @@ namespace KazanAirportWebApp.Logic
 
             if (dbCity.IataCode != receivedCity.IataCode)
                 outcome += validateExistingEmail(receivedCity.IataCode);
-
-            return outcome;
-        }
-
-        /// <summary>
-        /// Проверка, что в БД больше нет самолета с таким же бортовым номером
-        /// </summary>
-        /// <param name="plane"></param>
-        /// <returns></returns>
-        public static string ValidateExistingBoardNumbers(DbPlane plane)
-        {
-            var outcome = "";
-            outcome += validateExistingBoardNumber(plane.Number);
-
-            return outcome;
-        }
-
-        /// <summary>
-        /// Проверка, что в БД больше нет самолета с таким же бортовым номером, для редактирования
-        /// </summary>
-        /// <param name="dbPlane"></param>
-        /// <param name="receivedPlane"></param>
-        /// <returns></returns>
-        public static string ValidateExistingBoardNumbersForEdit(DbPlane dbPlane, DbPlane receivedPlane)
-        {
-            var outcome = "";
-            if (dbPlane == null || receivedPlane == null)
-                return outcome;
-
-            if (dbPlane.Number != receivedPlane.Number)
-                outcome += validateExistingBoardNumber(receivedPlane.Number);
 
             return outcome;
         }
@@ -202,18 +154,6 @@ namespace KazanAirportWebApp.Logic
             return checkExistanceInDb(iata,
                 (db, paramValue) => db.Cities.Any(x => x.IataCode == paramValue),
                 "Аэропорт с таким IATA уже присутствует в БД");
-        }
-
-        /// <summary>
-        /// Проверка на существование данного бортового номера в БД
-        /// </summary>
-        /// <param name="boardNumber"></param>
-        /// <returns></returns>
-        private static string validateExistingBoardNumber(string boardNumber)
-        {
-            return checkExistanceInDb(boardNumber, 
-                (db, paramValue) => db.Planes.Any(x => x.Number == paramValue),
-                "Самолет с данным бортовым номером уже присутствует в БД");
         }
 
         /// <summary>

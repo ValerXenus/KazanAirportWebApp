@@ -46,8 +46,6 @@ export class ManagePlanes extends Component {
                 editRecord: {
                     id: id,
                     modelName: response.data.Name,
-                    boardNumber: response.data.Number,
-                    seatsNumber: response.data.SeatsNumber,
                     airlineId: response.data.AirlineId
                 }});
         })
@@ -86,8 +84,6 @@ export class ManagePlanes extends Component {
                         <tr>
                             <th>ID</th>
                             <th>Модель</th>
-                            <th>Бортовой номер</th>
-                            <th>Количество мест</th>
                             <th>Авиакомпания</th>
                             <th/>
                         </tr>
@@ -97,8 +93,6 @@ export class ManagePlanes extends Component {
                         <tr key = {x.Id}>
                             <td>{x.Id}</td>
                             <td>{x.Name}</td>
-                            <td>{x.Number}</td>
-                            <td>{x.SeatsNumber}</td>
                             <td>{x.AirlineName}</td>
                             <td>
                                 <ButtonToolbar>

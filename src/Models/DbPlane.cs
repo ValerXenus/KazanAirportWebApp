@@ -24,18 +24,6 @@ namespace KazanAirportWebApp.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Board number
-        /// </summary>
-        [Column(TypeName = "VARCHAR")]
-        [StringLength(50)]
-        public string Number { get; set; }
-
-        /// <summary>
-        /// Number of seats
-        /// </summary>
-        public int SeatsNumber { get; set; }
-
-        /// <summary>
         /// Airline which owns current plane
         /// </summary>
         public int AirlineId { get; set; }

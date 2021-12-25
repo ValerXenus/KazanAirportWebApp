@@ -52,6 +52,7 @@ namespace KazanAirportWebApp.Models
         /// <summary>
         /// Status of the current flight
         /// </summary>
-        public int StatusId { get; set; }
+        [StringLength(50)]
+        public string StatusName { get; set; }
     }
 }

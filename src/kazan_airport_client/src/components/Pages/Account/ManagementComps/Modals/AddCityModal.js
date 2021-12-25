@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, {Component} from 'react';
 import {Modal, Button, Row, Col, Form} from 'react-bootstrap';
 import { citiesMethods } from '../../../../HelperComponents/ApiUrls';
-import InputValidations from '../../../../HelperComponents/Logic/InputValidations';
 
 export class AddCityModal extends Component {
     constructor(props){
@@ -29,9 +28,6 @@ export class AddCityModal extends Component {
     // Событие нажатия кнопки "Сохранить"
     handleSubmit = (event) => {
         event.preventDefault();
-
-        if (!this.validateInputs())
-            return;
 
         if (this.state.isEditMode) {
             this.updateInfo();
@@ -88,24 +84,6 @@ export class AddCityModal extends Component {
                 [event.target.name]: event.target.value
             }
         }))
-    }
-
-    // Проверка правильности заполнения полей
-    validateInputs = () => {
-        let outcome = "";
-
-        if (!InputValidations.validateIcaoCode(this.state.cityInfo.icaoCode))
-            outcome += "ICAO код должен состоять из 4 прописных букв\n";
-
-        if (!InputValidations.validateIataCode(this.state.cityInfo.iataCode))
-            outcome += "IATA код должен состоять из 3 прописных букв\n";
-
-        if (outcome.length > 0) {
-            alert(outcome);
-            return false;
-        }
-
-        return true;
     }
 
     // Предзаполнение данных для редактирования

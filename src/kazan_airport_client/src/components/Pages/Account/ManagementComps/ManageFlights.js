@@ -18,11 +18,6 @@ export class ManageFlights extends Component {
         this.refreshList();
     }
 
-    // Выполняется, когда некоторые данные изменились
-    componentDidUpdate() {
-        this.refreshList();
-    }
-
     // Обновление списка
     refreshList = () => {
         axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)
@@ -37,31 +32,28 @@ export class ManageFlights extends Component {
         });
     }
 
-    // Открытие модального окна для редактирования данных
-    showModalEdit = (id) => {
-        axios.post(flightsMethods.GET_FLIGHT_BY_ID, null, {
-            params: {flightId: id}
+    /**
+     * Сохранение выбранного авиарейса
+     * @param {Идентификатор рейса} id 
+     */
+    saveFlight = (id) => {
+        axios.post(flightsMethods.SAVE_FLIGHT, null, {
+            params: {flightId: id, directionType: 1}
         })
-        .then(response => {
-            this.setState({
-                editModalShow: true,
-                editRecord: {
-                    id: id,
-                    flightNumber: response.data.FlightNumber,
-                    departureScheduled: response.data.DepartureScheduled,
-                    arrivalScheduled: response.data.ArrivalScheduled,
-                    departureActual: response.data.DepartureActual,
-                    arrivalActual: response.data.arrivalActual,
-                    timeOnBoard: response.data.TimeOnBoard,
-                    flightType: response.data.FlightType,
-                    planeId: response.data.PlaneId,
-                    cityId: response.data.CityId,
-                    statusId: response.data.StatusId
-                }});
-        })
+        .then(response => this.completedSuccessfully(response))
         .catch((error) => {
             alert(`Произошла ошибка при получении данных: ${error}`);
         });
+    }
+
+    // Когда запрос выполнился без ошибок
+    completedSuccessfully = (response) => {
+        if (response.data !== "Success") {
+            alert(`Ошибка:\n${response.data}`);
+            return;
+        }
+
+        alert("Рейс успешно сохранен");
     }
 
     render() {
@@ -98,7 +90,7 @@ export class ManageFlights extends Component {
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.Id); }}>
+                                        onClick={() => { this.saveFlight(x.Id); }}>
                                         Сохранить
                                     </Button>
                                 </ButtonToolbar>
