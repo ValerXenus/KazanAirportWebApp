@@ -56,6 +56,9 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -81,9 +84,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -189,6 +189,7 @@
     <Compile Include="Logic\Enums\FlightStatus.cs" />
     <Compile Include="Logic\Enums\UserType.cs" />
     <Compile Include="Logic\EnumTranslator.cs" />
+    <Compile Include="Logic\FlightsFileReader.cs" />
     <Compile Include="Logic\InfoGenerators.cs" />
     <Compile Include="Logic\ProtectLogic.cs" />
     <Compile Include="Logic\ValidationLogic.cs" />
@@ -204,6 +205,10 @@
     <Compile Include="Migrations\202112181021051_TicketsFix.designer.cs">
       <DependentUpon>202112181021051_TicketsFix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112251607395_DbFlightsUpdate.cs" />
+    <Compile Include="Migrations\202112251607395_DbFlightsUpdate.designer.cs">
+      <DependentUpon>202112251607395_DbFlightsUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DbCity.cs" />
     <Compile Include="Models\DbAirline.cs" />
@@ -213,6 +218,7 @@
     <Compile Include="Models\DbTicket.cs" />
     <Compile Include="Models\DbUser.cs" />
     <Compile Include="Models\JoinModels\FlightItem.cs" />
+    <Compile Include="Models\JoinModels\FullFlights.cs" />
     <Compile Include="Models\JoinModels\PassengerItem.cs" />
     <Compile Include="Models\JoinModels\PassengerTicket.cs" />
     <Compile Include="Models\JoinModels\PlaneItem.cs" />
@@ -315,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112181021051_TicketsFix.resx">
       <DependentUpon>202112181021051_TicketsFix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112251607395_DbFlightsUpdate.resx">
+      <DependentUpon>202112251607395_DbFlightsUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -18,77 +18,32 @@ namespace KazanAirportWebApp.Models.JoinModels
         public string FlightNumber { get; set; }
 
         /// <summary>
-        /// Время отправления по расписанию
-        /// </summary>
-        public DateTime DepartureScheduled { get; set; }
-        
-        /// <summary>
-        /// Время прибытия по расписанию
-        /// </summary>
-        public DateTime ArrivalScheduled { get; set; }
-
-        /// <summary>
-        /// Время отправления фактическое
-        /// </summary>
-        public DateTime? DepartureActual { get; set; }
-
-        /// <summary>
-        /// Время прибытия фактическое
-        /// </summary>
-        public DateTime? ArrivalActual { get; set; }
-
-        /// <summary>
-        /// Время в пути (в минутах)
-        /// </summary>
-        public int TimeOnBoard { get; set; }
-
-        /// <summary>
-        /// Тип перелета (0 - Вылет, 1 - Прилет)
-        /// </summary>
-        public bool FlightType { get; set; }
-
-        /// <summary>
-        /// ID самолета
-        /// </summary>
-        public int PlaneId { get; set; }
-
-        /// <summary>
-        /// ID города
-        /// </summary>
-        public int CityId { get; set; }
-
-        /// <summary>
-        /// Статус полета
-        /// </summary>
-        public int StatusId { get; set; }
-
-        /// <summary>
-        /// Наименование модели самолета
-        /// </summary>
-        public string ModelName { get; set; }
-
-        /// <summary>
-        /// Бортовой номер самолета
-        /// </summary>
-        public string BoardNumber { get; set; }
-
-        /// <summary>
-        /// ID авиакомпании
-        /// </summary>
-        public int AirlineId { get; set; }
-
-        /// <summary>
-        /// Наименование авиакомпании
-        /// </summary>
-        public string AirlineName { get; set; }
-
-        /// <summary>
-        /// Наименование города
+        /// Наименование город
         /// </summary>
         public string CityName { get; set; }
 
         /// <summary>
-        /// Наименование статус полета
+        /// Наименование модели самолета
+        /// </summary>
+        public string PlaneName { get; set; }
+
+        /// <summary>
+        /// Авиакомпания
+        /// </summary>
+        public string AirlineName { get; set; }
+
+        /// <summary>
+        /// Дата и время (вылета/прибытия) по расписанию
+        /// </summary>
+        public DateTime ScheduledDateTime { get; set; }
+
+        /// <summary>
+        /// Дата и время (вылета/прибытия) реальное
+        /// </summary>
+        public DateTime ActualDateTime { get; set; }
+
+        /// <summary>
+        /// Статус рейса
         /// </summary>
         public string StatusName { get; set; }
     }
