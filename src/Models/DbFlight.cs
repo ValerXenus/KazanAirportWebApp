@@ -35,11 +35,6 @@ namespace KazanAirportWebApp.Models
         public DateTime? ActualDateTime { get; set; }
 
         /// <summary>
-        /// Flight type: 0 (false) - Departure, 1 (true) - Arrival
-        /// </summary>
-        public bool FlightType { get; set; }
-
-        /// <summary>
         /// ID of the plane
         /// </summary>
         public int PlaneId { get; set; }

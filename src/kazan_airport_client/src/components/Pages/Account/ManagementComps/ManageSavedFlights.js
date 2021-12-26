@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Button, ButtonToolbar, Table} from 'react-bootstrap';
-import { flightsMethods } from '../../../HelperComponents/ApiUrls';
+import { savedFlightsMethods } from '../../../HelperComponents/ApiUrls';
 import UtilityMethods from '../../../HelperComponents/Logic/UtilityMethods';
 
-export class ManageFlights extends Component {
+export class ManageSavedFlights extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +19,7 @@ export class ManageFlights extends Component {
 
     // Обновление списка
     refreshList = () => {
-        axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)
+        axios.post(savedFlightsMethods.GET_DEPARTURE_FLIGHTS)
         .then(response => {
             if (response.data === null)
                 return;
@@ -35,9 +35,9 @@ export class ManageFlights extends Component {
      * Сохранение выбранного авиарейса
      * @param {Идентификатор рейса} id 
      */
-    saveFlight = (id) => {
-        axios.post(flightsMethods.SAVE_FLIGHT, null, {
-            params: {flightId: id, directionType: 1}
+    removeFlight = (id) => {
+        axios.post(savedFlightsMethods.REMOVE_FLIGHT, null, {
+            params: {flightId: id}
         })
         .then(response => this.completedSuccessfully(response))
         .catch((error) => {
@@ -52,7 +52,7 @@ export class ManageFlights extends Component {
             return;
         }
 
-        alert("Рейс успешно сохранен");
+        this.refreshList();
     }
 
     render() {
@@ -88,9 +88,9 @@ export class ManageFlights extends Component {
                             <td>
                                 <ButtonToolbar>
                                     <Button
-                                        className="mr-2" variant="info"
-                                        onClick={() => { this.saveFlight(x.Id); }}>
-                                        Сохранить
+                                        className="mr-2 bg-danger" variant="info"
+                                        onClick={() => { this.removeFlight(x.Id); }}>
+                                        Удалить
                                     </Button>
                                 </ButtonToolbar>
                             </td>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using KazanAirportWebApp.DataAccess;
-using KazanAirportWebApp.Models.JoinModels;
+using KazanAirportWebApp.Models;
 
 namespace KazanAirportWebApp.Logic
 {
@@ -55,58 +55,15 @@ namespace KazanAirportWebApp.Logic
         }
 
         /// <summary>
-        /// Получение Id пользователя по id пассажира
-        /// </summary>
-        /// <returns></returns>
-        public static int GetUserId(int passengerId)
-        {
-            using var db = new KazanAirportDbContext();
-            var passengerItem = db.Passengers
-                .Where(x => x.Id == passengerId)
-                .Join(db.Users,
-                    p => p.Id,
-                    u => u.PassengerId,
-                    (p, u) => new PassengerItem
-                    {
-                        Id = p.Id,
-                        FirstName = p.FirstName,
-                        LastName = p.LastName,
-                        MiddleName = p.MiddleName,
-                        PassportNumber = p.PassportNumber,
-                        UserId = u.Id,
-                        UserLogin = u.UserLogin,
-                        Email = u.Email
-                    })
-                .FirstOrDefault();
-
-            return passengerItem?.UserId ?? -1;
-        }
-
-        /// <summary>
         /// Получение пассажира по номеру паспорта
         /// </summary>
         /// <param name="passportNumber"></param>
         /// <returns></returns>
-        public static PassengerItem GetPassengerByPassport(string passportNumber)
+        public static DbPassenger GetPassengerByPassport(string passportNumber)
         {
             using var db = new KazanAirportDbContext();
             var passengerItem = db.Passengers
-                .Where(x => x.PassportNumber == passportNumber)
-                .Join(db.Users,
-                    p => p.Id,
-                    u => u.PassengerId,
-                    (p, u) => new PassengerItem
-                    {
-                        Id = p.Id,
-                        FirstName = p.FirstName,
-                        LastName = p.LastName,
-                        MiddleName = p.MiddleName,
-                        PassportNumber = p.PassportNumber,
-                        UserId = u.Id,
-                        UserLogin = u.UserLogin,
-                        Email = u.Email
-                    })
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.PassportNumber == passportNumber);
 
             return passengerItem;
         }

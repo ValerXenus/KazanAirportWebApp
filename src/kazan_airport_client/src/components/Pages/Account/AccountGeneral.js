@@ -6,9 +6,10 @@ import { ManageCities } from './ManagementComps/ManageCities';
 import { ManagePlanes } from './ManagementComps/ManagePlanes';
 import { ManageAirlines } from './ManagementComps/ManageAirlines';
 import { ManageFlights } from './ManagementComps/ManageFlights';
+import { ManageSavedFlights } from './ManagementComps/ManageSavedFlights';
+import { PassengerTickets } from './PassengerComps/PassengerTickets';
 import WelcomeAccount from './WelcomeAccount';
 import Cookies from 'js-cookie';
-import { PassengerTickets } from './PassengerComps/PassengerTickets';
 
 const AccountGeneral = () => {
 
@@ -43,7 +44,8 @@ const AccountGeneral = () => {
                 { link: "/operator/cities", name: "Города", component: <ManageCities />, key: "o_cities" },
                 { link: "/operator/planes", name: "Самолеты", component: <ManagePlanes />, key: "o_planes" },
                 { link: "/operator/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "o_airlines" },
-                { link: "/operator/flights", name: "Рейсы", component: <ManageFlights />, key: "o_flights" }],
+                { link: "/operator/flights", name: "Рейсы", component: <ManageFlights />, key: "o_flights" },
+                { link: "/operator/sflights", name: "Сохраненные рейсы", component: <ManageSavedFlights />, key: "o_savedFlights" }],
                 main: { link: "/operator", component: <WelcomeAccount /> },
                 needShowLogout: true
             };
@@ -55,7 +57,8 @@ const AccountGeneral = () => {
                 { link: "/admin/cities", name: "Города", component: <ManageCities />, key: "a_cities" },
                 { link: "/admin/planes", name: "Самолеты", component: <ManagePlanes />, key: "a_planes" },
                 { link: "/admin/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "a_airlines" },
-                { link: "/admin/flights", name: "Рейсы", component: <ManageFlights />, key: "a_flights" }],
+                { link: "/admin/flights", name: "Рейсы", component: <ManageFlights />, key: "a_flights" },
+                { link: "/admin/sflights", name: "Сохраненные рейсы", component: <ManageSavedFlights />, key: "a_savedFlights" }],
                 main: { link: "/admin", component: <WelcomeAccount /> },
                 needShowLogout: true 
             };

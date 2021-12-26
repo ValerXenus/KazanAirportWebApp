@@ -179,6 +179,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PassengersController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
+    <Compile Include="Controllers\SavedFlightsController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="DataAccess\KazanAirportDbContext.cs" />
@@ -212,6 +213,10 @@
     <Compile Include="Migrations\202112252217065_UpdateForFlightSave.cs" />
     <Compile Include="Migrations\202112252217065_UpdateForFlightSave.designer.cs">
       <DependentUpon>202112252217065_UpdateForFlightSave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112261245001_removeFlightType.cs" />
+    <Compile Include="Migrations\202112261245001_removeFlightType.designer.cs">
+      <DependentUpon>202112261245001_removeFlightType.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DbCity.cs" />
@@ -331,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112252217065_UpdateForFlightSave.resx">
       <DependentUpon>202112252217065_UpdateForFlightSave.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112261245001_removeFlightType.resx">
+      <DependentUpon>202112261245001_removeFlightType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -58,7 +58,6 @@ namespace KazanAirportWebApp.Controllers
                 {
                     FlightNumber = flight.FlightNumber,
                     CityId = cityId,
-                    FlightType = directionType != 1,
                     PlaneId = planeId,
                     ScheduledDateTime = flight.ScheduledDateTime,
                     ActualDateTime = flight.ActualDateTime,
