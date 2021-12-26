@@ -46,6 +46,7 @@ export const flightsMethods = {
     SAVE_FLIGHT: apiUrl + "/Flights/SaveFlight",
     GET_DEPARTURE_FLIGHTS: apiUrl + "/Flights/GetDepartureFlightsList",
     GET_ARRIVAL_FLIGHTS: apiUrl + "/Flights/GetArrivalFlightsList",
+    GET_ALL_FLIGHTS: apiUrl + "/Flights/GetAllFlights"
 }
 
 export const ticketsMethods = {

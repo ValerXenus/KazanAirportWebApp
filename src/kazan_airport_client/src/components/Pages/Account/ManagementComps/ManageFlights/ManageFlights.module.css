@@ -1,0 +1,27 @@
+.buttonsContainer {
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+.selectButton {
+    color: #556677;
+    display: inline-flex;
+    height: 55px;
+    width: 235px;
+    background-color: #f5f5f5;
+    margin: 5px 5px 5px 5px;
+    align-items: center;
+    padding-left: 30px;
+    transition-duration: 0.4s;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.selectButton:hover {
+    color: white;
+    text-decoration: none;
+    background-color: #23B9D6;
+    transition-duration: 0.4s;
+    font-weight: bold;
+}
