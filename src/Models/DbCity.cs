@@ -28,13 +28,13 @@ namespace KazanAirportWebApp.Models
         /// </summary>
         [Column(TypeName = "VARCHAR")]
         [StringLength(4)]
-        public string IcaoCode { get; set; }
+        public string? IcaoCode { get; set; }
 
         /// <summary>
         /// IATA code of city airport
         /// </summary>
         [Column(TypeName = "VARCHAR")]
         [StringLength(3)]
-        public string IataCode { get; set; }
+        public string? IataCode { get; set; }
     }
 }

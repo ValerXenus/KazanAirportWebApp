@@ -11,9 +11,6 @@ export class AddPlaneModal extends Component {
             planeInfo: {
                 id: 0,
                 modelName: "",
-                boardNumber: "",
-                seatsNumber: "",
-                passportNumber: "",
                 airlineId: ""
             },
             isEditMode: false
@@ -38,8 +35,6 @@ export class AddPlaneModal extends Component {
         
         axios.post(planesMethods.ADD_NEW_PLANE, {
             Name: this.state.planeInfo.modelName,
-            Number: this.state.planeInfo.boardNumber,
-            SeatsNumber: this.state.planeInfo.seatsNumber,
             AirlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
@@ -52,8 +47,6 @@ export class AddPlaneModal extends Component {
         axios.post(planesMethods.UPDATE_PLANE, {
             Id: this.state.planeInfo.id,
             Name: this.state.planeInfo.modelName,
-            Number: this.state.planeInfo.boardNumber,
-            SeatsNumber: this.state.planeInfo.seatsNumber,
             AirlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
@@ -73,9 +66,6 @@ export class AddPlaneModal extends Component {
             planeInfo: {
                 id: 0,
                 modelName: "",
-                boardNumber: "",
-                seatsNumber: "",
-                passportNumber: "",
                 airlineId: ""
             }
         });
@@ -127,20 +117,6 @@ export class AddPlaneModal extends Component {
                                             name="modelName" required
                                             onChange={this.handleChanged}
                                             value={this.state.planeInfo.modelName}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="BoardNumberText">
-                                        <Form.Label>Бортовой номер</Form.Label>
-                                        <Form.Control type="text"
-                                            name="boardNumber" required
-                                            onChange={this.handleChanged}
-                                            value={this.state.planeInfo.boardNumber}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="SeatsNumberText">
-                                        <Form.Label>Количество мест</Form.Label>
-                                        <Form.Control type="text"
-                                            name="seatsNumber"
-                                            onChange={this.handleChanged}
-                                            value={this.state.planeInfo.seatsNumber}/>
                                     </Form.Group>
                                     <Form.Group controlId="AirlineIdText">
                                         <Form.Label>ID авиакомпании</Form.Label>

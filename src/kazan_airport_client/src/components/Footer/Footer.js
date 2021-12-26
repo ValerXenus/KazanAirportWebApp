@@ -8,7 +8,7 @@ const Footer = () => {
             <div className={styles.footerContainer}>
                 <div className={styles.services}>
                     <h3>Сервисы</h3>
-                    <div><NavLink className={styles.childItem} to="/schedule">Онлайн-табло</NavLink></div>
+                    <div><NavLink className={styles.childItem} to="/schedule/departures">Онлайн-табло</NavLink></div>
                     <div><NavLink className={styles.childItem} to="/online_registration">Онлайн-регистрация</NavLink></div>
                     <div><NavLink className={styles.childItem} to="/buy_ticket">Купить билет</NavLink></div>
                 </div>

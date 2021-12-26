@@ -1,7 +1,7 @@
 ﻿namespace GetFlightsService.Common
 {
     /// <summary>
-    /// Режим чтения авиарейсов
+    /// Тип авиарейса
     /// </summary>
     internal enum DirectionType
     {
@@ -11,12 +11,12 @@
         None = 0,
 
         /// <summary>
-        /// Файл вылетов
+        /// Вылет
         /// </summary>
         Departure = 1,
 
         /// <summary>
-        /// Файл прилетов
+        /// Прилет
         /// </summary>
         Arrival = 2
     }

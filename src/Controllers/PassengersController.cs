@@ -51,7 +51,7 @@ namespace KazanAirportWebApp.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("GetPassengerByPassport")]
-        public PassengerItem GetPassengerByPassport(string passportNumber)
+        public DbPassenger GetPassengerByPassport(string passportNumber)
         {
             try
             {

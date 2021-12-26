@@ -44,10 +44,13 @@ export const planesMethods = {
 
 export const flightsMethods = {
     SAVE_FLIGHT: apiUrl + "/Flights/SaveFlight",
-    GET_FLIGHT_BY_ID: apiUrl + "/Flights/GetFlightById",
-
     GET_DEPARTURE_FLIGHTS: apiUrl + "/Flights/GetDepartureFlightsList",
-    GET_ARRIVAL_FLIGHTS: apiUrl + "/Flights/GetArrivalFlightsList",
+    GET_ARRIVAL_FLIGHTS: apiUrl + "/Flights/GetArrivalFlightsList"
+}
+
+export const savedFlightsMethods = {
+    GET_DEPARTURE_FLIGHTS: apiUrl + "/SavedFlights/GetDepartureFlightsList",
+    REMOVE_FLIGHT: apiUrl + "/SavedFlights/RemoveFlight"
 }
 
 export const ticketsMethods = {

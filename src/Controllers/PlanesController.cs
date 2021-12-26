@@ -28,9 +28,7 @@ namespace KazanAirportWebApp.Controllers
                     (p, a) => new PlaneItem
                 {
                     Id = p.Id,
-                    Number = p.Number,
                     Name = p.Name,
-                    SeatsNumber = p.SeatsNumber,
                     AirlineId = p.AirlineId,
                     AirlineName = a.Name
                 }).ToList();
@@ -70,10 +68,6 @@ namespace KazanAirportWebApp.Controllers
         [ActionName("AddNewPlane")]
         public string AddNewPlane(DbPlane plane)
         {
-            var validationResult = ValidationLogic.ValidateExistingBoardNumbers(plane);
-            if (!string.IsNullOrEmpty(validationResult))
-                return validationResult;
-
             try
             {
                 using var db = new KazanAirportDbContext();
@@ -96,11 +90,6 @@ namespace KazanAirportWebApp.Controllers
         [ActionName("UpdatePlane")]
         public string UpdatePlane(DbPlane plane)
         {
-            var dbPlaneItem = GetPlaneById(plane.Id);
-            var validationResult = ValidationLogic.ValidateExistingBoardNumbersForEdit(dbPlaneItem, plane);
-            if (!string.IsNullOrEmpty(validationResult))
-                return validationResult;
-
             try
             {
                 using var db = new KazanAirportDbContext();
@@ -110,8 +99,6 @@ namespace KazanAirportWebApp.Controllers
 
                 currentPlane.Name = plane.Name;
                 currentPlane.AirlineId = plane.AirlineId;
-                currentPlane.Number = plane.Number;
-                currentPlane.SeatsNumber = plane.SeatsNumber;
                 db.SaveChanges();
 
                 return "Success";

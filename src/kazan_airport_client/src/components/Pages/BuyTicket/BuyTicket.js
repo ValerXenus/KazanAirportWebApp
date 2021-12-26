@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, ButtonToolbar, Table, Form } from 'react-bootstrap';
-import { flightsMethods, passengersMethods, ticketsMethods } from '../../HelperComponents/ApiUrls';
+import { savedFlightsMethods, passengersMethods, ticketsMethods } from '../../HelperComponents/ApiUrls';
 import styles from './BuyTicket.module.css';
 import axios from "axios";
 import Cookies from 'js-cookie';
@@ -11,7 +11,7 @@ export class BuyTicket extends Component {
         super(props);
         this.state = {
             flightsList: [],
-            selectedFlightId: 0,
+            selectedFlightId: -1,
             isAborted: false,
             passengerInfo: {
                 id: 0,
@@ -28,14 +28,11 @@ export class BuyTicket extends Component {
         this.refreshList();
     }
 
-    // Выполняется, когда некоторые данные изменились
-    componentDidUpdate() {
-        this.refreshList();
-    }
-
     // Обновление списка
     refreshList = () => {
-        axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)
+        axios.post(savedFlightsMethods.GET_DEPARTURE_FLIGHTS, null, {
+            params: {todayOnly: true}
+        })
         .then(response => {
             if (response.data === null)
                 return;
@@ -49,16 +46,6 @@ export class BuyTicket extends Component {
 
     // Обработчик кнопки "Выбрать рейс"
     selectFlight = (flight) => {
-        flight.isSelected = true;
-
-        if (this.state.selectedFlightId !== 0){
-            this.setState(prevState => ({
-                flightsList: prevState.flightsList.map(x => (x.Id === flight.Id 
-                    ? Object.assign(x, { isSelected: false })
-                    : x))
-            }));
-        }
-
         this.setState({
             selectedFlightId: flight.Id
         });
@@ -90,17 +77,19 @@ export class BuyTicket extends Component {
         })
         .then((response) => {
             console.log("AddNewPassenger");
-            this.completedSuccessfully(response); 
-            this.getPassengerForTicket(); 
+            this.completedSuccessfully(response);
+            this.getPassengerForTicket();
         })
         .catch((error) => {
             alert(`Ошибка при отправке данных: ${error}`);
         });
     }
 
-    // Метод покупки билета
-    buyTicket = () => { 
-        debugger;       
+    /**
+     * Покупка билета
+     * @returns 
+     */
+    buyTicket = () => {    
         if (this.state.isAborted)
             return;
 
@@ -148,7 +137,6 @@ export class BuyTicket extends Component {
     // Когда запрос выполнился без ошибок
     completedSuccessfully = (response) => {
         console.log(response);
-        debugger;
         if (response.data !== "Success") {
             alert(`Ошибка:\n${response.data}\n${response}`);
             this.setState({ isAborted: true });
@@ -160,7 +148,7 @@ export class BuyTicket extends Component {
     handleSubmit = () => {
         this.setState({ isAborted: false });
 
-        if (this.state.selectedFlightId === 0) {
+        if (this.state.selectedFlightId === -1) {
             alert("Выберите рейс, чтобы приступить к покупке билета");
             this.setState({ isAborted: true });
             return;            
@@ -191,18 +179,15 @@ export class BuyTicket extends Component {
         this.buyTicket();
     }
 
+    getClassIfActive = (flightId) => {
+        if (flightId === this.state.selectedFlightId)
+            return styles.selectedFlight;
+
+        return null;
+    }
+
     render() {
         const { flightsList } = this.state;
-
-        const getClassIfActive = (flight) => {
-            if (flight.isSelected === undefined)
-                return null;
-
-            if (flight.isSelected)
-                return styles.selectedFlight;
-
-            return null;
-        }
 
         const isUserHasPassengerInfo = () => {
             let authCookie = Cookies.get("authData");
@@ -237,8 +222,8 @@ export class BuyTicket extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {flightsList.map(x => 
-                        <tr key = {x.Id} className={getClassIfActive(x)}>
+                        {flightsList.map(x =>
+                        <tr key = {x.Id} className={this.getClassIfActive(x.Id)}>
                             <td>{x.AirlineName}</td>
                             <td>{x.FlightNumber}</td>
                             <td>{x.CityName}</td>
