@@ -34,21 +34,6 @@ namespace KazanAirportWebApp.Controllers
         }
 
         /// <summary>
-        /// Получить все авиарейсы (прилетающие и вылетающие)
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [ActionName("GetAllFlights")]
-        public object GetAllFlights()
-        {
-            return new
-            {
-                Departures = FlightsFileReader.Instance().GetDepartureFlights(),
-                Arrivals = FlightsFileReader.Instance().GetArrivalFlights()
-            };
-        }
-
-        /// <summary>
         /// Сохранить рейс в БД
         /// <param name="flightId">ID рейса в файле</param>
         /// <param name="directionType">Тип авиарейса, 1 - Вылет, 2 - Прилет</param>

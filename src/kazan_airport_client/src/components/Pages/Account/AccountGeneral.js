@@ -5,7 +5,7 @@ import { ManagePassengers } from './ManagementComps/ManagePassengers';
 import { ManageCities } from './ManagementComps/ManageCities';
 import { ManagePlanes } from './ManagementComps/ManagePlanes';
 import { ManageAirlines } from './ManagementComps/ManageAirlines';
-import { ManageFlightsWeb } from './ManagementComps/ManageFlights/ManageFlightsWeb';
+import { ManageFlights } from './ManagementComps/ManageFlights';
 import WelcomeAccount from './WelcomeAccount';
 import Cookies from 'js-cookie';
 import { PassengerTickets } from './PassengerComps/PassengerTickets';
@@ -43,7 +43,7 @@ const AccountGeneral = () => {
                 { link: "/operator/cities", name: "Города", component: <ManageCities />, key: "o_cities" },
                 { link: "/operator/planes", name: "Самолеты", component: <ManagePlanes />, key: "o_planes" },
                 { link: "/operator/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "o_airlines" },
-                { link: "/operator/flights", name: "Рейсы", component: <ManageFlightsWeb />, key: "o_flights" }],
+                { link: "/operator/flights", name: "Рейсы", component: <ManageFlights />, key: "o_flights" }],
                 main: { link: "/operator", component: <WelcomeAccount /> },
                 needShowLogout: true
             };
@@ -55,7 +55,7 @@ const AccountGeneral = () => {
                 { link: "/admin/cities", name: "Города", component: <ManageCities />, key: "a_cities" },
                 { link: "/admin/planes", name: "Самолеты", component: <ManagePlanes />, key: "a_planes" },
                 { link: "/admin/airlines", name: "Авиакомпании", component: <ManageAirlines />, key: "a_airlines" },
-                { link: "/admin/flights", name: "Рейсы", component: <ManageFlightsWeb />, key: "a_flights" }],
+                { link: "/admin/flights", name: "Рейсы", component: <ManageFlights />, key: "a_flights" }],
                 main: { link: "/admin", component: <WelcomeAccount /> },
                 needShowLogout: true 
             };
