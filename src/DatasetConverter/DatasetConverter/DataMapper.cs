@@ -153,7 +153,10 @@ namespace DatasetConverter
                 idx++;
 
                 if (idx >= weatherList.Count - 1)
+                {
+                    idx = weatherList.Count - 1;
                     break;
+                }
             }
 
             return weatherList[idx];
