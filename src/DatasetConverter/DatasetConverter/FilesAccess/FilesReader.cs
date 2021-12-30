@@ -102,8 +102,8 @@ namespace DatasetConverter.FilesAccess
 
                 outcome.Add(new FlightItem
                 {
-                    AirlineName = parts[1],
-                    CityName = parts[3],
+                    AirlineName = cleanAirlineName(parts[1]),
+                    CityName = cleanCityName(parts[3]),
                     ScheduledTime = DateTime.ParseExact(parts[4], "dd.MM.yyyy HH:mm:ss", null),
                     ActualTime = DateTime.ParseExact(parts[5], "dd.MM.yyyy HH:mm:ss", null)
                 });
@@ -176,6 +176,36 @@ namespace DatasetConverter.FilesAccess
                 AirPressure = decodedMetar.AltimeterSetting.Value,
                 Temperature = decodedMetar.Temperature.Value
             };
+        }
+
+        /// <summary>
+        /// Чистка наименований авиакомпаний
+        /// </summary>
+        /// <param name="airlineName">Наименование авиакомпании</param>
+        /// <returns></returns>
+        private string cleanAirlineName(string airlineName)
+        {
+            var parts = airlineName.Split(' ');
+            if (parts[0].ToLower().Equals("ао") || parts[0].ToLower().Equals("пао"))
+                return string.Join(' ', parts[1..]);
+
+            return airlineName;
+        }
+
+        /// <summary>
+        /// Чистка наименования города
+        /// </summary>
+        /// <param name="cityName">Наименование города</param>
+        /// <returns></returns>
+        private string cleanCityName(string cityName)
+        {
+            if (cityName.ToLower().StartsWith("санкт"))
+                return "Санкт-Петербург";
+
+            if (cityName.ToLower().StartsWith("саратов"))
+                return "Саратов";
+
+            return cityName;
         }
 
         #endregion
