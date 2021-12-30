@@ -117,8 +117,8 @@ namespace DatasetConverter
             foreach (var flight in flights)
             {
                 var weatherItem = getWeatherWithIdx(_weatherList, flight.ScheduledTime, ref dateIdx);
-                var airlineId = getIdxFromDirectory(AirlinesDirectory, flight.AirlineName);
-                var cityId = getIdxFromDirectory(CitiesDirectory, flight.CityName);
+                var airlineId = getIdxFromDirectory(AirlinesDirectory, cleanAirlineName(flight.AirlineName));
+                var cityId = getIdxFromDirectory(CitiesDirectory, cleanCityName(flight.CityName));
                 var delayTime = (flight.ActualTime - flight.ScheduledTime).TotalMinutes;
                 var dayTime = getDayTime(flight.ScheduledTime);
 
@@ -211,6 +211,36 @@ namespace DatasetConverter
                 parts[i] = string.Concat(parts[i][..1].ToUpper(), parts[i][1..].ToLower());
 
             return string.Join(' ', parts);
+        }
+
+        /// <summary>
+        /// Чистка наименований авиакомпаний
+        /// </summary>
+        /// <param name="airlineName">Наименование авиакомпании</param>
+        /// <returns></returns>
+        private string cleanAirlineName(string airlineName)
+        {
+            var parts = airlineName.Split(' ');
+            if (parts[0].ToLower().Equals("ао") || parts[0].ToLower().Equals("пао"))
+                return string.Join(' ', parts[1..]);
+
+            return airlineName;
+        }
+
+        /// <summary>
+        /// Чистка наименования города
+        /// </summary>
+        /// <param name="cityName">Наименование города</param>
+        /// <returns></returns>
+        private string cleanCityName(string cityName)
+        {
+            if (cityName.ToLower().StartsWith("санкт"))
+                return "Санкт-Петербург";
+
+            if (cityName.ToLower().StartsWith("саратов"))
+                return "Саратов";
+
+            return cityName;
         }
 
         #endregion
