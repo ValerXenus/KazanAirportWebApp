@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KazanAirportWebApp", "Kazan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFlightsService", "GetFlightsService\GetFlightsService.csproj", "{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightsML", "FlightsML\FlightsML.csproj", "{3C247E09-FB0C-4DE3-AFFC-885B7B6AD7F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C247E09-FB0C-4DE3-AFFC-885B7B6AD7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C247E09-FB0C-4DE3-AFFC-885B7B6AD7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C247E09-FB0C-4DE3-AFFC-885B7B6AD7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C247E09-FB0C-4DE3-AFFC-885B7B6AD7F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
