@@ -51,6 +51,9 @@ namespace DatasetConverter.FilesAccess
 
             foreach (var flight in flightsDataset)
             {
+                if (flight.DelayTime > 60 || flight.DelayTime < -30)
+                    continue;
+
                 var line = $"{(int)flight.DayTime}|{flight.WindSpeed}|{flight.Visibility}|{flight.AirPressure}" +
                     $"|{flight.Temperature}|{flight.AirlineId}|{flight.CityId}|{flight.DelayTime}";
                 flightsFile.WriteLine(line);
