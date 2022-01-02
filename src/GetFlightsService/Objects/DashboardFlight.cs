@@ -48,8 +48,7 @@ namespace GetFlightsService.Objects
                             && ActualDateTime != DateTime.MinValue
                             && !string.IsNullOrEmpty(FlightNumber)
                             && !string.IsNullOrEmpty(Destination)
-                            && !string.IsNullOrEmpty(Airline)
-                            && !string.IsNullOrEmpty(Status);
+                            && !string.IsNullOrEmpty(Airline);
             return condition;
         }
     }

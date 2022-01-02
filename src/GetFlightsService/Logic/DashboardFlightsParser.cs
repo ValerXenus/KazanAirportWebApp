@@ -86,7 +86,7 @@ namespace GetFlightsService.Logic
         {
             var statusNode = node.SelectSingleNode(StringConstants.FlightStatusXPath)
                              ?? node.SelectSingleNode(StringConstants.FlightStatusWarningXPath);
-            if (statusNode == null)
+            if (statusNode == null || string.IsNullOrEmpty(statusNode.InnerText.Trim()))
             {
                 Log.Error($"Узел статуса оказался пустым. Узел рейса: {node.InnerHtml}");
                 return string.Empty;
