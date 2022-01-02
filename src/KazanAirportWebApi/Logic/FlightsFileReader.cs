@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Flights.ML;
 using KazanAirportWebApi.Models.JoinModels;
+using MetarParserCore;
+using MetarParserCore.Objects;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -18,14 +22,19 @@ namespace KazanAirportWebApi.Logic
         private static FlightsFileReader _instance;
 
         /// <summary>
-        /// Конфигурация
-        /// </summary>
-        private readonly IConfiguration _config;
-
-        /// <summary>
         /// Путь до JSON-файла со списком авиарейсов
         /// </summary>
         private string _flightsFilePath;
+
+        /// <summary>
+        /// Словарь авиакомпаний
+        /// </summary>
+        private Dictionary<int, string> _airlinesDirectory;
+
+        /// <summary>
+        /// Словарь городов
+        /// </summary>
+        private Dictionary<int, string> _citiesDirectory;
 
         /// <summary>
         /// Полный список всех авиарейсов
@@ -34,8 +43,10 @@ namespace KazanAirportWebApi.Logic
 
         private FlightsFileReader(IConfiguration config)
         {
-            _config = config;
-            _flightsFilePath = _config.GetValue<string>("FlightsFilePath");
+            _flightsFilePath = config.GetValue<string>("FlightsFilePath");
+
+            _airlinesDirectory = loadDictionary(config.GetValue<string>("AirlinesDirectoryFilePath"));
+            _citiesDirectory = loadDictionary(config.GetValue<string>("CitiesDirectoryFilePath"));
         }
 
         #region Public methods
@@ -56,7 +67,16 @@ namespace KazanAirportWebApi.Logic
         public List<FlightItem> GetDepartureFlights()
         {
             reloadFlightsList();
-            return _fullFlights?.DepartureFlights ?? new List<FlightItem>();
+            var departures = _fullFlights?.DepartureFlights;
+            if (departures == null)
+                return new List<FlightItem>();
+
+            var metar = getWeatherInfo();
+
+            for (var i = 0; i < departures.Count; i++)
+                departures[i] = predictFlightDelayTime(departures[i], metar, 1);
+
+            return departures;
         }
 
         /// <summary>
@@ -66,7 +86,16 @@ namespace KazanAirportWebApi.Logic
         public List<FlightItem> GetArrivalFlights()
         {
             reloadFlightsList();
-            return _fullFlights?.ArrivalFlights ?? new List<FlightItem>();
+            var arrivals = _fullFlights?.ArrivalFlights;
+            if (arrivals == null)
+                return new List<FlightItem>();
+
+            var metar = getWeatherInfo();
+
+            for (var i = 0; i < arrivals.Count; i++)
+                arrivals[i] = predictFlightDelayTime(arrivals[i], metar, 2);
+
+            return arrivals;
         }
 
         /// <summary>
@@ -94,6 +123,116 @@ namespace KazanAirportWebApi.Logic
         {
             var jsonContent = File.ReadAllText(_flightsFilePath);
             _fullFlights = JsonConvert.DeserializeObject<FullFlights>(jsonContent);
+        }
+
+        /// <summary>
+        /// Предсказать приблизительное фактическое время вылета/прилета авиарейса
+        /// </summary>
+        /// <param name="flightItem">Информация об авиарейсе</param>
+        /// <param name="metar">Погодные данные</param>
+        /// <param name="directionType">Тип авиарейса, 1 - Вылет, 2 - Прилет</param>
+        /// <returns></returns>
+        private FlightItem predictFlightDelayTime(FlightItem flightItem, Metar metar, int directionType)
+        {
+            if (flightItem.StatusName.ToLower().Contains("вылетел") 
+                || flightItem.StatusName.ToLower().Contains("прибыл"))
+                return flightItem;
+
+            var scheduledTime = flightItem.ScheduledDateTime;
+            var airlineId = getIdxFromDictionary(_airlinesDirectory, flightItem.AirlineName);
+            var cityId = getIdxFromDictionary(_citiesDirectory, flightItem.CityName);
+            var visibility = metar.PrevailingVisibility.IsCavok
+                ? 9999
+                : metar.PrevailingVisibility.VisibilityInMeters.VisibilityValue;
+
+            var modelInput = new FlightModelInput
+            {
+                DayTime = getDayTimeByScheduled(scheduledTime),
+                WindSpeed = metar.SurfaceWind.Speed,
+                AirPressure = metar.AltimeterSetting.Value,
+                Visibility = visibility,
+                Temperature = 0,
+                AirlineId = airlineId,
+                CityId = cityId
+            };
+
+            var delayTime = directionType == 1
+                ? FlightsModel.Instance().GetDeparturePrediction(modelInput)
+                : FlightsModel.Instance().GetArrivalPrediction(modelInput);
+
+            flightItem.ActualDateTime = scheduledTime.AddMinutes(delayTime);
+            flightItem.IsPredicted = true;
+
+            return flightItem;
+        }
+
+        /// <summary>
+        /// Загрузить словарь из файла
+        /// </summary>
+        /// <param name="filePath">Путь до файла данных словаря</param>
+        /// <returns></returns>
+        private Dictionary<int, string> loadDictionary(string filePath)
+        {
+            var outcome = new Dictionary<int, string>();
+
+            if (!File.Exists(filePath))
+                return outcome;
+
+            using var fileReader = new StreamReader(filePath);
+            while (!fileReader.EndOfStream)
+            {
+                var line = fileReader.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                    continue;
+
+                var parts = line.Split('|');
+                outcome.Add(int.Parse(parts[0].Trim()), parts[1]);
+            }
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Получить индекс из словаря по наименованию
+        /// </summary>
+        /// <param name="dictionary">Словарь</param>
+        /// <param name="name">Наименование</param>
+        /// <returns></returns>
+        private int getIdxFromDictionary(Dictionary<int, string> dictionary, string name)
+        {
+            foreach (var element in dictionary)
+            {
+                if (element.Value.ToLower().Equals(name.ToLower()))
+                    return element.Key;
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Получить время суток по дате и времени в расписании
+        /// </summary>
+        /// <param name="scheduledDateTime">Дата/время по расписанию</param>
+        /// <returns></returns>
+        private int getDayTimeByScheduled(DateTime scheduledDateTime)
+        {
+            return scheduledDateTime switch
+            {
+                { Hour: >= 0 and < 6 } => 0,
+                { Hour: >= 6 and < 12 } => 1,
+                { Hour: >= 12 and < 18 } => 2,
+                _ => 3
+            };
+        }
+
+        /// <summary>
+        /// Распарсить полученный METAR
+        /// </summary>
+        /// <returns></returns>
+        private Metar getWeatherInfo()
+        {
+            var metarParser = new MetarParser();
+            return metarParser.Parse(_fullFlights.Metar);
         }
 
         #endregion

@@ -139,10 +139,15 @@ namespace GetFlightsService
                 var dashboardArrivalFlights = dashboardGetter.GetArrivalFlights();
                 var arrivalFlights = mergeFlightLists(yandexArrivalFlights, dashboardArrivalFlights);
 
+                Log.Information("Получение данных о погоде на аэродроме (METAR)");
+                var weatherGetter = new WeatherGetter();
+                var rawMetar = weatherGetter.GetWeatherInfo();
+
                 var flights = new
                 {
                     DepartureFlights = departureFlights,
-                    ArrivalFlights = arrivalFlights
+                    ArrivalFlights = arrivalFlights,
+                    Metar = rawMetar
                 };
 
                 Log.Information("Получение списка рейсов в файл");

@@ -17,11 +17,6 @@ export class Departures extends Component {
         this.refreshList();
     }
 
-    // Выполняется, когда некоторые данные изменились
-    componentDidUpdate() {
-        this.refreshList();
-    }
-
     // Обновление списка
     refreshList = () => {
         axios.post(flightsMethods.GET_DEPARTURE_FLIGHTS)

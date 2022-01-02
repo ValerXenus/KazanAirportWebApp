@@ -84,7 +84,7 @@ namespace DatasetConverter
                 .ToList();
 
             for (var i = 0; i < airlines.Count; i++)
-                airlinesDirectory.Add(i, airlines[i]);
+                airlinesDirectory.Add(i + 1, airlines[i]);
 
             return airlinesDirectory;
         }
@@ -102,7 +102,7 @@ namespace DatasetConverter
                 .ToList();
 
             for (var i = 0; i < cities.Count; i++)
-                citiesDirectory.Add(i, cities[i]);
+                citiesDirectory.Add(i + 1, cities[i]);
 
             return citiesDirectory;
         }

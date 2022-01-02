@@ -5,12 +5,12 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
-namespace FlightsML
+namespace Flights_ML
 {
-    public partial class DeparturesModel
+    public partial class ArrivalsModel
     {
         /// <summary>
-        /// model input class for DeparturesModel.
+        /// model input class for ArrivalsModel.
         /// </summary>
         #region model input class
         public class ModelInput
@@ -44,7 +44,7 @@ namespace FlightsML
         #endregion
 
         /// <summary>
-        /// model output class for DeparturesModel.
+        /// model output class for ArrivalsModel.
         /// </summary>
         #region model output class
         public class ModelOutput
@@ -53,7 +53,7 @@ namespace FlightsML
         }
         #endregion
 
-        private static string MLNetModelPath = Path.GetFullPath("DeparturesModel.zip");
+        private static string MLNetModelPath = Path.GetFullPath("ArrivalsModel.zip");
 
         public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine(), true);
 

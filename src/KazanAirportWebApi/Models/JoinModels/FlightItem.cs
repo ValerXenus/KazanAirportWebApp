@@ -46,5 +46,11 @@ namespace KazanAirportWebApi.Models.JoinModels
         /// Статус рейса
         /// </summary>
         public string StatusName { get; set; }
+
+        /// <summary>
+        /// Признак, обозначающий, что фактическое время было рассчитано
+        /// при помощи модели машинного обучения
+        /// </summary>
+        public bool IsPredicted { get; set; }
     }
 }

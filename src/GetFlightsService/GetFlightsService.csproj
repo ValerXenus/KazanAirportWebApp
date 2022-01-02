@@ -118,6 +118,7 @@
     <Compile Include="Logic\DashboardFlightsParser.cs" />
     <Compile Include="Logic\HeadlessBrowser.cs" />
     <Compile Include="Logic\HtmlParser.cs" />
+    <Compile Include="Logic\WeatherGetter.cs" />
     <Compile Include="Logic\YandexFlightsGetter.cs" />
     <Compile Include="Objects\DashboardFlight.cs" />
     <Compile Include="Objects\FlightItem.cs" />

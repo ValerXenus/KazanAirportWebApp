@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers.LightGbm;
+using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Trainers;
 using Microsoft.ML;
 
-namespace FlightsML
+namespace Flights_ML
 {
     public partial class DeparturesModel
     {
@@ -31,7 +31,7 @@ namespace FlightsML
             // Data process configuration with pipeline data transformations
             var pipeline = mlContext.Transforms.ReplaceMissingValues(new []{new InputOutputColumnPair(@"dayTime", @"dayTime"),new InputOutputColumnPair(@"windSpeed", @"windSpeed"),new InputOutputColumnPair(@"visibility", @"visibility"),new InputOutputColumnPair(@"airPressure", @"airPressure"),new InputOutputColumnPair(@"temperature", @"temperature"),new InputOutputColumnPair(@"airlineId", @"airlineId"),new InputOutputColumnPair(@"cityId", @"cityId")})      
                                     .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"dayTime",@"windSpeed",@"visibility",@"airPressure",@"temperature",@"airlineId",@"cityId"}))      
-                                    .Append(mlContext.Regression.Trainers.LightGbm(new LightGbmRegressionTrainer.Options(){NumberOfLeaves=198,MinimumExampleCountPerLeaf=7,NumberOfIterations=4295,MaximumBinCountPerFeature=1024,LearningRate=1F,LabelColumnName=@"delayTime",FeatureColumnName=@"Features",Booster=new GradientBooster.Options(){SubsampleFraction=0.841135531295429F,FeatureFraction=0.0540011684206098F,L1Regularization=9.19181337527507E-10F,L2Regularization=0.113709168061506F}}));
+                                    .Append(mlContext.Regression.Trainers.FastTree(new FastTreeRegressionTrainer.Options(){NumberOfLeaves=11,MinimumExampleCountPerLeaf=13,NumberOfTrees=38,MaximumBinCountPerFeature=807,LearningRate=0.286617556655495F,FeatureFraction=0.988414101931452F,LabelColumnName=@"delayTime",FeatureColumnName=@"Features"}));
 
             return pipeline;
         }
