@@ -1,7 +1,13 @@
-.scheduleStyle{
+.scheduleStyle {
     grid-area: ct;
     min-height: 800px;
     min-width: 1200px;
     max-width: 1500px;
     margin: 0 auto;
+}
+
+.mlLogoStyle {
+    height: 20px;
+    width: 20px;
+    margin-left: 5px;
 }

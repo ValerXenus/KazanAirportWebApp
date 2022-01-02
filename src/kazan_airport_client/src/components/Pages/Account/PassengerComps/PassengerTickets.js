@@ -35,7 +35,6 @@ export class PassengerTickets extends Component {
             params: {passengerId: currentSession.passengerId}
         })
         .then(response => {
-            debugger;
             this.setState({ticketsList: response.data})
         })
         .catch((error) => {
@@ -62,13 +61,13 @@ export class PassengerTickets extends Component {
                     </thead>
                     <tbody>
                         {ticketsList.map(x => 
-                        <tr key = {x.PassengerId}>
-                            <td>{x.FlightNumber}</td>
-                            <td>{x.TicketNumber}</td>
-                            <td>{x.CityName}</td>
-                            <td>{x.DepartureScheduled}</td>
-                            <td>{x.ArrivalScheduled}</td>
-                            <td>{x.AirlineName}</td>
+                        <tr key = {x.passengerId}>
+                            <td>{x.flightNumber}</td>
+                            <td>{x.ticketNumber}</td>
+                            <td>{x.cityName}</td>
+                            <td>{x.departureScheduled}</td>
+                            <td>{x.arrivalScheduled}</td>
+                            <td>{x.airlineName}</td>
                         </tr>)}
                     </tbody>
                 </Table>           

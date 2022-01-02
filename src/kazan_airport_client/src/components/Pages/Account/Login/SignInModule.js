@@ -47,8 +47,8 @@ const SignInModule = () => {
         let encryptedPassword = md5(state.password);
 
         axios.post(usersMethods.LOGIN_USER, {
-            UserLogin: state.login,
-            UserPassword: encryptedPassword
+            userLogin: state.login,
+            userPassword: encryptedPassword
         })
         .then((response) => completedSuccessfully(response))
         .catch((error) => {
@@ -70,13 +70,13 @@ const SignInModule = () => {
         }
 
         Cookies.set("authData", JSON.stringify({
-            userId: userData.Id,
-            userLogin: userData.UserLogin,
-            role: userData.UserTypeId,
-            passengerId: userData.PassengerId,
+            userId: userData.id,
+            userLogin: userData.userLogin,
+            role: userData.userTypeId,
+            passengerId: userData.passengerId,
             isAuth: true
         }));
-
+        
         alert("Вход выполнен успешно.\n");
         window.location = "/";
     }

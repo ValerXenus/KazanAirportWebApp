@@ -76,20 +76,20 @@ export class ManageSavedFlights extends Component {
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
-                        <tr key = {x.Id}>
-                            <td>{x.Id}</td>
-                            <td>{x.AirlineName}</td>
-                            <td>{x.FlightNumber}</td>
-                            <td>{x.CityName}</td>
-                            <td>{x.PlaneName}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ScheduledDateTime)}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ActualDateTime)}</td>
-                            <td>{x.StatusName}</td>
+                        <tr key = {x.id}>
+                            <td>{x.id}</td>
+                            <td>{x.airlineName}</td>
+                            <td>{x.flightNumber}</td>
+                            <td>{x.cityName}</td>
+                            <td>{x.planeName}</td>
+                            <td>{UtilityMethods.convertDateTime(x.scheduledDateTime)}</td>
+                            <td>{UtilityMethods.convertDateTime(x.actualDateTime)}</td>
+                            <td>{x.statusName}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeFlight(x.Id); }}>
+                                        onClick={() => { this.removeFlight(x.id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

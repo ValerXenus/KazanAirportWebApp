@@ -47,7 +47,7 @@ export class BuyTicket extends Component {
     // Обработчик кнопки "Выбрать рейс"
     selectFlight = (flight) => {
         this.setState({
-            selectedFlightId: flight.Id
+            selectedFlightId: flight.id
         });
         this.refreshList();
     }
@@ -68,10 +68,10 @@ export class BuyTicket extends Component {
             return;
 
         axios.post(passengersMethods.ADD_NEW_PASSENGER, {
-            LastName: this.state.passengerInfo.lastName,
-            FirstName: this.state.passengerInfo.firstName,
-            MiddleName: this.state.passengerInfo.middleName,
-            PassportNumber: this.state.passengerInfo.passportNumber,
+            lastName: this.state.passengerInfo.lastName,
+            firstName: this.state.passengerInfo.firstName,
+            middleName: this.state.passengerInfo.middleName,
+            passportNumber: this.state.passengerInfo.passportNumber,
         }, {
             params: { userLogin: userLogin }
         })
@@ -89,13 +89,15 @@ export class BuyTicket extends Component {
      * Покупка билета
      * @returns 
      */
-    buyTicket = () => {    
+    buyTicket = (passengerId) => {    
         if (this.state.isAborted)
             return;
 
+        let id = passengerId ? passengerId : this.state.passengerInfo.id;
+
         axios.post(ticketsMethods.CREATE_TICKET, {
-            PassengerId: this.state.passengerInfo.id,
-            FlightId: this.state.selectedFlightId
+            passengerId: id,
+            flightId: this.state.selectedFlightId
         })
         .then((response) => {
             this.completedSuccessfully(response);
@@ -124,9 +126,9 @@ export class BuyTicket extends Component {
             this.setState(prevState => ({
                 passengerInfo: {                   
                     ...prevState.passengerInfo,
-                    id: response.data.Id
+                    id: response.data.id
                 }
-            }))            
+            }));
             this.buyTicket(); 
         })
         .catch((error) => {
@@ -157,6 +159,7 @@ export class BuyTicket extends Component {
         let authCookie = Cookies.get("authData");
         if (authCookie) {
             let currentSession = JSON.parse(authCookie);
+
             // Если у пользователя нет пассажира, то добавляем его
             if (!currentSession.passengerId 
                 || currentSession.passengerId === -1 
@@ -164,19 +167,13 @@ export class BuyTicket extends Component {
                 this.addNewPassenger(currentSession.userLogin);
                 return;
             } else {
-                this.setState(prevState => ({
-                    passengerInfo: {                   
-                        ...prevState.passengerInfo,
-                        id: currentSession.passengerId
-                    }
-                }))
+                this.buyTicket(parseInt(currentSession.passengerId));
+                return;
             }
         } else {
             this.addNewPassenger();
             return;
         }
-
-        this.buyTicket();
     }
 
     getClassIfActive = (flightId) => {
@@ -223,13 +220,13 @@ export class BuyTicket extends Component {
                     </thead>
                     <tbody>
                         {flightsList.map(x =>
-                        <tr key = {x.Id} className={this.getClassIfActive(x.Id)}>
-                            <td>{x.AirlineName}</td>
-                            <td>{x.FlightNumber}</td>
-                            <td>{x.CityName}</td>
-                            <td>{x.PlaneName}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ScheduledDateTime)}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ActualDateTime)}</td>
+                        <tr key = {x.id} className={this.getClassIfActive(x.id)}>
+                            <td>{x.airlineName}</td>
+                            <td>{x.flightNumber}</td>
+                            <td>{x.cityName}</td>
+                            <td>{x.planeName}</td>
+                            <td>{UtilityMethods.convertDateTime(x.scheduledDateTime)}</td>
+                            <td>{UtilityMethods.convertDateTime(x.actualDateTime)}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button

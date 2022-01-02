@@ -34,8 +34,8 @@ export class AddPlaneModal extends Component {
         }
         
         axios.post(planesMethods.ADD_NEW_PLANE, {
-            Name: this.state.planeInfo.modelName,
-            AirlineId: this.state.planeInfo.airlineId
+            name: this.state.planeInfo.modelName,
+            airlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -45,9 +45,9 @@ export class AddPlaneModal extends Component {
 
     updateInfo = () => {
         axios.post(planesMethods.UPDATE_PLANE, {
-            Id: this.state.planeInfo.id,
-            Name: this.state.planeInfo.modelName,
-            AirlineId: this.state.planeInfo.airlineId
+            id: this.state.planeInfo.id,
+            name: this.state.planeInfo.modelName,
+            airlineId: this.state.planeInfo.airlineId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {

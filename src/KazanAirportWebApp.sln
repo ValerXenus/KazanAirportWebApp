@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{62C47288-2081-45D8-B8AF-2B777FAD6EEF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFlightsService", "GetFlightsService\GetFlightsService.csproj", "{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KazanAirportWebApi", "KazanAirportWebApi\KazanAirportWebApi.csproj", "{8795CDE9-4478-44CE-A9B0-7A6B6BF02482}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flights.ML", "Flights.ML\Flights.ML.csproj", "{678CE24E-D230-4819-9ACE-EACEEBCE8D57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D19D6FD-FCBE-49E6-8F0A-0F100E3983FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8795CDE9-4478-44CE-A9B0-7A6B6BF02482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8795CDE9-4478-44CE-A9B0-7A6B6BF02482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8795CDE9-4478-44CE-A9B0-7A6B6BF02482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8795CDE9-4478-44CE-A9B0-7A6B6BF02482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{678CE24E-D230-4819-9ACE-EACEEBCE8D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{678CE24E-D230-4819-9ACE-EACEEBCE8D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{678CE24E-D230-4819-9ACE-EACEEBCE8D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{678CE24E-D230-4819-9ACE-EACEEBCE8D57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5260D209-D3BA-44B3-9008-4FDE0F53C8D4}
+	EndGlobalSection
+EndGlobal

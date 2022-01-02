@@ -45,7 +45,7 @@ export class ManageAirlines extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    airlineName: response.data.Name
+                    airlineName: response.data.name
                 }});
         })
         .catch((error) => {
@@ -88,19 +88,19 @@ export class ManageAirlines extends Component {
                     </thead>
                     <tbody>
                         {airlinesList.map(x => 
-                        <tr key = {x.Id}>
-                            <td>{x.Id}</td>
-                            <td>{x.Name}</td>
+                        <tr key = {x.id}>
+                            <td>{x.id}</td>
+                            <td>{x.name}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.Id); }}>
+                                        onClick={() => { this.showModalEdit(x.id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.Id); }}>
+                                        onClick={() => { this.removeRecord(x.id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

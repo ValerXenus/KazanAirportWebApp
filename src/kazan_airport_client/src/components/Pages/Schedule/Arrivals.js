@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import { flightsMethods } from '../../HelperComponents/ApiUrls';
+import styles from './Schedule.module.css';
+import mlIcon from '../../../images/icons/ml_icon.png';
 import axios from "axios";
 import UtilityMethods from '../../HelperComponents/Logic/UtilityMethods';
 
@@ -14,11 +16,6 @@ export class Arrivals extends Component {
 
     // Выполняется, когда все компоненты были отрендерены
     componentDidMount() {
-        this.refreshList();
-    }
-
-    // Выполняется, когда некоторые данные изменились
-    componentDidUpdate() {
         this.refreshList();
     }
 
@@ -39,6 +36,20 @@ export class Arrivals extends Component {
     render() {
         const { flightsList } = this.state;
 
+        const renderActualTime = (date, isPredicted) => {
+            if (isPredicted)
+                return (
+                    <div>
+                        {date}
+                        <img src={mlIcon} className={styles.mlLogoStyle} alt={"Рассчитано при помощи модели машинного обучения"}/>
+                    </div>
+                );
+
+            return (
+                <div>{date}</div>
+            );
+        }
+
         return(
             <div>
                 <h4>Прилет</h4>
@@ -57,14 +68,14 @@ export class Arrivals extends Component {
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
-                        <tr key = {x.Id}>
-                            <td>{x.AirlineName}</td>
-                            <td>{x.FlightNumber}</td>
-                            <td>{x.CityName}</td>
-                            <td>{x.PlaneName}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ScheduledDateTime)}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ActualDateTime)}</td>
-                            <td>{x.StatusName}</td>
+                        <tr key = {x.id}>
+                            <td>{x.airlineName}</td>
+                            <td>{x.flightNumber}</td>
+                            <td>{x.cityName}</td>
+                            <td>{x.planeName}</td>
+                            <td>{UtilityMethods.convertDateTime(x.scheduledDateTime)}</td>
+                            <td width={160}>{renderActualTime(UtilityMethods.convertDateTime(x.actualDateTime), x.isPredicted)}</td>
+                            <td>{x.statusName}</td>
                         </tr>)}
                     </tbody>
                 </Table>

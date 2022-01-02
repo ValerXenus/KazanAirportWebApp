@@ -45,9 +45,9 @@ export class ManageUsers extends Component {
                 editModalShow: true,
                 editRecord: {
                     id: id,
-                    login: response.data.UserLogin,
-                    email: response.data.Email,
-                    role: response.data.UserTypeId
+                    login: response.data.userLogin,
+                    email: response.data.email,
+                    role: response.data.userTypeId
                 }});
         })
         .catch((error) => {
@@ -103,21 +103,21 @@ export class ManageUsers extends Component {
                     </thead>
                     <tbody>
                         {usersList.map(x => 
-                        <tr key = {x.Id}>
-                            <td>{x.Id}</td>
-                            <td>{x.UserLogin}</td>
-                            <td>{x.Email}</td>
-                            <td>{getUserTypeName(x.UserTypeId)}</td>
+                        <tr key = {x.id}>
+                            <td>{x.id}</td>
+                            <td>{x.userLogin}</td>
+                            <td>{x.email}</td>
+                            <td>{getUserTypeName(x.userTypeId)}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button
                                         className="mr-2" variant="info"
-                                        onClick={() => { this.showModalEdit(x.Id); }}>
+                                        onClick={() => { this.showModalEdit(x.id); }}>
                                         Редактировать
                                     </Button>
                                     <Button
                                         className="mr-2 bg-danger" variant="info"
-                                        onClick={() => { this.removeRecord(x.Id); }}>
+                                        onClick={() => { this.removeRecord(x.id); }}>
                                         Удалить
                                     </Button>
                                 </ButtonToolbar>

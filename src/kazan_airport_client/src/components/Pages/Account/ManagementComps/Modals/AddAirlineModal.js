@@ -33,7 +33,7 @@ export class AddAirlineModal extends Component {
         }
         
         axios.post(airlinesMethods.ADD_NEW_AIRLINE, {
-            Name: this.state.airlineInfo.airlineName
+            name: this.state.airlineInfo.airlineName
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -43,8 +43,8 @@ export class AddAirlineModal extends Component {
 
     updateInfo = () => {
         axios.post(airlinesMethods.UPDATE_AIRLINE, {
-            Id: this.state.airlineInfo.id,
-            Name: this.state.airlineInfo.airlineName
+            id: this.state.airlineInfo.id,
+            name: this.state.airlineInfo.airlineName
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
