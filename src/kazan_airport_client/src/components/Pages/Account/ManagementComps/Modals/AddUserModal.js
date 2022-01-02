@@ -35,10 +35,10 @@ export class AddUserModal extends Component {
         
         let encryptedPassword = md5(this.state.password);
         axios.post(usersMethods.ADD_NEW_USER, {
-            UserLogin: this.state.login,
-            UserPassword: encryptedPassword,
-            Email: this.state.email,
-            UserTypeId: this.state.userTypeId
+            userLogin: this.state.login,
+            userPassword: encryptedPassword,
+            email: this.state.email,
+            userTypeId: this.state.userTypeId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {
@@ -48,10 +48,10 @@ export class AddUserModal extends Component {
 
     updateUserInfo = () => {
         axios.post(usersMethods.UPDATE_USER, {
-            Id: this.state.id,
-            UserLogin: this.state.login,
-            Email: this.state.email,
-            UserTypeId: this.state.userTypeId
+            id: this.state.id,
+            userLogin: this.state.login,
+            email: this.state.email,
+            userTypeId: this.state.userTypeId
         })
         .then((response) => this.completedSuccessfully(response))
         .catch((error) => {

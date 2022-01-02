@@ -28,7 +28,7 @@ export class Departures extends Component {
         .then(response => {
             if (response.data === null)
                 return;
-                
+            
             this.setState({flightsList: response.data})
         })
         .catch((error) => {
@@ -50,21 +50,21 @@ export class Departures extends Component {
                             <th>Город</th>
                             <th>Самолет</th>
                             <th>Отправление по расписанию</th>
-                            <th>Отправление (приблизительно)</th>
+                            <th>Отправление фактическое</th>
                             <th>Статус</th>
                             <th/>
                         </tr>
                     </thead>
                     <tbody>
                         {flightsList.map(x => 
-                        <tr key = {x.Id}>
-                            <td>{x.AirlineName}</td>
-                            <td>{x.FlightNumber}</td>
-                            <td>{x.CityName}</td>
-                            <td>{x.PlaneName}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ScheduledDateTime)}</td>
-                            <td>{UtilityMethods.convertDateTime(x.ActualDateTime)}</td>                          
-                            <td>{x.StatusName}</td>
+                        <tr key = {x.id}>
+                            <td>{x.airlineName}</td>
+                            <td>{x.flightNumber}</td>
+                            <td>{x.cityName}</td>
+                            <td>{x.planeName}</td>
+                            <td>{UtilityMethods.convertDateTime(x.scheduledDateTime)}</td>
+                            <td>{UtilityMethods.convertDateTime(x.actualDateTime)}</td>                          
+                            <td>{x.statusName}</td>
                         </tr>)}
                     </tbody>
                 </Table>

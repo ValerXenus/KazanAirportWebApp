@@ -1,4 +1,4 @@
-const apiUrl = "https://localhost:44377/api";
+const apiUrl = "http://localhost:32111";
 
 export const usersMethods = {
     ADD_NEW_USER: apiUrl + "/UserAccount/AddNewUser",
