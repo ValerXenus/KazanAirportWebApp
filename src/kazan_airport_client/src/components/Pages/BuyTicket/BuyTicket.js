@@ -214,7 +214,6 @@ export class BuyTicket extends Component {
                             <th>Город</th>
                             <th>Самолет</th>
                             <th>Вылет по расписанию</th>
-                            <th>Вылет (приблизительно)</th>
                             <th/>
                         </tr>
                     </thead>
@@ -226,7 +225,6 @@ export class BuyTicket extends Component {
                             <td>{x.cityName}</td>
                             <td>{x.planeName}</td>
                             <td>{UtilityMethods.convertDateTime(x.scheduledDateTime)}</td>
-                            <td>{UtilityMethods.convertDateTime(x.actualDateTime)}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button

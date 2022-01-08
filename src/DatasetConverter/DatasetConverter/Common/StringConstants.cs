@@ -51,5 +51,10 @@ namespace DatasetConverter.Common
         /// Файл-справочник городов (аэропортов)
         /// </summary>
         public static string CitiesDirectory = Path.Combine(_outcomeFolder, "CitiesDirectory.txt");
+
+        /// <summary>
+        /// Файл рейтинга авиакомпаний
+        /// </summary>
+        public static string AirlinesTop = Path.Combine(_outcomeFolder, "AirlinesTop.txt");
     }
 }

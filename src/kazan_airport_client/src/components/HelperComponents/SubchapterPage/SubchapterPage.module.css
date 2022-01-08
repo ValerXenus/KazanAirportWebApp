@@ -26,6 +26,7 @@
     padding-left: 30px;
     transition-duration: 0.4s;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .navlinkItem:hover {

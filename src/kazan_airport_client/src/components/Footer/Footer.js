@@ -28,7 +28,7 @@ const Footer = () => {
                 </div>
                 <div className={styles.aboutInfo}>
                     <h3>О нас</h3>
-                    <div><NavLink className={styles.childItem} to="/about/news">Новости</NavLink></div>
+                    <div><NavLink className={styles.childItem} to="/about/airlinestop">Рейтинг авиакомпаний</NavLink></div>
                     <div><NavLink className={styles.childItem} to="/howtoget">Как добраться</NavLink></div>
                     <div><NavLink className={styles.childItem} to="/about/history">История</NavLink></div>
                     <div><NavLink className={styles.childItem} to="/about/contacts">Контактная информация</NavLink></div>

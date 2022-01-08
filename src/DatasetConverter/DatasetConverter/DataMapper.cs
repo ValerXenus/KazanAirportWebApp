@@ -28,6 +28,11 @@ namespace DatasetConverter
         /// </summary>
         private List<WeatherItem> _weatherList;
 
+        /// <summary>
+        /// Справочник со значениями о времени задержки по авиакомпании
+        /// </summary>
+        private Dictionary<int, List<double>> _airlineDelays;
+
         #endregion
 
         #region Properties
@@ -52,6 +57,11 @@ namespace DatasetConverter
         /// </summary>
         public Dictionary<int, string> CitiesDirectory { get; }
 
+        /// <summary>
+        /// Топ авиакомпаний
+        /// </summary>
+        public Dictionary<string, double> AirlineDelays { get; }
+
         #endregion
 
         public DataMapper(List<FlightItem> departureFlights, List<FlightItem> arrivalFlights,
@@ -61,12 +71,16 @@ namespace DatasetConverter
             _arrivalFlights = arrivalFlights;
             _weatherList = weatherList;
 
+            _airlineDelays = new Dictionary<int, List<double>>();
+
             // Создание справочников
             AirlinesDirectory = getAirlinesDirectory(_departureFlights.Concat(_arrivalFlights).ToList());
             CitiesDirectory = getCitiesDirectory(_departureFlights.Concat(_arrivalFlights).ToList());
 
             DepartureDataset = getDataset(_departureFlights);
             ArrivalDataset = getDataset(_arrivalFlights);
+
+            AirlineDelays = getAirlinesAvgDelays();
         }
 
         #region Private methods
@@ -84,7 +98,10 @@ namespace DatasetConverter
                 .ToList();
 
             for (var i = 0; i < airlines.Count; i++)
+            {
                 airlinesDirectory.Add(i + 1, airlines[i]);
+                _airlineDelays.Add(i, new List<double>());
+            }
 
             return airlinesDirectory;
         }
@@ -137,6 +154,8 @@ namespace DatasetConverter
                     Visibility = weatherItem.Visibility,
                     WindSpeed = weatherItem.WindSpeed
                 });
+
+                addDelayValueForRating(airlineId, delayTime);
             }
 
             return outcome;
@@ -215,6 +234,42 @@ namespace DatasetConverter
                 parts[i] = string.Concat(parts[i][..1].ToUpper(), parts[i][1..].ToLower());
 
             return string.Join(' ', parts);
+        }
+
+        /// <summary>
+        /// Добавить значение времени задержки к авиакомпание
+        /// </summary>
+        /// <param name="airlineId">ID авиакомпании в справочнике</param>
+        /// <param name="delayTime">Время задержки</param>
+        private void addDelayValueForRating(int airlineId, double delayTime)
+        {
+            var airline = _airlineDelays.FirstOrDefault(x => x.Key == airlineId);
+            airline.Value?.Add(delayTime);
+        }
+
+        /// <summary>
+        /// Получить среднее время задержки по авиакомпаниям
+        /// </summary>
+        /// <returns></returns>
+        private Dictionary<string, double> getAirlinesAvgDelays()
+        {
+            var outcome = new Dictionary<string, double>();
+
+            foreach (var element in _airlineDelays)
+            {
+                var airline = AirlinesDirectory.FirstOrDefault(x => x.Key == element.Key).Value;
+                if (airline == null)
+                    continue;
+
+                var averageDelayTime = element.Value.Sum();
+                averageDelayTime = Math.Round(averageDelayTime / element.Value.Count, 2);
+
+                outcome.Add(airline, averageDelayTime);
+            }
+
+            return outcome
+                .OrderBy(x => x.Value)
+                .ToDictionary(x => x.Key, x => x.Value);
         }
 
         #endregion

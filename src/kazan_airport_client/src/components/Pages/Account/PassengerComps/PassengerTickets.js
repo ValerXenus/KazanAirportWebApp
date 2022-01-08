@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Table } from 'react-bootstrap';
 import { ticketsMethods } from '../../../HelperComponents/ApiUrls';
 import Cookies from 'js-cookie';
+import UtilityMethods from "../../../HelperComponents/Logic/UtilityMethods";
 
 export class PassengerTickets extends Component {
     constructor(props) {
@@ -14,11 +15,6 @@ export class PassengerTickets extends Component {
 
     // Выполняется, когда все компоненты были отрендерены
     componentDidMount() {
-        this.refreshList();
-    }
-
-    // Выполняется, когда некоторые данные изменились
-    componentDidUpdate() {
         this.refreshList();
     }
 
@@ -65,8 +61,7 @@ export class PassengerTickets extends Component {
                             <td>{x.flightNumber}</td>
                             <td>{x.ticketNumber}</td>
                             <td>{x.cityName}</td>
-                            <td>{x.departureScheduled}</td>
-                            <td>{x.arrivalScheduled}</td>
+                            <td>{UtilityMethods.convertDateTime(x.departureScheduled)}</td>
                             <td>{x.airlineName}</td>
                         </tr>)}
                     </tbody>

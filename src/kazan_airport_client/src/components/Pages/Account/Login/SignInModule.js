@@ -58,13 +58,13 @@ const SignInModule = () => {
 
     // Выполнение запроса успешно завершено
     const completedSuccessfully = (response) => {
-        if (response.data === null){
+        if (!response.data){
             alert("Неправильный логин или пароль");
             return;
         }
 
         let userData = response.data;
-        if (userData === undefined) {
+        if (!userData) {
             alert("Неправильный логин или пароль");
             return;
         }

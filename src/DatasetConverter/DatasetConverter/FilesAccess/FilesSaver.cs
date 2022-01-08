@@ -31,6 +31,9 @@ namespace DatasetConverter.FilesAccess
             // Сохранение справочных файлов
             saveDirectoryFile(dataMapper.AirlinesDirectory, StringConstants.AirlinesDirectory);
             saveDirectoryFile(dataMapper.CitiesDirectory, StringConstants.CitiesDirectory);
+
+            // Сохранение файла рейтинга авиакомпаний
+            saveRatingsFile(dataMapper.AirlineDelays, StringConstants.AirlinesTop);
         }
 
         #endregion
@@ -70,6 +73,22 @@ namespace DatasetConverter.FilesAccess
             using var flightsFile = new StreamWriter(filename);
 
             foreach (var row in directory)
+            {
+                var line = $"{row.Key}|{row.Value}";
+                flightsFile.WriteLine(line);
+            }
+        }
+
+        /// <summary>
+        /// Сохранить файл рейтинга авиакомпаний
+        /// </summary>
+        /// <param name="top">Данные</param>
+        /// <param name="filename">Имя файла</param>
+        private void saveRatingsFile(Dictionary<string, double> top, string filename)
+        {
+            using var flightsFile = new StreamWriter(filename);
+
+            foreach (var row in top)
             {
                 var line = $"{row.Key}|{row.Value}";
                 flightsFile.WriteLine(line);

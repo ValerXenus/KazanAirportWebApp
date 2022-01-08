@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using KazanAirportWebApi.DataAccess;
+using KazanAirportWebApi.Logic;
 using KazanAirportWebApi.Models;
+using KazanAirportWebApi.Models.JoinModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace KazanAirportWebApi.Controllers
 {
@@ -16,9 +19,15 @@ namespace KazanAirportWebApi.Controllers
         /// </summary>
         private readonly KazanAirportDbContext _db;
 
-        public AirlinesController(KazanAirportDbContext db)
+        /// <summary>
+        /// Конфигурация
+        /// </summary>
+        private readonly IConfiguration _config;
+
+        public AirlinesController(IConfiguration config, KazanAirportDbContext db)
         {
             _db = db;
+            _config = config;
         }
 
         /// <summary>
@@ -34,6 +43,24 @@ namespace KazanAirportWebApi.Controllers
                 var airlinesList = _db.Airlines.ToList();
 
                 return airlinesList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Получение списка рейтинга авиакомпаний
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetAirlinesRating")]
+        public List<AirlineTopItem> GetAirlinesRating()
+        {
+            try
+            {
+                return FlightsFileReader.Instance(_config).GetFlightsRating();
             }
             catch
             {

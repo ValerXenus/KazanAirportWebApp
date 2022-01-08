@@ -68,7 +68,7 @@ namespace KazanAirportWebApi.Controllers
                     join c in _db.Cities on f.CityId equals c.Id
                     join p in _db.Planes on f.PlaneId equals p.Id
                     join a in _db.Airlines on p.AirlineId equals a.Id
-                    where t.PassengerId == passengerId
+                    where t.PassengerId == passengerId && t.PassengerId != -1
                     select new PassengerTicket
                     {
                         PassengerId = passengerId,

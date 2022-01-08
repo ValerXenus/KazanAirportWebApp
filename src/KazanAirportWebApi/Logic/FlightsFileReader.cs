@@ -37,6 +37,11 @@ namespace KazanAirportWebApi.Logic
         private Dictionary<int, string> _citiesDirectory;
 
         /// <summary>
+        /// Рейтинг авиакомпаний
+        /// </summary>
+        private Dictionary<string, double> _airlinesTop;
+
+        /// <summary>
         /// Полный список всех авиарейсов
         /// </summary>
         private FullFlights _fullFlights;
@@ -47,6 +52,7 @@ namespace KazanAirportWebApi.Logic
 
             _airlinesDirectory = loadDictionary(config.GetValue<string>("AirlinesDirectoryFilePath"));
             _citiesDirectory = loadDictionary(config.GetValue<string>("CitiesDirectoryFilePath"));
+            _airlinesTop = loadFlightsTop(config.GetValue<string>("AirlinesTopFilePath"));
         }
 
         #region Public methods
@@ -110,6 +116,19 @@ namespace KazanAirportWebApi.Logic
             return directionType == 1
                 ? _fullFlights.DepartureFlights.FirstOrDefault(x => x.Id == flightId)
                 : _fullFlights.ArrivalFlights.FirstOrDefault(x => x.Id == flightId);
+        }
+
+        /// <summary>
+        /// Получить список рейтинга авиакомпаний
+        /// </summary>
+        /// <returns></returns>
+        public List<AirlineTopItem> GetFlightsRating()
+        {
+            return _airlinesTop.Select(x => new AirlineTopItem
+            {
+                Name = x.Key,
+                DelayTime = x.Value
+            }).ToList();
         }
 
         #endregion
@@ -187,6 +206,32 @@ namespace KazanAirportWebApi.Logic
 
                 var parts = line.Split('|');
                 outcome.Add(int.Parse(parts[0].Trim()), parts[1]);
+            }
+
+            return outcome;
+        }
+
+        /// <summary>
+        /// Загрузить список рейтинга авиакомпаний
+        /// </summary>
+        /// <param name="filePath">Путь до файла</param>
+        /// <returns></returns>
+        private Dictionary<string, double> loadFlightsTop(string filePath)
+        {
+            var outcome = new Dictionary<string, double>();
+
+            if (!File.Exists(filePath))
+                return outcome;
+
+            using var fileReader = new StreamReader(filePath);
+            while (!fileReader.EndOfStream)
+            {
+                var line = fileReader.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                    continue;
+
+                var parts = line.Split('|');
+                outcome.Add(parts[0], double.Parse(parts[1].Trim()));
             }
 
             return outcome;
