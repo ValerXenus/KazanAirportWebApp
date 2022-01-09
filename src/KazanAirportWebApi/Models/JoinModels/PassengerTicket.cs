@@ -41,5 +41,10 @@ namespace KazanAirportWebApi.Models.JoinModels
         /// Наименование авиакомпании
         /// </summary>
         public string AirlineName { get; set; }
+
+        /// <summary>
+        /// Номер кресла в салоне
+        /// </summary>
+        public string SeatNumber { get; set; }
     }
 }

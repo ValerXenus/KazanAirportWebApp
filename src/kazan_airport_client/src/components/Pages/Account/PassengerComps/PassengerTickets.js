@@ -50,8 +50,8 @@ export class PassengerTickets extends Component {
                             <th>Номер билета</th>
                             <th>Город</th>
                             <th>Отправление</th>
-                            <th>Прибытие</th>
                             <th>Авиакомпания</th>
+                            <th>Место в салоне</th>
                             <th/>
                         </tr>
                     </thead>
@@ -63,6 +63,7 @@ export class PassengerTickets extends Component {
                             <td>{x.cityName}</td>
                             <td>{UtilityMethods.convertDateTime(x.departureScheduled)}</td>
                             <td>{x.airlineName}</td>
+                            <td>{x.seatNumber}</td>
                         </tr>)}
                     </tbody>
                 </Table>           

@@ -68,16 +68,18 @@ namespace KazanAirportWebApi.Controllers
                     join c in _db.Cities on f.CityId equals c.Id
                     join p in _db.Planes on f.PlaneId equals p.Id
                     join a in _db.Airlines on p.AirlineId equals a.Id
-                    where t.PassengerId == passengerId && t.PassengerId != -1
+                    where t.PassengerId == passengerId 
+                          && t.PassengerId != -1
+                          && f.ScheduledDateTime >= DateTime.Now
                     select new PassengerTicket
                     {
                         PassengerId = passengerId,
                         TicketNumber = t.TicketNumber,
                         FlightNumber = f.FlightNumber,
                         DepartureScheduled = f.ScheduledDateTime,
-                        ArrivalScheduled = f.ActualDateTime ?? DateTime.MinValue,
                         AirlineName = a.Name,
-                        CityName = c.Name
+                        CityName = c.Name,
+                        SeatNumber = t.SeatNumber
                     }).ToList();
 
                 return tickets;
@@ -111,6 +113,9 @@ namespace KazanAirportWebApi.Controllers
                 var ticket = _db.Tickets.FirstOrDefault(x => x.Id == currentTicket.Id);
                 if (ticket == null)
                     return $"Ticket with ID = {currentTicket.Id} wasn't found";
+
+                if (!string.IsNullOrEmpty(ticket.SeatNumber))
+                    return "Вы уже прошли онлайн-регистрацию. Повторно ее проходить не требуется.";
 
                 ticket.SeatNumber = InfoGenerators.GenerateSeatNumber();
                 _db.SaveChanges();

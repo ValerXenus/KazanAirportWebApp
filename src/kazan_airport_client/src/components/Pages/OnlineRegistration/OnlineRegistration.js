@@ -66,6 +66,11 @@ const OnlineRegistration = () => {
             return;
         }
 
+        if (response.data !== "Success") {
+            alert(`Внимание:\n${response.data}`);
+            return;
+        }
+
         alert("Онлайн-регистрация пройдена успешно.\n");
         window.location = "/";
     }
