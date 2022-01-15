@@ -16,4 +16,18 @@ export default class UtilityMethods {
 
         return dd + '.' + MM + '.' + yyyy + ' ' + HH + ":" + minutes;
     }
+
+    /**
+     * Получить время посадки на самолет
+     * @param {*} dateTime 
+     */
+    static getBoardingTime = (dateTime) => {
+        dateTime = new Date(dateTime);
+        var boardingDateTime = new Date(dateTime - 30 * 60000);
+
+        var HH = String(boardingDateTime.getHours()).padStart(2, '0');
+        var minutes = String(boardingDateTime.getMinutes()).padStart(2, '0');
+
+        return HH + ":" + minutes;
+    }
 }
