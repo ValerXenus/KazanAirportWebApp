@@ -93,7 +93,9 @@ export class BuyTicket extends Component {
         if (this.state.isAborted)
             return;
 
-        let id = passengerId ? passengerId : this.state.passengerInfo.id;
+        let id = passengerId 
+            ? passengerId 
+            : this.state.passengerInfo.id;
 
         axios.post(ticketsMethods.CREATE_TICKET, {
             passengerId: id,
@@ -129,7 +131,8 @@ export class BuyTicket extends Component {
                     id: response.data.id
                 }
             }));
-            this.buyTicket(); 
+            this.savePassengerIdInCookie(response.data.id);
+            this.buyTicket(response.data.id); 
         })
         .catch((error) => {
             alert(`Ошибка при отправке данных: ${error}`);
@@ -181,6 +184,16 @@ export class BuyTicket extends Component {
             return styles.selectedFlight;
 
         return null;
+    }
+
+    savePassengerIdInCookie = (passengerId) => {
+        let authCookie = Cookies.get("authData");
+        if (!authCookie)
+            return;
+
+        let currentSession = JSON.parse(authCookie);
+        currentSession.passengerId = passengerId;
+        Cookies.set("authData", JSON.stringify(currentSession));
     }
 
     render() {
